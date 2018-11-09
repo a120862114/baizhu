@@ -46,13 +46,13 @@ public class SmsController {
         message.setIdentifyingTempleteCode(smsConfig.getIdentifyingTempleteCode());
         JSONObject json=new JSONObject();
         int ret=10010;
+        String msg="短信发送成功";
         String mobile=message.getMobile();
-        String content=message.getContent();
+        message.setMobile(mobile);
+        message.setContent(String.valueOf(code));
         boolean flag= SmsSender.sendSms(message);
         if(flag) ret=0;
-        //json.put("msg",flag);
-
-       // return json;
-        return JsonReturn.SetMsg(ret,"","");
+        if(ret!=0) msg="短信发送失败";
+        return JsonReturn.SetMsg(ret,msg,"");
     }
 }

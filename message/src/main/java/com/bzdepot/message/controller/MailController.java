@@ -32,7 +32,7 @@ public class MailController {
     private RedisTemplate<String, Object> redisTemplate;
 
     @RequestMapping(value = "/send",method = RequestMethod.POST)
-    public  Object SmsemailSend(HttpServletRequest request, @Valid @ModelAttribute("message") Message message){
+    public  Object mailSend(HttpServletRequest request, @Valid @ModelAttribute("message") Message message){
         int code=(int)((Math.random()*9+1)*100000);
 
         redisTemplate.opsForValue().set(message.getToEmail(),code,15,TimeUnit.SECONDS);
@@ -46,23 +46,24 @@ public class MailController {
         message.setSignName(smsConfig.getSignName());
         message.setRegistTempleteCode(smsConfig.getRegistTempleteCode());
         message.setIdentifyingTempleteCode(smsConfig.getIdentifyingTempleteCode());
-       // JSONObject json=new JSONObject();
+        message.setContent(String.valueOf(code));
+
         int ret=10010;
+        String msg="邮件发送成功";
         if("1".equals(message.getSms_sendType())){
             //单独发邮件
             if(EmailSender.SendEmail(message)){
-                //json.put("msg","success");
                 ret=0;
             }
         }else{
             //群发邮件
             if(EmailSender.SendEmails(message)){
-               // json.put("msg","error");
-                ret=0;
+               ret=0;
             }
         }
-
-        return JsonReturn.SetMsg(ret,"","");
+        if(ret!=0)
+            msg="邮件发送失败";
+        return JsonReturn.SetMsg(ret,msg,"");
 
 
     }

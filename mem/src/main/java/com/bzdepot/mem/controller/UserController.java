@@ -5,6 +5,7 @@ import com.bzdepot.common.message.JsonReturn;
 import com.bzdepot.common.util.JwtUtil;
 import com.bzdepot.mem.model.Member;
 import com.bzdepot.mem.service.MemberService;
+import com.bzdepot.mem.service.RegisterService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.InvalidClaimException;
@@ -27,7 +28,8 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private MemberService userService;
-
+    @Autowired
+    private RegisterService registerService;
     @Value("${tokenkey}")
     private  String TokenKey;
 
@@ -64,6 +66,10 @@ public class UserController {
         Member MobileResult = userService.findUserByMobile(User.getMobile());
         if(MobileResult != null){
             return JsonReturn.SetMsg(10011,"手机号码已存在,请重新填写!","");
+        }
+        int validCode=(Integer) registerService.validRegister(String.valueOf(User.getMobile()),User.getCode());
+        if(validCode>1){
+            return JsonReturn.SetMsg(10011,"手机验证码错误,请重新填写!","");
         }
 
         //验证两次密码是否输入一致

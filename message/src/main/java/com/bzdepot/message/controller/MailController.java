@@ -35,12 +35,12 @@ public class MailController {
     public  Object mailSend(HttpServletRequest request, @Valid @ModelAttribute("message") Message message){
         int code=(int)((Math.random()*9+1)*100000);
 
-        redisTemplate.opsForValue().set(message.getToEmail(),code,15,TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(message.getToEmail(),code,3,TimeUnit.MINUTES);
 
         message.setHostName(emailConfig.getHostName());
         message.setEmailName(emailConfig.getEmailName());
         message.setEmailPass(emailConfig.getEmailPass());
-        //
+
         message.setAccessKeyId(smsConfig.getAccessKeyId());
         message.setAccesskeySecret(smsConfig.getAccesskeySecret());
         message.setSignName(smsConfig.getSignName());
@@ -68,32 +68,4 @@ public class MailController {
 
     }
 
-    public  Object SmsemailSend_bak(@RequestBody String data){
-        System.out.println(data);
-        JSONObject json=new JSONObject();
-        JSONObject jsonParam= JSONObject.parseObject(data);
-        logger.info("jsonParam"+jsonParam.toJSONString());
-        if("1".equals(jsonParam.get("SMS_TYPE"))){
-            if("1".equals(jsonParam.getString("SMS_SENDTYPE"))){
-                //单独发邮件
-                if(EmailSender.SendEmail(jsonParam)){
-                    json.put("msg","success");
-                }
-            }
-            else{
-                //群发邮件
-                if(EmailSender.SendEmails(jsonParam)){
-                    json.put("msg","error");
-                }
-            }
-        }
-        if("2".equals(jsonParam.getString("SMS_TYPE"))){
-            String mobile=jsonParam.getString("ToEmail");
-            String content=jsonParam.getString("CONTENT");
-            //boolean flag= SmsSender.sendSms(mobile,content);
-            //json.put("msg",flag);
-
-        }
-        return json;
-    }
 }

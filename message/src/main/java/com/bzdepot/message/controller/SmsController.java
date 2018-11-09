@@ -33,7 +33,7 @@ public class SmsController {
     @RequestMapping(value = "/send",method = RequestMethod.POST)
     public  Object SmsSend(HttpServletRequest request, @Valid @ModelAttribute("message") Message message){
         int code=(int)((Math.random()*9+1)*100000);
-        redisTemplate.opsForValue().set(message.getMobile(),code,15,TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(message.getMobile(),code,3,TimeUnit.MINUTES);
 
         message.setHostName(emailConfig.getHostName());
         message.setEmailName(emailConfig.getEmailName());

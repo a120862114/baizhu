@@ -29,6 +29,8 @@ public class Member {
 
     private String headImgId;
 
+    private String code;
+
     public Long getId() {
         return id;
     }
@@ -139,5 +141,13 @@ public class Member {
 
     public void setHeadImgId(String headImgId) {
         this.headImgId = headImgId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

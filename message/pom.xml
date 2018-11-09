@@ -8,7 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>mem</name>
+	<name>message</name>
 	<description>this is message service</description>
 
 	<parent>

@@ -38,7 +38,6 @@ public class SmsController {
         message.setHostName(emailConfig.getHostName());
         message.setEmailName(emailConfig.getEmailName());
         message.setEmailPass(emailConfig.getEmailPass());
-        //
         message.setAccessKeyId(smsConfig.getAccessKeyId());
         message.setAccesskeySecret(smsConfig.getAccesskeySecret());
         message.setSignName(smsConfig.getSignName());

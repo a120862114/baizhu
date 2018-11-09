@@ -1,0 +1,135 @@
+hystrix.command.fallbackcmd.execution.isolation.thread.timeoutInMilliseconds: 5000
+server:
+  port: 9293
+spring:
+  resources:
+    add-mappings: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+  application:
+      name: baizhu_gateway
+  cloud:
+    consul:
+      host: 127.0.0.1
+      port: 8500
+      discovery:
+        healthCheckInterval: 15s
+        instance-id: baizhu_gateway
+    gateway:
+      locator:
+        enabled: true
+      default-filters:
+      - AddResponseHeader=X-Response-Default-Foo, Default-Bar
+      routes:
+      - id: auth_user
+        uri: lb://auth-user
+        predicates:
+        - Path=/member/**
+        filters:
+        - StripPrefix=1
+        #- Hystrix=myCommandName
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/hystrixfallback
+      - id: bz-offer
+        uri: lb://bz-offer
+        predicates:
+        - Path=/offer/**
+        filters:
+        - StripPrefix=1
+        #- Hystrix=myCommandName
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/hystrixfallback
+      - id: bz-transport
+        uri: lb://bz-transport
+        predicates:
+        - Path=/transport/**
+        filters:
+        - StripPrefix=1
+        #- Hystrix=myCommandName
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/hystrixfallback
+      - id: bz-communal
+        uri: lb://bz-communal
+        predicates:
+        - Path=/communal/**
+        filters:
+        - StripPrefix=1
+        #- Hystrix=myCommandName
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/hystrixfallback
+      - id: bz-client-service
+        uri: lb://bz-client-service
+        predicates:
+        - Path=/client/**
+        filters:
+        - StripPrefix=1
+        #- Hystrix=myCommandName
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/hystrixfallback
+      - id: user-service
+        uri: lb://user-service
+        predicates:
+        - Path=/user/**
+        filters:
+        - StripPrefix=1
+        #- Hystrix=myCommandName
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/hystrixfallback
+      - id: profit-service
+        uri: lb://profit-service
+        predicates:
+        - Path=/profitset/**
+        filters:
+        - StripPrefix=1
+        #- Hystrix=myCommandName
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/hystrixfallback
+      - id: special-service
+        uri: lb://special-service
+        predicates:
+        - Path=/special/**
+        filters:
+        - StripPrefix=1
+        #- Hystrix=myCommandName
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/hystrixfallback
+      - id: message-server
+        uri: lb://message-server
+        predicates:
+        - Path=/message/**
+        filters:
+        - StripPrefix=1
+        #- Hystrix=myCommandName
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/hystrixfallback
+
+auth:
+  outserver: member,message
+  token:
+    tokenheader: token
+    tokenkey: BaiZhuMicro
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

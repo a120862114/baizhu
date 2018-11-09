@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.client.mapper.LevelModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.client.model.LevelModule" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="level_id" property="levelId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_type" property="userType" jdbcType="TINYINT" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, seller_id, level_id, user_id, user_type, nickname, username
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from level_module
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="findMyParentUserData" resultType="com.bzdepot.client.vo.ClientUserNameBo" parameterType="com.bzdepot.client.model.LevelModule">
+    SELECT
+    l.id,l.seller_id as sellerId,l.user_id as userId,l.level_id as levelId,l.user_type as userType,u.nickname as sellerName,uone.nickname as clientName
+    FROM level_module l ,client_user u,client_user uone
+    where l.seller_id = u.user_id and uone.user_id = l.user_id and l.user_id = #{userId,jdbcType=BIGINT} and l.user_type = 1
+    <if test="levelId != null" >
+      and l.level_id = #{levelId,jdbcType=BIGINT}
+    </if>
+  </select>
+  <select id="findLevelIdByUserIdAndSellerId" resultMap="BaseResultMap" parameterType="com.bzdepot.client.model.LevelModule">
+    select
+    <include refid="Base_Column_List" />
+    from level_module
+    where seller_id = #{sellerId,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <select id="searchLevelUserPage" resultType="com.bzdepot.client.vo.ClientUserNameBo" parameterType="com.bzdepot.client.model.LevelModule" >
+    SELECT
+    l.id,l.seller_id as sellerId,l.user_id as userId,l.level_id as levelId,l.user_type as userType,u.nickname as sellerName,uone.nickname as clientName
+    FROM level_module l ,client_user u,client_user uone
+    where l.seller_id = u.user_id and uone.user_id = l.user_id and l.seller_id = #{sellerId,jdbcType=BIGINT}
+    <if test="levelId != null" >
+    and l.level_id = #{levelId,jdbcType=BIGINT}
+    </if>
+  </select>
+  <select id="countLevelUserNums" resultType="java.lang.Long" parameterType="java.lang.Long" >
+    select
+    count("id")
+    from level_module
+    where level_id = #{levelId,jdbcType=BIGINT}
+
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from level_module
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.client.model.LevelModule" >
+    insert into level_module (id, seller_id, level_id, 
+      user_id, user_type, nickname, 
+      username)
+    values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{levelId,jdbcType=BIGINT}, 
+      #{userId,jdbcType=BIGINT}, #{userType,jdbcType=TINYINT}, #{nickname,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.client.model.LevelModule" >
+    insert into level_module
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="levelId != null" >
+        level_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="levelId != null" >
+        #{levelId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.client.model.LevelModule" >
+    update level_module
+    <set >
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="levelId != null" >
+        level_id = #{levelId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateLevelIdByUserIdSelective" parameterType="com.bzdepot.client.model.LevelModule" >
+    update level_module
+    <set >
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="levelId != null" >
+        level_id = #{levelId,jdbcType=BIGINT},
+      </if>
+
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.client.model.LevelModule" >
+    update level_module
+    set seller_id = #{sellerId,jdbcType=BIGINT},
+      level_id = #{levelId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      user_type = #{userType,jdbcType=TINYINT},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

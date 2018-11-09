@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.offer.mapper.OfferSonExpressMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.offer.model.OfferSonExpress" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="offer_son_id" property="offerSonId" jdbcType="BIGINT" />
+    <result column="city_id" property="cityId" jdbcType="BIGINT" />
+    <result column="rate" property="rate" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, offer_son_id, city_id, rate
+  </sql>
+  <select id="selectByOfferSonId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <include refid="Base_Column_List" />
+    from offer_son_express
+    where offer_son_id = #{offerSonId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from offer_son_express
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from offer_son_express
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.offer.model.OfferSonExpress" >
+    insert into offer_son_express (id, offer_son_id, city_id, 
+      rate)
+    values (#{id,jdbcType=BIGINT}, #{offerSonId,jdbcType=BIGINT}, #{cityId,jdbcType=BIGINT}, 
+      #{rate,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.offer.model.OfferSonExpress" >
+    insert into offer_son_express
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="offerSonId != null" >
+        offer_son_id,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="offerSonId != null" >
+        #{offerSonId,jdbcType=BIGINT},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=BIGINT},
+      </if>
+      <if test="rate != null" >
+        #{rate,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.offer.model.OfferSonExpress" >
+    update offer_son_express
+    <set >
+      <if test="offerSonId != null" >
+        offer_son_id = #{offerSonId,jdbcType=BIGINT},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=BIGINT},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.offer.model.OfferSonExpress" >
+    update offer_son_express
+    set offer_son_id = #{offerSonId,jdbcType=BIGINT},
+      city_id = #{cityId,jdbcType=BIGINT},
+      rate = #{rate,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

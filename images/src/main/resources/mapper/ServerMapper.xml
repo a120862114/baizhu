@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.images.mapper.ServerMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.images.model.Server" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="server_host" property="serverHost" jdbcType="VARCHAR" />
+    <result column="server_port" property="serverPort" jdbcType="VARCHAR" />
+    <result column="is_master" property="isMaster" jdbcType="TINYINT" />
+    <result column="pid" property="pid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, server_host, server_port, is_master, pid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from server
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from server
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.images.model.Server" >
+    insert into server (id, server_host, server_port, 
+      is_master, pid)
+    values (#{id,jdbcType=BIGINT}, #{serverHost,jdbcType=VARCHAR}, #{serverPort,jdbcType=VARCHAR}, 
+      #{isMaster,jdbcType=TINYINT}, #{pid,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.images.model.Server" >
+    insert into server
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="serverHost != null" >
+        server_host,
+      </if>
+      <if test="serverPort != null" >
+        server_port,
+      </if>
+      <if test="isMaster != null" >
+        is_master,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="serverHost != null" >
+        #{serverHost,jdbcType=VARCHAR},
+      </if>
+      <if test="serverPort != null" >
+        #{serverPort,jdbcType=VARCHAR},
+      </if>
+      <if test="isMaster != null" >
+        #{isMaster,jdbcType=TINYINT},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.images.model.Server" >
+    update server
+    <set >
+      <if test="serverHost != null" >
+        server_host = #{serverHost,jdbcType=VARCHAR},
+      </if>
+      <if test="serverPort != null" >
+        server_port = #{serverPort,jdbcType=VARCHAR},
+      </if>
+      <if test="isMaster != null" >
+        is_master = #{isMaster,jdbcType=TINYINT},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.images.model.Server" >
+    update server
+    set server_host = #{serverHost,jdbcType=VARCHAR},
+      server_port = #{serverPort,jdbcType=VARCHAR},
+      is_master = #{isMaster,jdbcType=TINYINT},
+      pid = #{pid,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

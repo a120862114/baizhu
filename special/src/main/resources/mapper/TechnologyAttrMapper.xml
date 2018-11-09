@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.special.mapper.TechnologyAttrMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.special.model.TechnologyAttr" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="t_id" property="tId" jdbcType="BIGINT" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="hs_in_num" property="hsInNum" jdbcType="INTEGER" />
+    <result column="hs_hs_num" property="hsHsNum" jdbcType="INTEGER" />
+    <result column="hs_md_num" property="hsMdNum" jdbcType="INTEGER" />
+    <result column="hs_md_hs_num" property="hsMdHsNum" jdbcType="INTEGER" />
+    <result column="is_edition" property="isEdition" jdbcType="TINYINT" />
+    <result column="on_money" property="onMoney" jdbcType="DECIMAL" />
+    <result column="machining_nums" property="machiningNums" jdbcType="INTEGER" />
+    <result column="calculation_type" property="calculationType" jdbcType="TINYINT" />
+    <result column="calculation_nums_money" property="calculationNumsMoney" jdbcType="DECIMAL" />
+    <result column="calculation_mj_money" property="calculationMjMoney" jdbcType="DECIMAL" />
+    <result column="set_limit_type" property="setLimitType" jdbcType="TINYINT" />
+    <result column="limit_size_max_long" property="limitSizeMaxLong" jdbcType="DECIMAL" />
+    <result column="limit_size_max_wight" property="limitSizeMaxWight" jdbcType="DECIMAL" />
+    <result column="limit_size_min_long" property="limitSizeMinLong" jdbcType="DECIMAL" />
+    <result column="limit_size_min_wight" property="limitSizeMinWight" jdbcType="DECIMAL" />
+    <result column="limit_area_id" property="limitAreaId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, t_id, category, hs_in_num, hs_hs_num, hs_md_num, hs_md_hs_num, is_edition, on_money, 
+    machining_nums, calculation_type, calculation_nums_money, calculation_mj_money, set_limit_type, 
+    limit_size_max_long, limit_size_max_wight, limit_size_min_long, limit_size_min_wight, 
+    limit_area_id, status, create_time, update_time, seller_id
+  </sql>
+  <select id="countAttrDataByTid" resultType="java.lang.Integer">
+    select count(id) from technology_attr where seller_id = #{sellerId,jdbcType=BIGINT} and t_id = #{tId,jdbcType=BIGINT}
+  </select>
+  <select id="listAttrDataByTid" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+      <include refid="Base_Column_List" />
+    from technology_attr where t_id = #{tId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from technology_attr
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from technology_attr
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByTid" parameterType="java.lang.Long">
+    delete from technology_attr
+    where t_id = #{tId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.special.model.TechnologyAttr" >
+    insert into technology_attr (id, t_id, category, 
+      hs_in_num, hs_hs_num, hs_md_num, 
+      hs_md_hs_num, is_edition, on_money, 
+      machining_nums, calculation_type, calculation_nums_money, 
+      calculation_mj_money, set_limit_type, limit_size_max_long, 
+      limit_size_max_wight, limit_size_min_long, limit_size_min_wight, 
+      limit_area_id, status, create_time, 
+      update_time, seller_id)
+    values (#{id,jdbcType=BIGINT}, #{tId,jdbcType=BIGINT}, #{category,jdbcType=VARCHAR}, 
+      #{hsInNum,jdbcType=INTEGER}, #{hsHsNum,jdbcType=INTEGER}, #{hsMdNum,jdbcType=INTEGER}, 
+      #{hsMdHsNum,jdbcType=INTEGER}, #{isEdition,jdbcType=TINYINT}, #{onMoney,jdbcType=DECIMAL}, 
+      #{machiningNums,jdbcType=INTEGER}, #{calculationType,jdbcType=TINYINT}, #{calculationNumsMoney,jdbcType=DECIMAL}, 
+      #{calculationMjMoney,jdbcType=DECIMAL}, #{setLimitType,jdbcType=TINYINT}, #{limitSizeMaxLong,jdbcType=DECIMAL}, 
+      #{limitSizeMaxWight,jdbcType=DECIMAL}, #{limitSizeMinLong,jdbcType=DECIMAL}, #{limitSizeMinWight,jdbcType=DECIMAL}, 
+      #{limitAreaId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyProperty="id" useGeneratedKeys="true" parameterType="com.bzdepot.special.model.TechnologyAttr" >
+    insert into technology_attr
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tId != null" >
+        t_id,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="hsInNum != null" >
+        hs_in_num,
+      </if>
+      <if test="hsHsNum != null" >
+        hs_hs_num,
+      </if>
+      <if test="hsMdNum != null" >
+        hs_md_num,
+      </if>
+      <if test="hsMdHsNum != null" >
+        hs_md_hs_num,
+      </if>
+      <if test="isEdition != null" >
+        is_edition,
+      </if>
+      <if test="onMoney != null" >
+        on_money,
+      </if>
+      <if test="machiningNums != null" >
+        machining_nums,
+      </if>
+      <if test="calculationType != null" >
+        calculation_type,
+      </if>
+      <if test="calculationNumsMoney != null" >
+        calculation_nums_money,
+      </if>
+      <if test="calculationMjMoney != null" >
+        calculation_mj_money,
+      </if>
+      <if test="setLimitType != null" >
+        set_limit_type,
+      </if>
+      <if test="limitSizeMaxLong != null" >
+        limit_size_max_long,
+      </if>
+      <if test="limitSizeMaxWight != null" >
+        limit_size_max_wight,
+      </if>
+      <if test="limitSizeMinLong != null" >
+        limit_size_min_long,
+      </if>
+      <if test="limitSizeMinWight != null" >
+        limit_size_min_wight,
+      </if>
+      <if test="limitAreaId != null" >
+        limit_area_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="tId != null" >
+        #{tId,jdbcType=BIGINT},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="hsInNum != null" >
+        #{hsInNum,jdbcType=INTEGER},
+      </if>
+      <if test="hsHsNum != null" >
+        #{hsHsNum,jdbcType=INTEGER},
+      </if>
+      <if test="hsMdNum != null" >
+        #{hsMdNum,jdbcType=INTEGER},
+      </if>
+      <if test="hsMdHsNum != null" >
+        #{hsMdHsNum,jdbcType=INTEGER},
+      </if>
+      <if test="isEdition != null" >
+        #{isEdition,jdbcType=TINYINT},
+      </if>
+      <if test="onMoney != null" >
+        #{onMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="machiningNums != null" >
+        #{machiningNums,jdbcType=INTEGER},
+      </if>
+      <if test="calculationType != null" >
+        #{calculationType,jdbcType=TINYINT},
+      </if>
+      <if test="calculationNumsMoney != null" >
+        #{calculationNumsMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="calculationMjMoney != null" >
+        #{calculationMjMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="setLimitType != null" >
+        #{setLimitType,jdbcType=TINYINT},
+      </if>
+      <if test="limitSizeMaxLong != null" >
+        #{limitSizeMaxLong,jdbcType=DECIMAL},
+      </if>
+      <if test="limitSizeMaxWight != null" >
+        #{limitSizeMaxWight,jdbcType=DECIMAL},
+      </if>
+      <if test="limitSizeMinLong != null" >
+        #{limitSizeMinLong,jdbcType=DECIMAL},
+      </if>
+      <if test="limitSizeMinWight != null" >
+        #{limitSizeMinWight,jdbcType=DECIMAL},
+      </if>
+      <if test="limitAreaId != null" >
+        #{limitAreaId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.TechnologyAttr" >
+    update technology_attr
+    <set >
+      <if test="tId != null" >
+        t_id = #{tId,jdbcType=BIGINT},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="hsInNum != null" >
+        hs_in_num = #{hsInNum,jdbcType=INTEGER},
+      </if>
+      <if test="hsHsNum != null" >
+        hs_hs_num = #{hsHsNum,jdbcType=INTEGER},
+      </if>
+      <if test="hsMdNum != null" >
+        hs_md_num = #{hsMdNum,jdbcType=INTEGER},
+      </if>
+      <if test="hsMdHsNum != null" >
+        hs_md_hs_num = #{hsMdHsNum,jdbcType=INTEGER},
+      </if>
+      <if test="isEdition != null" >
+        is_edition = #{isEdition,jdbcType=TINYINT},
+      </if>
+      <if test="onMoney != null" >
+        on_money = #{onMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="machiningNums != null" >
+        machining_nums = #{machiningNums,jdbcType=INTEGER},
+      </if>
+      <if test="calculationType != null" >
+        calculation_type = #{calculationType,jdbcType=TINYINT},
+      </if>
+      <if test="calculationNumsMoney != null" >
+        calculation_nums_money = #{calculationNumsMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="calculationMjMoney != null" >
+        calculation_mj_money = #{calculationMjMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="setLimitType != null" >
+        set_limit_type = #{setLimitType,jdbcType=TINYINT},
+      </if>
+      <if test="limitSizeMaxLong != null" >
+        limit_size_max_long = #{limitSizeMaxLong,jdbcType=DECIMAL},
+      </if>
+      <if test="limitSizeMaxWight != null" >
+        limit_size_max_wight = #{limitSizeMaxWight,jdbcType=DECIMAL},
+      </if>
+      <if test="limitSizeMinLong != null" >
+        limit_size_min_long = #{limitSizeMinLong,jdbcType=DECIMAL},
+      </if>
+      <if test="limitSizeMinWight != null" >
+        limit_size_min_wight = #{limitSizeMinWight,jdbcType=DECIMAL},
+      </if>
+      <if test="limitAreaId != null" >
+        limit_area_id = #{limitAreaId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.special.model.TechnologyAttr" >
+    update technology_attr
+    set t_id = #{tId,jdbcType=BIGINT},
+      category = #{category,jdbcType=VARCHAR},
+      hs_in_num = #{hsInNum,jdbcType=INTEGER},
+      hs_hs_num = #{hsHsNum,jdbcType=INTEGER},
+      hs_md_num = #{hsMdNum,jdbcType=INTEGER},
+      hs_md_hs_num = #{hsMdHsNum,jdbcType=INTEGER},
+      is_edition = #{isEdition,jdbcType=TINYINT},
+      on_money = #{onMoney,jdbcType=DECIMAL},
+      machining_nums = #{machiningNums,jdbcType=INTEGER},
+      calculation_type = #{calculationType,jdbcType=TINYINT},
+      calculation_nums_money = #{calculationNumsMoney,jdbcType=DECIMAL},
+      calculation_mj_money = #{calculationMjMoney,jdbcType=DECIMAL},
+      set_limit_type = #{setLimitType,jdbcType=TINYINT},
+      limit_size_max_long = #{limitSizeMaxLong,jdbcType=DECIMAL},
+      limit_size_max_wight = #{limitSizeMaxWight,jdbcType=DECIMAL},
+      limit_size_min_long = #{limitSizeMinLong,jdbcType=DECIMAL},
+      limit_size_min_wight = #{limitSizeMinWight,jdbcType=DECIMAL},
+      limit_area_id = #{limitAreaId,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      seller_id = #{sellerId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

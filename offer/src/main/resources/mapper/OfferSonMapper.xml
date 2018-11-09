@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.offer.mapper.OfferSonMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.offer.model.OfferSon" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="offer_types" property="offerTypes" jdbcType="TINYINT" />
+    <result column="is_design" property="isDesign" jdbcType="TINYINT" />
+    <result column="is_free_shipping" property="isFreeShipping" jdbcType="TINYINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="texture_id" property="textureId" jdbcType="BIGINT" />
+    <result column="postage_profit" property="postageProfit" jdbcType="DECIMAL" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.bzdepot.offer.model.OfferSon" extends="BaseResultMap" >
+    <result column="except_city_ids" property="exceptCityIds" jdbcType="LONGVARCHAR" />
+    <collection property="offerSonExpressesData" ofType="com.bzdepot.offer.model.OfferSonExpress" select="com.bzdepot.offer.mapper.OfferSonExpressMapper.selectByOfferSonId" column="id"  />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, offer_types, is_design, is_free_shipping, seller_id, class_id, texture_id, postage_profit
+  </sql>
+  <sql id="Blob_Column_List" >
+    except_city_ids
+  </sql>
+  <select id="selectByClassIdAndTextureIdAndSellerId" resultMap="ResultMapWithBLOBs">
+      select
+      <include refid="Base_Column_List" />
+      ,
+      <include refid="Blob_Column_List" />
+    from offer_son
+    where seller_id = #{sellerId,jdbcType=BIGINT} and class_id = #{classId,jdbcType=BIGINT} and texture_id = #{textureId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from offer_son
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from offer_son
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="com.bzdepot.offer.model.OfferSon" >
+    insert into offer_son (id, offer_types, is_design, 
+      is_free_shipping, seller_id, class_id, 
+      texture_id, postage_profit, except_city_ids
+      )
+    values (#{id,jdbcType=BIGINT}, #{offerTypes,jdbcType=TINYINT}, #{isDesign,jdbcType=TINYINT}, 
+      #{isFreeShipping,jdbcType=TINYINT}, #{sellerId,jdbcType=BIGINT}, #{classId,jdbcType=BIGINT}, 
+      #{textureId,jdbcType=BIGINT}, #{postageProfit,jdbcType=DECIMAL}, #{exceptCityIds,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyProperty="id" useGeneratedKeys="true" parameterType="com.bzdepot.offer.model.OfferSon" >
+    insert into offer_son
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="offerTypes != null" >
+        offer_types,
+      </if>
+      <if test="isDesign != null" >
+        is_design,
+      </if>
+      <if test="isFreeShipping != null" >
+        is_free_shipping,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="textureId != null" >
+        texture_id,
+      </if>
+      <if test="postageProfit != null" >
+        postage_profit,
+      </if>
+      <if test="exceptCityIds != null" >
+        except_city_ids,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="offerTypes != null" >
+        #{offerTypes,jdbcType=TINYINT},
+      </if>
+      <if test="isDesign != null" >
+        #{isDesign,jdbcType=TINYINT},
+      </if>
+      <if test="isFreeShipping != null" >
+        #{isFreeShipping,jdbcType=TINYINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="textureId != null" >
+        #{textureId,jdbcType=BIGINT},
+      </if>
+      <if test="postageProfit != null" >
+        #{postageProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="exceptCityIds != null" >
+        #{exceptCityIds,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.offer.model.OfferSon" >
+    update offer_son
+    <set >
+      <if test="offerTypes != null" >
+        offer_types = #{offerTypes,jdbcType=TINYINT},
+      </if>
+      <if test="isDesign != null" >
+        is_design = #{isDesign,jdbcType=TINYINT},
+      </if>
+      <if test="isFreeShipping != null" >
+        is_free_shipping = #{isFreeShipping,jdbcType=TINYINT},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="textureId != null" >
+        texture_id = #{textureId,jdbcType=BIGINT},
+      </if>
+      <if test="postageProfit != null" >
+        postage_profit = #{postageProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="exceptCityIds != null" >
+        except_city_ids = #{exceptCityIds,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bzdepot.offer.model.OfferSon" >
+    update offer_son
+    set offer_types = #{offerTypes,jdbcType=TINYINT},
+      is_design = #{isDesign,jdbcType=TINYINT},
+      is_free_shipping = #{isFreeShipping,jdbcType=TINYINT},
+      seller_id = #{sellerId,jdbcType=BIGINT},
+      class_id = #{classId,jdbcType=BIGINT},
+      texture_id = #{textureId,jdbcType=BIGINT},
+      postage_profit = #{postageProfit,jdbcType=DECIMAL},
+      except_city_ids = #{exceptCityIds,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.offer.model.OfferSon" >
+    update offer_son
+    set offer_types = #{offerTypes,jdbcType=TINYINT},
+      is_design = #{isDesign,jdbcType=TINYINT},
+      is_free_shipping = #{isFreeShipping,jdbcType=TINYINT},
+      seller_id = #{sellerId,jdbcType=BIGINT},
+      class_id = #{classId,jdbcType=BIGINT},
+      texture_id = #{textureId,jdbcType=BIGINT},
+      postage_profit = #{postageProfit,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

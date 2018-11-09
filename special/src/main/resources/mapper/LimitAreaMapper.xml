@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.special.mapper.LimitAreaMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.special.model.LimitArea" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="one_longs" property="oneLongs" jdbcType="DECIMAL" />
+    <result column="one_wight" property="oneWight" jdbcType="DECIMAL" />
+    <result column="two_longs" property="twoLongs" jdbcType="DECIMAL" />
+    <result column="two_wight" property="twoWight" jdbcType="DECIMAL" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, one_longs, one_wight, two_longs, two_wight, seller_id
+  </sql>
+  <select id="selectBySellerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from limit_area
+    where seller_id = #{sellerId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from limit_area
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from limit_area
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.special.model.LimitArea" >
+    insert into limit_area (id, one_longs, one_wight, 
+      two_longs, two_wight, seller_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{oneLongs,jdbcType=DECIMAL}, #{oneWight,jdbcType=DECIMAL}, 
+      #{twoLongs,jdbcType=DECIMAL}, #{twoWight,jdbcType=DECIMAL}, #{sellerId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.special.model.LimitArea" >
+    insert into limit_area
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="oneLongs != null" >
+        one_longs,
+      </if>
+      <if test="oneWight != null" >
+        one_wight,
+      </if>
+      <if test="twoLongs != null" >
+        two_longs,
+      </if>
+      <if test="twoWight != null" >
+        two_wight,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="oneLongs != null" >
+        #{oneLongs,jdbcType=DECIMAL},
+      </if>
+      <if test="oneWight != null" >
+        #{oneWight,jdbcType=DECIMAL},
+      </if>
+      <if test="twoLongs != null" >
+        #{twoLongs,jdbcType=DECIMAL},
+      </if>
+      <if test="twoWight != null" >
+        #{twoWight,jdbcType=DECIMAL},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.LimitArea" >
+    update limit_area
+    <set >
+      <if test="oneLongs != null" >
+        one_longs = #{oneLongs,jdbcType=DECIMAL},
+      </if>
+      <if test="oneWight != null" >
+        one_wight = #{oneWight,jdbcType=DECIMAL},
+      </if>
+      <if test="twoLongs != null" >
+        two_longs = #{twoLongs,jdbcType=DECIMAL},
+      </if>
+      <if test="twoWight != null" >
+        two_wight = #{twoWight,jdbcType=DECIMAL},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.special.model.LimitArea" >
+    update limit_area
+    set one_longs = #{oneLongs,jdbcType=DECIMAL},
+      one_wight = #{oneWight,jdbcType=DECIMAL},
+      two_longs = #{twoLongs,jdbcType=DECIMAL},
+      two_wight = #{twoWight,jdbcType=DECIMAL},
+      seller_id = #{sellerId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

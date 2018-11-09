@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.client.mapper.UserCollectionMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.client.model.UserCollection" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="offer_id" property="offerId" jdbcType="BIGINT" />
+    <result column="group_id" property="groupId" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="detail_id" property="detailId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="ys_money" property="ysMoney" jdbcType="DECIMAL" />
+    <result column="ys_number" property="ysNumber" jdbcType="INTEGER" />
+    <result column="ys_name" property="ysName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, offer_id, group_id, seller_id, detail_id, user_id, ys_money, ys_number, ys_name, 
+    create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from collection
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from collection
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.client.model.UserCollection" >
+    insert into collection (id, offer_id, group_id, 
+      seller_id, detail_id, user_id, 
+      ys_money, ys_number, ys_name, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{offerId,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, 
+      #{sellerId,jdbcType=BIGINT}, #{detailId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{ysMoney,jdbcType=DECIMAL}, #{ysNumber,jdbcType=INTEGER}, #{ysName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.client.model.UserCollection" >
+    insert into collection
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="offerId != null" >
+        offer_id,
+      </if>
+      <if test="groupId != null" >
+        group_id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="detailId != null" >
+        detail_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="ysMoney != null" >
+        ys_money,
+      </if>
+      <if test="ysNumber != null" >
+        ys_number,
+      </if>
+      <if test="ysName != null" >
+        ys_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="offerId != null" >
+        #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="detailId != null" >
+        #{detailId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="ysMoney != null" >
+        #{ysMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="ysNumber != null" >
+        #{ysNumber,jdbcType=INTEGER},
+      </if>
+      <if test="ysName != null" >
+        #{ysName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.client.model.UserCollection" >
+    update collection
+    <set >
+      <if test="offerId != null" >
+        offer_id = #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="detailId != null" >
+        detail_id = #{detailId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="ysMoney != null" >
+        ys_money = #{ysMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="ysNumber != null" >
+        ys_number = #{ysNumber,jdbcType=INTEGER},
+      </if>
+      <if test="ysName != null" >
+        ys_name = #{ysName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.client.model.UserCollection" >
+    update collection
+    set offer_id = #{offerId,jdbcType=BIGINT},
+      group_id = #{groupId,jdbcType=BIGINT},
+      seller_id = #{sellerId,jdbcType=BIGINT},
+      detail_id = #{detailId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      ys_money = #{ysMoney,jdbcType=DECIMAL},
+      ys_number = #{ysNumber,jdbcType=INTEGER},
+      ys_name = #{ysName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.offer.mapper.ProductImgMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.offer.model.ProductImg" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="img_ids" property="imgIds" jdbcType="VARCHAR" />
+    <result column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="texture_id" property="textureId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="FindMap" type="com.bzdepot.offer.vo.ProductImgVo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="img_ids" property="imgIds" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, seller_id, img_ids, class_id, texture_id, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from product_img
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getProductImgList" resultMap="FindMap">
+      select id,img_ids from product_img where seller_id=#{sellerid} and class_id=#{classid} and texture_id=#{textureid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from product_img
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.offer.model.ProductImg" >
+    insert into product_img (id, seller_id, img_ids, 
+      class_id, texture_id, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{imgIds,jdbcType=VARCHAR}, 
+      #{classId,jdbcType=BIGINT}, #{textureId,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyProperty="id"  useGeneratedKeys="true" parameterType="com.bzdepot.offer.model.ProductImg" >
+    insert into product_img
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="imgIds != null" >
+        img_ids,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="textureId != null" >
+        texture_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="imgIds != null" >
+        #{imgIds,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="textureId != null" >
+        #{textureId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.offer.model.ProductImg" >
+    update product_img
+    <set >
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="imgIds != null" >
+        img_ids = #{imgIds,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="textureId != null" >
+        texture_id = #{textureId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.offer.model.ProductImg" >
+    update product_img
+    set seller_id = #{sellerId,jdbcType=BIGINT},
+      img_ids = #{imgIds,jdbcType=VARCHAR},
+      class_id = #{classId,jdbcType=BIGINT},
+      texture_id = #{textureId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.offer.mapper.OfferAttrMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.offer.model.OfferAttr" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="offer_id" property="offerId" jdbcType="BIGINT" />
+    <result column="offer_group_id" property="offerGroupId" jdbcType="BIGINT" />
+    <result column="attr_key" property="attrKey" jdbcType="VARCHAR" />
+    <result column="attr_value" property="attrValue" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, offer_id, offer_group_id, attr_key, attr_value
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from offer_attr
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from offer_attr
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="delbyGroupId" parameterType="java.lang.Long">
+    delete from offer_attr
+    where offer_group_id = #{offergroupid}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.offer.model.OfferAttr" >
+    insert into offer_attr (id, offer_id, offer_group_id, 
+      attr_key, attr_value)
+    values (#{id,jdbcType=BIGINT}, #{offerId,jdbcType=BIGINT}, #{offerGroupId,jdbcType=BIGINT}, 
+      #{attrKey,jdbcType=VARCHAR}, #{attrValue,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyProperty="id"  useGeneratedKeys="true" parameterType="com.bzdepot.offer.model.OfferAttr" >
+    insert into offer_attr
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="offerId != null" >
+        offer_id,
+      </if>
+      <if test="offerGroupId != null" >
+        offer_group_id,
+      </if>
+      <if test="attrKey != null" >
+        attr_key,
+      </if>
+      <if test="attrValue != null" >
+        attr_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="offerId != null" >
+        #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="offerGroupId != null" >
+        #{offerGroupId,jdbcType=BIGINT},
+      </if>
+      <if test="attrKey != null" >
+        #{attrKey,jdbcType=VARCHAR},
+      </if>
+      <if test="attrValue != null" >
+        #{attrValue,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.offer.model.OfferAttr" >
+    update offer_attr
+    <set >
+      <if test="offerId != null" >
+        offer_id = #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="offerGroupId != null" >
+        offer_group_id = #{offerGroupId,jdbcType=BIGINT},
+      </if>
+      <if test="attrKey != null" >
+        attr_key = #{attrKey,jdbcType=VARCHAR},
+      </if>
+      <if test="attrValue != null" >
+        attr_value = #{attrValue,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.offer.model.OfferAttr" >
+    update offer_attr
+    set offer_id = #{offerId,jdbcType=BIGINT},
+      offer_group_id = #{offerGroupId,jdbcType=BIGINT},
+      attr_key = #{attrKey,jdbcType=VARCHAR},
+      attr_value = #{attrValue,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

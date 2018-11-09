@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.offer.mapper.ProfitMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.offer.model.Profit" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="offer_id" property="offerId" jdbcType="BIGINT" />
+    <result column="parent_offer_id" property="parentOfferId" jdbcType="BIGINT" />
+    <result column="types" property="types" jdbcType="TINYINT" />
+    <result column="start_value" property="startValue" jdbcType="DECIMAL" />
+    <result column="end_value" property="endValue" jdbcType="DECIMAL" />
+    <result column="level_id" property="levelId" jdbcType="BIGINT" />
+    <result column="profit_rate" property="profitRate" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, offer_id, parent_offer_id, types, start_value, end_value, level_id, profit_rate
+  </sql>
+  <select id="findOfferIdList" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from profit where offer_id=#{offerid} or parent_offer_id=#{offerid}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from profit
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from profit
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.offer.model.Profit" >
+    insert into profit (id, offer_id, parent_offer_id, 
+      types, start_value, end_value, 
+      level_id, profit_rate)
+    values (#{id,jdbcType=BIGINT}, #{offerId,jdbcType=BIGINT}, #{parentOfferId,jdbcType=BIGINT}, 
+      #{types,jdbcType=TINYINT}, #{startValue,jdbcType=DECIMAL}, #{endValue,jdbcType=DECIMAL}, 
+      #{levelId,jdbcType=BIGINT}, #{profitRate,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyProperty="id"  useGeneratedKeys="true" parameterType="com.bzdepot.offer.model.Profit" >
+    insert into profit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="offerId != null" >
+        offer_id,
+      </if>
+      <if test="parentOfferId != null" >
+        parent_offer_id,
+      </if>
+      <if test="types != null" >
+        types,
+      </if>
+      <if test="startValue != null" >
+        start_value,
+      </if>
+      <if test="endValue != null" >
+        end_value,
+      </if>
+      <if test="levelId != null" >
+        level_id,
+      </if>
+      <if test="profitRate != null" >
+        profit_rate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="offerId != null" >
+        #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="parentOfferId != null" >
+        #{parentOfferId,jdbcType=BIGINT},
+      </if>
+      <if test="types != null" >
+        #{types,jdbcType=TINYINT},
+      </if>
+      <if test="startValue != null" >
+        #{startValue,jdbcType=DECIMAL},
+      </if>
+      <if test="endValue != null" >
+        #{endValue,jdbcType=DECIMAL},
+      </if>
+      <if test="levelId != null" >
+        #{levelId,jdbcType=BIGINT},
+      </if>
+      <if test="profitRate != null" >
+        #{profitRate,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.offer.model.Profit" >
+    update profit
+    <set >
+      <if test="offerId != null" >
+        offer_id = #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="parentOfferId != null" >
+        parent_offer_id = #{parentOfferId,jdbcType=BIGINT},
+      </if>
+      <if test="types != null" >
+        types = #{types,jdbcType=TINYINT},
+      </if>
+      <if test="startValue != null" >
+        start_value = #{startValue,jdbcType=DECIMAL},
+      </if>
+      <if test="endValue != null" >
+        end_value = #{endValue,jdbcType=DECIMAL},
+      </if>
+      <if test="levelId != null" >
+        level_id = #{levelId,jdbcType=BIGINT},
+      </if>
+      <if test="profitRate != null" >
+        profit_rate = #{profitRate,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.offer.model.Profit" >
+    update profit
+    set offer_id = #{offerId,jdbcType=BIGINT},
+      parent_offer_id = #{parentOfferId,jdbcType=BIGINT},
+      types = #{types,jdbcType=TINYINT},
+      start_value = #{startValue,jdbcType=DECIMAL},
+      end_value = #{endValue,jdbcType=DECIMAL},
+      level_id = #{levelId,jdbcType=BIGINT},
+      profit_rate = #{profitRate,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

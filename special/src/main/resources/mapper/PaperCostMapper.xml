@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.special.mapper.PaperCostMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.special.model.PaperCost" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="paper_tid" property="paperTid" jdbcType="BIGINT" />
+    <result column="paper_tname" property="paperTname" jdbcType="VARCHAR" />
+    <result column="brand_id" property="brandId" jdbcType="BIGINT" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="packing_id" property="packingId" jdbcType="BIGINT" />
+    <result column="packing_name" property="packingName" jdbcType="VARCHAR" />
+    <result column="gram_id" property="gramId" jdbcType="BIGINT" />
+    <result column="gram_name" property="gramName" jdbcType="VARCHAR" />
+    <result column="thickness_start" property="thicknessStart" jdbcType="DECIMAL" />
+    <result column="thickness_end" property="thicknessEnd" jdbcType="DECIMAL" />
+    <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+    <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="is_magnanimity" property="isMagnanimity" jdbcType="TINYINT" />
+    <result column="is_positive_degree" property="isPositiveDegree" jdbcType="TINYINT" />
+    <result column="is_routine" property="isRoutine" jdbcType="TINYINT" />
+    <result column="last_dun" property="lastDun" jdbcType="DECIMAL" />
+    <result column="last_money" property="lastMoney" jdbcType="DECIMAL" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.bzdepot.special.model.PaperCostWithBLOBs" extends="BaseResultMap" >
+    <result column="drum_ids" property="drumIds" jdbcType="LONGVARCHAR" />
+    <result column="drum_values" property="drumValues" jdbcType="LONGVARCHAR" />
+    <result column="other_size_ids" property="otherSizeIds" jdbcType="LONGVARCHAR" />
+    <result column="other_size_values" property="otherSizeValues" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, seller_id, paper_tid, paper_tname, brand_id, brand_name, packing_id, packing_name, 
+    gram_id, gram_name, thickness_start, thickness_end, supplier_id, supplier_name, status, 
+    create_time, update_time, is_magnanimity, is_positive_degree, is_routine,last_dun,last_money
+  </sql>
+  <sql id="Blob_Column_List" >
+    drum_ids, drum_values, other_size_ids, other_size_values
+  </sql>
+  <select id="selectBySellerIdPageList" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from paper_cost
+    where seller_id = #{sellerId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from paper_cost
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from paper_cost
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.special.model.PaperCostWithBLOBs" >
+    insert into paper_cost (id, seller_id, paper_tid, 
+      paper_tname, brand_id, brand_name, 
+      packing_id, packing_name, gram_id, 
+      gram_name, thickness_start, thickness_end, 
+      supplier_id, supplier_name, status, 
+      create_time, update_time, is_magnanimity, 
+      is_positive_degree, is_routine,last_dun,last_money, drum_ids,
+      drum_values, other_size_ids, other_size_values
+      )
+    values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{paperTid,jdbcType=BIGINT}, 
+      #{paperTname,jdbcType=VARCHAR}, #{brandId,jdbcType=BIGINT}, #{brandName,jdbcType=VARCHAR}, 
+      #{packingId,jdbcType=BIGINT}, #{packingName,jdbcType=VARCHAR}, #{gramId,jdbcType=BIGINT}, 
+      #{gramName,jdbcType=VARCHAR}, #{thicknessStart,jdbcType=DECIMAL}, #{thicknessEnd,jdbcType=DECIMAL}, 
+      #{supplierId,jdbcType=BIGINT}, #{supplierName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{isMagnanimity,jdbcType=TINYINT}, 
+      #{isPositiveDegree,jdbcType=TINYINT}, #{isRoutine,jdbcType=TINYINT}, #{lastDun,jdbcType=DECIMAL},#{lastMoney,jdbcType=DECIMAL},#{drumIds,jdbcType=LONGVARCHAR},
+      #{drumValues,jdbcType=LONGVARCHAR}, #{otherSizeIds,jdbcType=LONGVARCHAR}, #{otherSizeValues,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.special.model.PaperCostWithBLOBs" >
+    insert into paper_cost
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="paperTid != null" >
+        paper_tid,
+      </if>
+      <if test="paperTname != null" >
+        paper_tname,
+      </if>
+      <if test="brandId != null" >
+        brand_id,
+      </if>
+      <if test="brandName != null" >
+        brand_name,
+      </if>
+      <if test="packingId != null" >
+        packing_id,
+      </if>
+      <if test="packingName != null" >
+        packing_name,
+      </if>
+      <if test="gramId != null" >
+        gram_id,
+      </if>
+      <if test="gramName != null" >
+        gram_name,
+      </if>
+      <if test="thicknessStart != null" >
+        thickness_start,
+      </if>
+      <if test="thicknessEnd != null" >
+        thickness_end,
+      </if>
+      <if test="supplierId != null" >
+        supplier_id,
+      </if>
+      <if test="supplierName != null" >
+        supplier_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isMagnanimity != null" >
+        is_magnanimity,
+      </if>
+      <if test="isPositiveDegree != null" >
+        is_positive_degree,
+      </if>
+      <if test="isRoutine != null" >
+        is_routine,
+      </if>
+      <if test="lastDun != null" >
+        last_dun,
+      </if>
+      <if test="lastMoney != null" >
+        last_money,
+      </if>
+      <if test="drumIds != null" >
+        drum_ids,
+      </if>
+      <if test="drumValues != null" >
+        drum_values,
+      </if>
+      <if test="otherSizeIds != null" >
+        other_size_ids,
+      </if>
+      <if test="otherSizeValues != null" >
+        other_size_values,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="paperTid != null" >
+        #{paperTid,jdbcType=BIGINT},
+      </if>
+      <if test="paperTname != null" >
+        #{paperTname,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null" >
+        #{brandId,jdbcType=BIGINT},
+      </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="packingId != null" >
+        #{packingId,jdbcType=BIGINT},
+      </if>
+      <if test="packingName != null" >
+        #{packingName,jdbcType=VARCHAR},
+      </if>
+      <if test="gramId != null" >
+        #{gramId,jdbcType=BIGINT},
+      </if>
+      <if test="gramName != null" >
+        #{gramName,jdbcType=VARCHAR},
+      </if>
+      <if test="thicknessStart != null" >
+        #{thicknessStart,jdbcType=DECIMAL},
+      </if>
+      <if test="thicknessEnd != null" >
+        #{thicknessEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierName != null" >
+        #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="isMagnanimity != null" >
+        #{isMagnanimity,jdbcType=TINYINT},
+      </if>
+      <if test="isPositiveDegree != null" >
+        #{isPositiveDegree,jdbcType=TINYINT},
+      </if>
+      <if test="isRoutine != null" >
+        #{isRoutine,jdbcType=TINYINT},
+      </if>
+      <if test="lastDun != null" >
+        #{lastDun,jdbcType=DECIMAL},
+      </if>
+      <if test="lastMoney != null" >
+        #{lastMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="drumIds != null" >
+        #{drumIds,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="drumValues != null" >
+        #{drumValues,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="otherSizeIds != null" >
+        #{otherSizeIds,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="otherSizeValues != null" >
+        #{otherSizeValues,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.PaperCostWithBLOBs" >
+    update paper_cost
+    <set >
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="paperTid != null" >
+        paper_tid = #{paperTid,jdbcType=BIGINT},
+      </if>
+      <if test="paperTname != null" >
+        paper_tname = #{paperTname,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null" >
+        brand_id = #{brandId,jdbcType=BIGINT},
+      </if>
+      <if test="brandName != null" >
+        brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="packingId != null" >
+        packing_id = #{packingId,jdbcType=BIGINT},
+      </if>
+      <if test="packingName != null" >
+        packing_name = #{packingName,jdbcType=VARCHAR},
+      </if>
+      <if test="gramId != null" >
+        gram_id = #{gramId,jdbcType=BIGINT},
+      </if>
+      <if test="gramName != null" >
+        gram_name = #{gramName,jdbcType=VARCHAR},
+      </if>
+      <if test="thicknessStart != null" >
+        thickness_start = #{thicknessStart,jdbcType=DECIMAL},
+      </if>
+      <if test="thicknessEnd != null" >
+        thickness_end = #{thicknessEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="supplierId != null" >
+        supplier_id = #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierName != null" >
+        supplier_name = #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="isMagnanimity != null" >
+        is_magnanimity = #{isMagnanimity,jdbcType=TINYINT},
+      </if>
+      <if test="isPositiveDegree != null" >
+        is_positive_degree = #{isPositiveDegree,jdbcType=TINYINT},
+      </if>
+      <if test="isRoutine != null" >
+        is_routine = #{isRoutine,jdbcType=TINYINT},
+      </if>
+      <if test="lastDun != null" >
+        last_dun = #{lastDun,jdbcType=DECIMAL},
+      </if>
+      <if test="lastMoney != null" >
+        last_money = #{lastMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="drumIds != null" >
+        drum_ids = #{drumIds,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="drumValues != null" >
+        drum_values = #{drumValues,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="otherSizeIds != null" >
+        other_size_ids = #{otherSizeIds,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="otherSizeValues != null" >
+        other_size_values = #{otherSizeValues,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bzdepot.special.model.PaperCostWithBLOBs" >
+    update paper_cost
+    set seller_id = #{sellerId,jdbcType=BIGINT},
+      paper_tid = #{paperTid,jdbcType=BIGINT},
+      paper_tname = #{paperTname,jdbcType=VARCHAR},
+      brand_id = #{brandId,jdbcType=BIGINT},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      packing_id = #{packingId,jdbcType=BIGINT},
+      packing_name = #{packingName,jdbcType=VARCHAR},
+      gram_id = #{gramId,jdbcType=BIGINT},
+      gram_name = #{gramName,jdbcType=VARCHAR},
+      thickness_start = #{thicknessStart,jdbcType=DECIMAL},
+      thickness_end = #{thicknessEnd,jdbcType=DECIMAL},
+      supplier_id = #{supplierId,jdbcType=BIGINT},
+      supplier_name = #{supplierName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      is_magnanimity = #{isMagnanimity,jdbcType=TINYINT},
+      is_positive_degree = #{isPositiveDegree,jdbcType=TINYINT},
+      is_routine = #{isRoutine,jdbcType=TINYINT},
+      last_dun = #{lastDun,jdbcType=DECIMAL},
+      last_money = #{lastMoney,jdbcType=DECIMAL},
+      drum_ids = #{drumIds,jdbcType=LONGVARCHAR},
+      drum_values = #{drumValues,jdbcType=LONGVARCHAR},
+      other_size_ids = #{otherSizeIds,jdbcType=LONGVARCHAR},
+      other_size_values = #{otherSizeValues,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.special.model.PaperCost" >
+    update paper_cost
+    set seller_id = #{sellerId,jdbcType=BIGINT},
+      paper_tid = #{paperTid,jdbcType=BIGINT},
+      paper_tname = #{paperTname,jdbcType=VARCHAR},
+      brand_id = #{brandId,jdbcType=BIGINT},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      packing_id = #{packingId,jdbcType=BIGINT},
+      packing_name = #{packingName,jdbcType=VARCHAR},
+      gram_id = #{gramId,jdbcType=BIGINT},
+      gram_name = #{gramName,jdbcType=VARCHAR},
+      thickness_start = #{thicknessStart,jdbcType=DECIMAL},
+      thickness_end = #{thicknessEnd,jdbcType=DECIMAL},
+      supplier_id = #{supplierId,jdbcType=BIGINT},
+      supplier_name = #{supplierName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      is_magnanimity = #{isMagnanimity,jdbcType=TINYINT},
+      is_positive_degree = #{isPositiveDegree,jdbcType=TINYINT},
+      is_routine = #{isRoutine,jdbcType=TINYINT}
+    is_routine = #{isRoutine,jdbcType=TINYINT},
+    last_dun = #{lastDun,jdbcType=DECIMAL},
+    last_money = #{lastMoney,jdbcType=DECIMAL}
+  </update>
+</mapper>

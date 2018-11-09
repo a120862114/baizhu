@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.special.mapper.PrintingCostMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.special.model.PrintingCost" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="robot_identifier" property="robotIdentifier" jdbcType="VARCHAR" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="robot_size_id" property="robotSizeId" jdbcType="BIGINT" />
+    <result column="robot_brand_id" property="robotBrandId" jdbcType="BIGINT" />
+    <result column="robot_color_id" property="robotColorId" jdbcType="BIGINT" />
+    <result column="is_uv" property="isUv" jdbcType="TINYINT" />
+    <result column="robot_manufactor_id" property="robotManufactorId" jdbcType="BIGINT" />
+    <result column="boot_strap_money" property="bootStrapMoney" jdbcType="DECIMAL" />
+    <result column="print_nums" property="printNums" jdbcType="INTEGER" />
+    <result column="exceed_money" property="exceedMoney" jdbcType="DECIMAL" />
+    <result column="exceed_nums" property="exceedNums" jdbcType="INTEGER" />
+    <result column="thickness_range_start" property="thicknessRangeStart" jdbcType="DECIMAL" />
+    <result column="thickness_range_end" property="thicknessRangeEnd" jdbcType="DECIMAL" />
+    <result column="min_bite" property="minBite" jdbcType="DECIMAL" />
+    <result column="paper_feeding_max_one" property="paperFeedingMaxOne" jdbcType="DECIMAL" />
+    <result column="paper_feeding_max_two" property="paperFeedingMaxTwo" jdbcType="DECIMAL" />
+    <result column="paper_feeding_min_one" property="paperFeedingMinOne" jdbcType="DECIMAL" />
+    <result column="paper_feeding_min_two" property="paperFeedingMinTwo" jdbcType="DECIMAL" />
+    <result column="discharge_number_in" property="dischargeNumberIn" jdbcType="INTEGER" />
+    <result column="discharge_number_in_nums" property="dischargeNumberInNums" jdbcType="INTEGER" />
+    <result column="discharge_number_max" property="dischargeNumberMax" jdbcType="INTEGER" />
+    <result column="discharge_number_max_nums" property="dischargeNumberMaxNums" jdbcType="INTEGER" />
+    <result column="special_color_type" property="specialColorType" jdbcType="TINYINT" />
+    <result column="special_color_start_money" property="specialColorStartMoney" jdbcType="DECIMAL" />
+    <result column="special_color_start_nums" property="specialColorStartNums" jdbcType="INTEGER" />
+    <result column="special_color_two_nums" property="specialColorTwoNums" jdbcType="INTEGER" />
+    <result column="special_color_two_one_money" property="specialColorTwoOneMoney" jdbcType="DECIMAL" />
+    <result column="special_color_two_two_money" property="specialColorTwoTwoMoney" jdbcType="DECIMAL" />
+    <result column="special_color_three_nums" property="specialColorThreeNums" jdbcType="INTEGER" />
+    <result column="special_color_three_one_money" property="specialColorThreeOneMoney" jdbcType="DECIMAL" />
+    <result column="special_color_three_two_money" property="specialColorThreeTwoMoney" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="robot_size_title" property="robotSizeTitle" jdbcType="VARCHAR" />
+    <result column="robot_brand_title" property="robotBrandTitle" jdbcType="VARCHAR" />
+    <result column="robot_color_title" property="robotColorTitle" jdbcType="VARCHAR" />
+    <result column="manufactor_title" property="manufactorTitle" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, robot_identifier, seller_id, robot_size_id, robot_brand_id, robot_color_id, is_uv, 
+    robot_manufactor_id, boot_strap_money, print_nums, exceed_money, exceed_nums, thickness_range_start, 
+    thickness_range_end, min_bite, paper_feeding_max_one, paper_feeding_max_two, paper_feeding_min_one, 
+    paper_feeding_min_two, discharge_number_in, discharge_number_in_nums, discharge_number_max, 
+    discharge_number_max_nums, special_color_type, special_color_start_money, special_color_start_nums, 
+    special_color_two_nums, special_color_two_one_money, special_color_two_two_money, 
+    special_color_three_nums, special_color_three_one_money, special_color_three_two_money, 
+    status, create_time, update_time, robot_size_title, robot_brand_title, robot_color_title, 
+    manufactor_title
+  </sql>
+  <select id="selectBySellerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from printing_cost
+    where seller_id = #{sellerId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from printing_cost
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from printing_cost
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.special.model.PrintingCost" >
+    insert into printing_cost (id, robot_identifier, seller_id, 
+      robot_size_id, robot_brand_id, robot_color_id, 
+      is_uv, robot_manufactor_id, boot_strap_money, 
+      print_nums, exceed_money, exceed_nums, 
+      thickness_range_start, thickness_range_end, 
+      min_bite, paper_feeding_max_one, paper_feeding_max_two, 
+      paper_feeding_min_one, paper_feeding_min_two, 
+      discharge_number_in, discharge_number_in_nums, 
+      discharge_number_max, discharge_number_max_nums, 
+      special_color_type, special_color_start_money, 
+      special_color_start_nums, special_color_two_nums, 
+      special_color_two_one_money, special_color_two_two_money, 
+      special_color_three_nums, special_color_three_one_money, 
+      special_color_three_two_money, status, create_time, 
+      update_time, robot_size_title, robot_brand_title, 
+      robot_color_title, manufactor_title)
+    values (#{id,jdbcType=BIGINT}, #{robotIdentifier,jdbcType=VARCHAR}, #{sellerId,jdbcType=BIGINT}, 
+      #{robotSizeId,jdbcType=BIGINT}, #{robotBrandId,jdbcType=BIGINT}, #{robotColorId,jdbcType=BIGINT}, 
+      #{isUv,jdbcType=TINYINT}, #{robotManufactorId,jdbcType=BIGINT}, #{bootStrapMoney,jdbcType=DECIMAL}, 
+      #{printNums,jdbcType=INTEGER}, #{exceedMoney,jdbcType=DECIMAL}, #{exceedNums,jdbcType=INTEGER}, 
+      #{thicknessRangeStart,jdbcType=DECIMAL}, #{thicknessRangeEnd,jdbcType=DECIMAL}, 
+      #{minBite,jdbcType=DECIMAL}, #{paperFeedingMaxOne,jdbcType=DECIMAL}, #{paperFeedingMaxTwo,jdbcType=DECIMAL}, 
+      #{paperFeedingMinOne,jdbcType=DECIMAL}, #{paperFeedingMinTwo,jdbcType=DECIMAL}, 
+      #{dischargeNumberIn,jdbcType=INTEGER}, #{dischargeNumberInNums,jdbcType=INTEGER}, 
+      #{dischargeNumberMax,jdbcType=INTEGER}, #{dischargeNumberMaxNums,jdbcType=INTEGER}, 
+      #{specialColorType,jdbcType=TINYINT}, #{specialColorStartMoney,jdbcType=DECIMAL}, 
+      #{specialColorStartNums,jdbcType=INTEGER}, #{specialColorTwoNums,jdbcType=INTEGER}, 
+      #{specialColorTwoOneMoney,jdbcType=DECIMAL}, #{specialColorTwoTwoMoney,jdbcType=DECIMAL}, 
+      #{specialColorThreeNums,jdbcType=INTEGER}, #{specialColorThreeOneMoney,jdbcType=DECIMAL}, 
+      #{specialColorThreeTwoMoney,jdbcType=DECIMAL}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT}, #{robotSizeTitle,jdbcType=VARCHAR}, #{robotBrandTitle,jdbcType=VARCHAR}, 
+      #{robotColorTitle,jdbcType=VARCHAR}, #{manufactorTitle,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.special.model.PrintingCost" >
+    insert into printing_cost
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="robotIdentifier != null" >
+        robot_identifier,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="robotSizeId != null" >
+        robot_size_id,
+      </if>
+      <if test="robotBrandId != null" >
+        robot_brand_id,
+      </if>
+      <if test="robotColorId != null" >
+        robot_color_id,
+      </if>
+      <if test="isUv != null" >
+        is_uv,
+      </if>
+      <if test="robotManufactorId != null" >
+        robot_manufactor_id,
+      </if>
+      <if test="bootStrapMoney != null" >
+        boot_strap_money,
+      </if>
+      <if test="printNums != null" >
+        print_nums,
+      </if>
+      <if test="exceedMoney != null" >
+        exceed_money,
+      </if>
+      <if test="exceedNums != null" >
+        exceed_nums,
+      </if>
+      <if test="thicknessRangeStart != null" >
+        thickness_range_start,
+      </if>
+      <if test="thicknessRangeEnd != null" >
+        thickness_range_end,
+      </if>
+      <if test="minBite != null" >
+        min_bite,
+      </if>
+      <if test="paperFeedingMaxOne != null" >
+        paper_feeding_max_one,
+      </if>
+      <if test="paperFeedingMaxTwo != null" >
+        paper_feeding_max_two,
+      </if>
+      <if test="paperFeedingMinOne != null" >
+        paper_feeding_min_one,
+      </if>
+      <if test="paperFeedingMinTwo != null" >
+        paper_feeding_min_two,
+      </if>
+      <if test="dischargeNumberIn != null" >
+        discharge_number_in,
+      </if>
+      <if test="dischargeNumberInNums != null" >
+        discharge_number_in_nums,
+      </if>
+      <if test="dischargeNumberMax != null" >
+        discharge_number_max,
+      </if>
+      <if test="dischargeNumberMaxNums != null" >
+        discharge_number_max_nums,
+      </if>
+      <if test="specialColorType != null" >
+        special_color_type,
+      </if>
+      <if test="specialColorStartMoney != null" >
+        special_color_start_money,
+      </if>
+      <if test="specialColorStartNums != null" >
+        special_color_start_nums,
+      </if>
+      <if test="specialColorTwoNums != null" >
+        special_color_two_nums,
+      </if>
+      <if test="specialColorTwoOneMoney != null" >
+        special_color_two_one_money,
+      </if>
+      <if test="specialColorTwoTwoMoney != null" >
+        special_color_two_two_money,
+      </if>
+      <if test="specialColorThreeNums != null" >
+        special_color_three_nums,
+      </if>
+      <if test="specialColorThreeOneMoney != null" >
+        special_color_three_one_money,
+      </if>
+      <if test="specialColorThreeTwoMoney != null" >
+        special_color_three_two_money,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="robotSizeTitle != null" >
+        robot_size_title,
+      </if>
+      <if test="robotBrandTitle != null" >
+        robot_brand_title,
+      </if>
+      <if test="robotColorTitle != null" >
+        robot_color_title,
+      </if>
+      <if test="manufactorTitle != null" >
+        manufactor_title,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="robotIdentifier != null" >
+        #{robotIdentifier,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="robotSizeId != null" >
+        #{robotSizeId,jdbcType=BIGINT},
+      </if>
+      <if test="robotBrandId != null" >
+        #{robotBrandId,jdbcType=BIGINT},
+      </if>
+      <if test="robotColorId != null" >
+        #{robotColorId,jdbcType=BIGINT},
+      </if>
+      <if test="isUv != null" >
+        #{isUv,jdbcType=TINYINT},
+      </if>
+      <if test="robotManufactorId != null" >
+        #{robotManufactorId,jdbcType=BIGINT},
+      </if>
+      <if test="bootStrapMoney != null" >
+        #{bootStrapMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="printNums != null" >
+        #{printNums,jdbcType=INTEGER},
+      </if>
+      <if test="exceedMoney != null" >
+        #{exceedMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="exceedNums != null" >
+        #{exceedNums,jdbcType=INTEGER},
+      </if>
+      <if test="thicknessRangeStart != null" >
+        #{thicknessRangeStart,jdbcType=DECIMAL},
+      </if>
+      <if test="thicknessRangeEnd != null" >
+        #{thicknessRangeEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="minBite != null" >
+        #{minBite,jdbcType=DECIMAL},
+      </if>
+      <if test="paperFeedingMaxOne != null" >
+        #{paperFeedingMaxOne,jdbcType=DECIMAL},
+      </if>
+      <if test="paperFeedingMaxTwo != null" >
+        #{paperFeedingMaxTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="paperFeedingMinOne != null" >
+        #{paperFeedingMinOne,jdbcType=DECIMAL},
+      </if>
+      <if test="paperFeedingMinTwo != null" >
+        #{paperFeedingMinTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="dischargeNumberIn != null" >
+        #{dischargeNumberIn,jdbcType=INTEGER},
+      </if>
+      <if test="dischargeNumberInNums != null" >
+        #{dischargeNumberInNums,jdbcType=INTEGER},
+      </if>
+      <if test="dischargeNumberMax != null" >
+        #{dischargeNumberMax,jdbcType=INTEGER},
+      </if>
+      <if test="dischargeNumberMaxNums != null" >
+        #{dischargeNumberMaxNums,jdbcType=INTEGER},
+      </if>
+      <if test="specialColorType != null" >
+        #{specialColorType,jdbcType=TINYINT},
+      </if>
+      <if test="specialColorStartMoney != null" >
+        #{specialColorStartMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="specialColorStartNums != null" >
+        #{specialColorStartNums,jdbcType=INTEGER},
+      </if>
+      <if test="specialColorTwoNums != null" >
+        #{specialColorTwoNums,jdbcType=INTEGER},
+      </if>
+      <if test="specialColorTwoOneMoney != null" >
+        #{specialColorTwoOneMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="specialColorTwoTwoMoney != null" >
+        #{specialColorTwoTwoMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="specialColorThreeNums != null" >
+        #{specialColorThreeNums,jdbcType=INTEGER},
+      </if>
+      <if test="specialColorThreeOneMoney != null" >
+        #{specialColorThreeOneMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="specialColorThreeTwoMoney != null" >
+        #{specialColorThreeTwoMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="robotSizeTitle != null" >
+        #{robotSizeTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="robotBrandTitle != null" >
+        #{robotBrandTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="robotColorTitle != null" >
+        #{robotColorTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="manufactorTitle != null" >
+        #{manufactorTitle,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.PrintingCost" >
+    update printing_cost
+    <set >
+      <if test="robotIdentifier != null" >
+        robot_identifier = #{robotIdentifier,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="robotSizeId != null" >
+        robot_size_id = #{robotSizeId,jdbcType=BIGINT},
+      </if>
+      <if test="robotBrandId != null" >
+        robot_brand_id = #{robotBrandId,jdbcType=BIGINT},
+      </if>
+      <if test="robotColorId != null" >
+        robot_color_id = #{robotColorId,jdbcType=BIGINT},
+      </if>
+      <if test="isUv != null" >
+        is_uv = #{isUv,jdbcType=TINYINT},
+      </if>
+      <if test="robotManufactorId != null" >
+        robot_manufactor_id = #{robotManufactorId,jdbcType=BIGINT},
+      </if>
+      <if test="bootStrapMoney != null" >
+        boot_strap_money = #{bootStrapMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="printNums != null" >
+        print_nums = #{printNums,jdbcType=INTEGER},
+      </if>
+      <if test="exceedMoney != null" >
+        exceed_money = #{exceedMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="exceedNums != null" >
+        exceed_nums = #{exceedNums,jdbcType=INTEGER},
+      </if>
+      <if test="thicknessRangeStart != null" >
+        thickness_range_start = #{thicknessRangeStart,jdbcType=DECIMAL},
+      </if>
+      <if test="thicknessRangeEnd != null" >
+        thickness_range_end = #{thicknessRangeEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="minBite != null" >
+        min_bite = #{minBite,jdbcType=DECIMAL},
+      </if>
+      <if test="paperFeedingMaxOne != null" >
+        paper_feeding_max_one = #{paperFeedingMaxOne,jdbcType=DECIMAL},
+      </if>
+      <if test="paperFeedingMaxTwo != null" >
+        paper_feeding_max_two = #{paperFeedingMaxTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="paperFeedingMinOne != null" >
+        paper_feeding_min_one = #{paperFeedingMinOne,jdbcType=DECIMAL},
+      </if>
+      <if test="paperFeedingMinTwo != null" >
+        paper_feeding_min_two = #{paperFeedingMinTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="dischargeNumberIn != null" >
+        discharge_number_in = #{dischargeNumberIn,jdbcType=INTEGER},
+      </if>
+      <if test="dischargeNumberInNums != null" >
+        discharge_number_in_nums = #{dischargeNumberInNums,jdbcType=INTEGER},
+      </if>
+      <if test="dischargeNumberMax != null" >
+        discharge_number_max = #{dischargeNumberMax,jdbcType=INTEGER},
+      </if>
+      <if test="dischargeNumberMaxNums != null" >
+        discharge_number_max_nums = #{dischargeNumberMaxNums,jdbcType=INTEGER},
+      </if>
+      <if test="specialColorType != null" >
+        special_color_type = #{specialColorType,jdbcType=TINYINT},
+      </if>
+      <if test="specialColorStartMoney != null" >
+        special_color_start_money = #{specialColorStartMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="specialColorStartNums != null" >
+        special_color_start_nums = #{specialColorStartNums,jdbcType=INTEGER},
+      </if>
+      <if test="specialColorTwoNums != null" >
+        special_color_two_nums = #{specialColorTwoNums,jdbcType=INTEGER},
+      </if>
+      <if test="specialColorTwoOneMoney != null" >
+        special_color_two_one_money = #{specialColorTwoOneMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="specialColorTwoTwoMoney != null" >
+        special_color_two_two_money = #{specialColorTwoTwoMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="specialColorThreeNums != null" >
+        special_color_three_nums = #{specialColorThreeNums,jdbcType=INTEGER},
+      </if>
+      <if test="specialColorThreeOneMoney != null" >
+        special_color_three_one_money = #{specialColorThreeOneMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="specialColorThreeTwoMoney != null" >
+        special_color_three_two_money = #{specialColorThreeTwoMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="robotSizeTitle != null" >
+        robot_size_title = #{robotSizeTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="robotBrandTitle != null" >
+        robot_brand_title = #{robotBrandTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="robotColorTitle != null" >
+        robot_color_title = #{robotColorTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="manufactorTitle != null" >
+        manufactor_title = #{manufactorTitle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.special.model.PrintingCost" >
+    update printing_cost
+    set robot_identifier = #{robotIdentifier,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=BIGINT},
+      robot_size_id = #{robotSizeId,jdbcType=BIGINT},
+      robot_brand_id = #{robotBrandId,jdbcType=BIGINT},
+      robot_color_id = #{robotColorId,jdbcType=BIGINT},
+      is_uv = #{isUv,jdbcType=TINYINT},
+      robot_manufactor_id = #{robotManufactorId,jdbcType=BIGINT},
+      boot_strap_money = #{bootStrapMoney,jdbcType=DECIMAL},
+      print_nums = #{printNums,jdbcType=INTEGER},
+      exceed_money = #{exceedMoney,jdbcType=DECIMAL},
+      exceed_nums = #{exceedNums,jdbcType=INTEGER},
+      thickness_range_start = #{thicknessRangeStart,jdbcType=DECIMAL},
+      thickness_range_end = #{thicknessRangeEnd,jdbcType=DECIMAL},
+      min_bite = #{minBite,jdbcType=DECIMAL},
+      paper_feeding_max_one = #{paperFeedingMaxOne,jdbcType=DECIMAL},
+      paper_feeding_max_two = #{paperFeedingMaxTwo,jdbcType=DECIMAL},
+      paper_feeding_min_one = #{paperFeedingMinOne,jdbcType=DECIMAL},
+      paper_feeding_min_two = #{paperFeedingMinTwo,jdbcType=DECIMAL},
+      discharge_number_in = #{dischargeNumberIn,jdbcType=INTEGER},
+      discharge_number_in_nums = #{dischargeNumberInNums,jdbcType=INTEGER},
+      discharge_number_max = #{dischargeNumberMax,jdbcType=INTEGER},
+      discharge_number_max_nums = #{dischargeNumberMaxNums,jdbcType=INTEGER},
+      special_color_type = #{specialColorType,jdbcType=TINYINT},
+      special_color_start_money = #{specialColorStartMoney,jdbcType=DECIMAL},
+      special_color_start_nums = #{specialColorStartNums,jdbcType=INTEGER},
+      special_color_two_nums = #{specialColorTwoNums,jdbcType=INTEGER},
+      special_color_two_one_money = #{specialColorTwoOneMoney,jdbcType=DECIMAL},
+      special_color_two_two_money = #{specialColorTwoTwoMoney,jdbcType=DECIMAL},
+      special_color_three_nums = #{specialColorThreeNums,jdbcType=INTEGER},
+      special_color_three_one_money = #{specialColorThreeOneMoney,jdbcType=DECIMAL},
+      special_color_three_two_money = #{specialColorThreeTwoMoney,jdbcType=DECIMAL},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      robot_size_title = #{robotSizeTitle,jdbcType=VARCHAR},
+      robot_brand_title = #{robotBrandTitle,jdbcType=VARCHAR},
+      robot_color_title = #{robotColorTitle,jdbcType=VARCHAR},
+      manufactor_title = #{manufactorTitle,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

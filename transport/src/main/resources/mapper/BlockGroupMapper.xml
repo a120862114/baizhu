@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.transport.mapper.BlockGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.transport.model.BlockGroup" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="region_id" property="regionId" jdbcType="BIGINT" />
+    <result column="block_id" property="blockId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.bzdepot.transport.model.BlockGroupWithBLOBs" extends="BaseResultMap" >
+    <result column="cityids" property="cityids" jdbcType="LONGVARCHAR" />
+    <result column="cityname" property="cityname" jdbcType="LONGVARCHAR" />
+    <result column="pid" property="pid" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapAll" type="com.bzdepot.transport.model.BlockGroupData">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="region_id" property="regionId" jdbcType="BIGINT" />
+    <result column="block_id" property="blockId" jdbcType="INTEGER" />
+    <result column="cityids" property="cityids" jdbcType="LONGVARCHAR" />
+    <result column="cityname" property="cityname" jdbcType="LONGVARCHAR" />
+    <result column="pid" property="pid" jdbcType="LONGVARCHAR" />
+    <collection property="pricedata" ofType="com.bzdepot.transport.model.BlockPrice">
+      <id column="p_id" property="id" jdbcType="BIGINT" />
+      <result column="p_seller_id" property="sellerId" jdbcType="BIGINT" />
+      <result column="p_company_id" property="companyId" jdbcType="BIGINT" />
+      <result column="p_region_id" property="regionId" jdbcType="BIGINT" />
+      <result column="p_block_id" property="blockId" jdbcType="INTEGER" />
+      <result column="weight_start" property="weightStart" jdbcType="DECIMAL" />
+      <result column="weight_end" property="weightEnd" jdbcType="DECIMAL" />
+      <result column="start_price" property="startPrice" jdbcType="DECIMAL" />
+      <result column="end_price" property="endPrice" jdbcType="DECIMAL" />
+      <result column="count_type" property="countType" jdbcType="TINYINT" />
+    </collection>
+    <collection property="suspendData" ofType="com.bzdepot.transport.model.RegionBlock" select="com.bzdepot.transport.mapper.RegionBlockMapper.selectIsSuspendByContidion" column="{sellerId=seller_id,companyId=company_id,regionId=region_id,blockId=block_id}"  />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, seller_id, company_id, region_id, block_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    cityids, cityname, pid
+  </sql>
+  <select id="findGroupAndPrice" resultMap="ResultMapAll" parameterType="com.bzdepot.transport.model.BlockGroupData">
+    SELECT
+    g.id,g.seller_id,g.company_id,g.region_id,g.block_id,g.cityids,g.cityname,pid,p.seller_id as p_seller_id,p.company_id as p_company_id,p.region_id as p_region_id,p.block_id as  p_block_id,p.weight_start,p.weight_end,p.start_price,p.end_price,p.count_type,p.id as p_id
+    from block_group g LEFT JOIN block_price p
+    on g.seller_id=p.seller_id AND g.company_id = p.company_id and g.region_id = p.region_id and g.block_id = p.block_id
+    where g.seller_id = #{sellerId,jdbcType=BIGINT} and g.company_id = #{companyId,jdbcType=BIGINT} and g.region_id = #{regionId,jdbcType=BIGINT}
+  </select>
+  <select id="CountByBlockNode" resultType="int">
+    select count(id) from block_group where seller_id=#{sellerid} and company_id=#{companyid} and region_id=#{regionid} and block_id=#{blockid}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from block_group
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from block_group
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.transport.model.BlockGroupWithBLOBs" >
+    insert into block_group (id, seller_id, company_id, 
+      region_id, block_id, cityids, 
+      cityname, pid)
+    values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, 
+      #{regionId,jdbcType=BIGINT}, #{blockId,jdbcType=INTEGER}, #{cityids,jdbcType=LONGVARCHAR}, 
+      #{cityname,jdbcType=LONGVARCHAR}, #{pid,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.transport.model.BlockGroupWithBLOBs" >
+    insert into block_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="regionId != null" >
+        region_id,
+      </if>
+      <if test="blockId != null" >
+        block_id,
+      </if>
+      <if test="cityids != null" >
+        cityids,
+      </if>
+      <if test="cityname != null" >
+        cityname,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="regionId != null" >
+        #{regionId,jdbcType=BIGINT},
+      </if>
+      <if test="blockId != null" >
+        #{blockId,jdbcType=INTEGER},
+      </if>
+      <if test="cityids != null" >
+        #{cityids,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="cityname != null" >
+        #{cityname,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.transport.model.BlockGroupWithBLOBs" >
+    update block_group
+    <set >
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="regionId != null" >
+        region_id = #{regionId,jdbcType=BIGINT},
+      </if>
+      <if test="blockId != null" >
+        block_id = #{blockId,jdbcType=INTEGER},
+      </if>
+      <if test="cityids != null" >
+        cityids = #{cityids,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="cityname != null" >
+        cityname = #{cityname,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateBlockDatas" parameterType="com.bzdepot.transport.model.BlockGroupWithBLOBs" >
+    update block_group
+    <set >
+      <if test="cityids != null" >
+        cityids = #{cityids,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="cityname != null" >
+        cityname = #{cityname,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where seller_id = #{sellerId,jdbcType=BIGINT} and company_id = #{companyId,jdbcType=BIGINT} and region_id = #{regionId,jdbcType=BIGINT} and block_id = #{blockId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bzdepot.transport.model.BlockGroupWithBLOBs" >
+    update block_group
+    set seller_id = #{sellerId,jdbcType=BIGINT},
+      company_id = #{companyId,jdbcType=BIGINT},
+      region_id = #{regionId,jdbcType=BIGINT},
+      block_id = #{blockId,jdbcType=INTEGER},
+      cityids = #{cityids,jdbcType=LONGVARCHAR},
+      cityname = #{cityname,jdbcType=LONGVARCHAR},
+      pid = #{pid,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.transport.model.BlockGroup" >
+    update block_group
+    set seller_id = #{sellerId,jdbcType=BIGINT},
+      company_id = #{companyId,jdbcType=BIGINT},
+      region_id = #{regionId,jdbcType=BIGINT},
+      block_id = #{blockId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

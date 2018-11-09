@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.transport.mapper.BlockPriceMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.transport.model.BlockPrice" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="region_id" property="regionId" jdbcType="BIGINT" />
+    <result column="block_id" property="blockId" jdbcType="INTEGER" />
+    <result column="weight_start" property="weightStart" jdbcType="DECIMAL" />
+    <result column="weight_end" property="weightEnd" jdbcType="DECIMAL" />
+    <result column="start_price" property="startPrice" jdbcType="DECIMAL" />
+    <result column="end_price" property="endPrice" jdbcType="DECIMAL" />
+    <result column="count_type" property="countType" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, seller_id, company_id, region_id, block_id, weight_start, weight_end, start_price, 
+    end_price, count_type
+  </sql>
+  <select id="findCityConfig" resultType="com.bzdepot.transport.model.BlockPrice">
+    SELECT
+          p.seller_id as sellerId,
+          p.company_id as companyId,
+          p.region_id as regionId,
+          p.block_id as blockId,
+          p.weight_start as weightStart,
+          p.weight_end as weightEnd,
+          p.start_price as startPrice,
+          p.end_price as endPrice,
+          p.count_type as countType
+    from region_block b,block_price p,region_default d
+          where d.seller_id=b.seller_id
+          and d.region_id=b.region_id
+          and b.seller_id=p.seller_id
+          and b.company_id=p.company_id
+          and b.region_id=p.region_id
+          and b.block_id=p.block_id
+          and p.company_id=#{companyId}
+          and p.seller_id=#{sellerId}
+          and b.city_id=#{cityId}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from block_price
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from block_price
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.transport.model.BlockPrice" >
+    insert into block_price (id, seller_id, company_id, 
+      region_id, block_id, weight_start, 
+      weight_end, start_price, end_price, 
+      count_type)
+    values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, 
+      #{regionId,jdbcType=BIGINT}, #{blockId,jdbcType=INTEGER}, #{weightStart,jdbcType=DECIMAL}, 
+      #{weightEnd,jdbcType=DECIMAL}, #{startPrice,jdbcType=DECIMAL}, #{endPrice,jdbcType=DECIMAL}, 
+      #{countType,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.transport.model.BlockPrice" >
+    insert into block_price
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="regionId != null" >
+        region_id,
+      </if>
+      <if test="blockId != null" >
+        block_id,
+      </if>
+      <if test="weightStart != null" >
+        weight_start,
+      </if>
+      <if test="weightEnd != null" >
+        weight_end,
+      </if>
+      <if test="startPrice != null" >
+        start_price,
+      </if>
+      <if test="endPrice != null" >
+        end_price,
+      </if>
+      <if test="countType != null" >
+        count_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="regionId != null" >
+        #{regionId,jdbcType=BIGINT},
+      </if>
+      <if test="blockId != null" >
+        #{blockId,jdbcType=INTEGER},
+      </if>
+      <if test="weightStart != null" >
+        #{weightStart,jdbcType=DECIMAL},
+      </if>
+      <if test="weightEnd != null" >
+        #{weightEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="startPrice != null" >
+        #{startPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="endPrice != null" >
+        #{endPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="countType != null" >
+        #{countType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.transport.model.BlockPrice" >
+    update block_price
+    <set >
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="regionId != null" >
+        region_id = #{regionId,jdbcType=BIGINT},
+      </if>
+      <if test="blockId != null" >
+        block_id = #{blockId,jdbcType=INTEGER},
+      </if>
+      <if test="weightStart != null" >
+        weight_start = #{weightStart,jdbcType=DECIMAL},
+      </if>
+      <if test="weightEnd != null" >
+        weight_end = #{weightEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="startPrice != null" >
+        start_price = #{startPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="endPrice != null" >
+        end_price = #{endPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="countType != null" >
+        count_type = #{countType,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.transport.model.BlockPrice" >
+    update block_price
+    set seller_id = #{sellerId,jdbcType=BIGINT},
+      company_id = #{companyId,jdbcType=BIGINT},
+      region_id = #{regionId,jdbcType=BIGINT},
+      block_id = #{blockId,jdbcType=INTEGER},
+      weight_start = #{weightStart,jdbcType=DECIMAL},
+      weight_end = #{weightEnd,jdbcType=DECIMAL},
+      start_price = #{startPrice,jdbcType=DECIMAL},
+      end_price = #{endPrice,jdbcType=DECIMAL},
+      count_type = #{countType,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

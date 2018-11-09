@@ -1,0 +1,44 @@
+server:
+  port: 9492
+spring:
+    application:
+      name: message-server
+    cloud:
+      consul:
+        host: 192.168.0.15
+        port: 8500
+        discovery:
+          healthCheckInterval: 15s
+          instance-id: message-server1
+    redis:
+        database:  0
+        host:  192.168.0.15
+        port:  6379
+        password:
+        pool:
+           max-active: 8
+           max-wait: -1
+           max-idle: 8
+           min-idle: 0
+        timeout: 5000
+    cache:
+        type: redis
+        redis:
+          time-to-live: 2000 #缓存超时时间ms
+          cache-null-values: false #是否缓存空值
+management:
+  endpoint:
+    health:
+      show-details: always
+
+
+email:
+  hostName: smtp.163.com
+  emailName: taoyinwangjj@163.com
+  emailPass: jjsjjs521521
+sms:
+  accessKeyId: LTAIhg9LpQlGK9Kr
+  accesskeySecret: gt5COnYqR6PVgMkTRrifOSk4ZEFVXW
+  signName: 湖南百竹印务
+  identifyingTempleteCode: SMS_145500724
+  registTempleteCode: SMS_145495720

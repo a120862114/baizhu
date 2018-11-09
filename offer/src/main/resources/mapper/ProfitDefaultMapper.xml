@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.offer.mapper.ProfitDefaultMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.offer.model.ProfitDefault" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="offer_id" property="offerId" jdbcType="BIGINT" />
+    <result column="default_type" property="defaultType" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, offer_id, default_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from profit_default
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="findOfferDefaultSet" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <include refid="Base_Column_List" />
+    from profit_default
+    where offer_id = #{offerId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from profit_default
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.offer.model.ProfitDefault" >
+    insert into profit_default (id, offer_id, default_type
+      )
+    values (#{id,jdbcType=BIGINT}, #{offerId,jdbcType=BIGINT}, #{defaultType,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyProperty="id"  useGeneratedKeys="true" parameterType="com.bzdepot.offer.model.ProfitDefault" >
+    insert into profit_default
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="offerId != null" >
+        offer_id,
+      </if>
+      <if test="defaultType != null" >
+        default_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="offerId != null" >
+        #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="defaultType != null" >
+        #{defaultType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.offer.model.ProfitDefault" >
+    update profit_default
+    <set >
+      <if test="offerId != null" >
+        offer_id = #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="defaultType != null" >
+        default_type = #{defaultType,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.offer.model.ProfitDefault" >
+    update profit_default
+    set offer_id = #{offerId,jdbcType=BIGINT},
+      default_type = #{defaultType,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

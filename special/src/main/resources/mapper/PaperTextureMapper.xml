@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.special.mapper.PaperTextureMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.special.model.PaperTexture" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="names" property="names" jdbcType="VARCHAR" />
+    <result column="t_bs" property="tBs" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, seller_id, names, t_bs
+  </sql>
+  <select id="selectBySellerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from paper_texture
+    where seller_id = #{sellerId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from paper_texture
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from paper_texture
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.special.model.PaperTexture" >
+    insert into paper_texture (id, seller_id, names, 
+      t_bs)
+    values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{names,jdbcType=VARCHAR}, 
+      #{tBs,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.special.model.PaperTexture" >
+    insert into paper_texture
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="names != null" >
+        names,
+      </if>
+      <if test="tBs != null" >
+        t_bs,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="names != null" >
+        #{names,jdbcType=VARCHAR},
+      </if>
+      <if test="tBs != null" >
+        #{tBs,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.PaperTexture" >
+    update paper_texture
+    <set >
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="names != null" >
+        names = #{names,jdbcType=VARCHAR},
+      </if>
+      <if test="tBs != null" >
+        t_bs = #{tBs,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.special.model.PaperTexture" >
+    update paper_texture
+    set seller_id = #{sellerId,jdbcType=BIGINT},
+      names = #{names,jdbcType=VARCHAR},
+      t_bs = #{tBs,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

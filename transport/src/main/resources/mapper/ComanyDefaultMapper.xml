@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.transport.mapper.ComanyDefaultMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.transport.model.ComanyDefault" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="comany_id" property="comanyId" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, comany_id, seller_id
+  </sql>
+  <select id="selectBySellerId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <include refid="Base_Column_List" />
+    from comany_default where seller_id = #{sellerId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from comany_default
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from comany_default
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.transport.model.ComanyDefault" >
+    insert into comany_default (id, comany_id, seller_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{comanyId,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyProperty="id"  useGeneratedKeys="true" parameterType="com.bzdepot.transport.model.ComanyDefault" >
+    insert into comany_default
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="comanyId != null" >
+        comany_id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="comanyId != null" >
+        #{comanyId,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.transport.model.ComanyDefault" >
+    update comany_default
+    <set >
+      <if test="comanyId != null" >
+        comany_id = #{comanyId,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateBySellerIdSelective" parameterType="com.bzdepot.transport.model.ComanyDefault" >
+    update comany_default
+    <set >
+      <if test="comanyId != null" >
+        comany_id = #{comanyId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where seller_id = #{sellerId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.transport.model.ComanyDefault" >
+    update comany_default
+    set comany_id = #{comanyId,jdbcType=BIGINT},
+    seller_id = #{sellerId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

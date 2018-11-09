@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.profit.mapper.ProfitRulerMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.profit.model.ProfitRuler" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="offer_id" property="offerId" jdbcType="BIGINT" />
+    <result column="ruler_type" property="rulerType" jdbcType="TINYINT" />
+    <result column="dafault_type" property="dafaultType" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.bzdepot.profit.model.ProfitRuler" extends="BaseResultMap" >
+    <result column="ruler_ids" property="rulerIds" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, offer_id, ruler_type, dafault_type, create_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    ruler_ids
+  </sql>
+  <select id="findIds" resultType="java.lang.Long"  parameterType="java.lang.Long">
+    select offer_id from profit_ruler where offer_id != #{offerId,jdbcType=BIGINT}
+  </select>
+  <select id="findDataByOfferId" resultType="com.bzdepot.profit.bo.ProfitDataBo" parameterType="java.lang.Long" statementType="CALLABLE">
+    call finddatabyofferid(#{offerid})
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from profit_ruler
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByOfferId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from profit_ruler
+    where offer_id = #{offerId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from profit_ruler
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.profit.model.ProfitRuler" >
+    insert into profit_ruler (id, offer_id, ruler_type, 
+      dafault_type, create_time, ruler_ids
+      )
+    values (#{id,jdbcType=BIGINT}, #{offerId,jdbcType=BIGINT}, #{rulerType,jdbcType=TINYINT}, 
+      #{dafaultType,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, #{rulerIds,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.profit.model.ProfitRuler" >
+    insert into profit_ruler
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="offerId != null" >
+        offer_id,
+      </if>
+      <if test="rulerType != null" >
+        ruler_type,
+      </if>
+      <if test="dafaultType != null" >
+        dafault_type,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="rulerIds != null" >
+        ruler_ids,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="offerId != null" >
+        #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="rulerType != null" >
+        #{rulerType,jdbcType=TINYINT},
+      </if>
+      <if test="dafaultType != null" >
+        #{dafaultType,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="rulerIds != null" >
+        #{rulerIds,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.profit.model.ProfitRuler" >
+    update profit_ruler
+    <set >
+      <if test="offerId != null" >
+        offer_id = #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="rulerType != null" >
+        ruler_type = #{rulerType,jdbcType=TINYINT},
+      </if>
+      <if test="dafaultType != null" >
+        dafault_type = #{dafaultType,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="rulerIds != null" >
+        ruler_ids = #{rulerIds,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bzdepot.profit.model.ProfitRuler" >
+    update profit_ruler
+    set offer_id = #{offerId,jdbcType=BIGINT},
+      ruler_type = #{rulerType,jdbcType=TINYINT},
+      dafault_type = #{dafaultType,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      ruler_ids = #{rulerIds,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.profit.model.ProfitRuler" >
+    update profit_ruler
+    set offer_id = #{offerId,jdbcType=BIGINT},
+      ruler_type = #{rulerType,jdbcType=TINYINT},
+      dafault_type = #{dafaultType,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.profit.mapper.InvoiceMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.profit.model.Invoice" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="level_id" property="levelId" jdbcType="BIGINT" />
+    <result column="comany_id" property="comanyId" jdbcType="BIGINT" />
+    <result column="tax_rate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="types" property="types" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, seller_id, level_id, comany_id, tax_rate, create_time, update_time, types
+  </sql>
+  <select id="findInvoiceByLevelIdFuncm" resultType="com.bzdepot.profit.model.Invoice" statementType="CALLABLE">
+    call findInvoiceByLevelIdFunc(#{sellerId},#{comanyId},#{types},#{levelId})
+  </select>
+  <select id="selectBySellerId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <include refid="Base_Column_List" />
+    from invoice
+    where seller_id = #{sellerId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from invoice
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" >
+    delete from invoice
+    where id = #{id,jdbcType=BIGINT} and seller_id = #{sellerId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.profit.model.Invoice" >
+    insert into invoice (id, seller_id, level_id, 
+      comany_id, tax_rate, create_time, 
+      update_time, types)
+    values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{levelId,jdbcType=BIGINT}, 
+      #{comanyId,jdbcType=BIGINT}, #{taxRate,jdbcType=DECIMAL}, #{createTime,jdbcType=BIGINT},
+      #{updateTime,jdbcType=BIGINT}, #{types,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.profit.model.Invoice" >
+    insert into invoice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="levelId != null" >
+        level_id,
+      </if>
+      <if test="comanyId != null" >
+        comany_id,
+      </if>
+      <if test="taxRate != null" >
+        tax_rate,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="types != null" >
+        types,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="levelId != null" >
+        #{levelId,jdbcType=BIGINT},
+      </if>
+      <if test="comanyId != null" >
+        #{comanyId,jdbcType=BIGINT},
+      </if>
+      <if test="taxRate != null" >
+        #{taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="types != null" >
+        #{types,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.profit.model.Invoice" >
+    update invoice
+    <set >
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="levelId != null" >
+        level_id = #{levelId,jdbcType=BIGINT},
+      </if>
+      <if test="comanyId != null" >
+        comany_id = #{comanyId,jdbcType=BIGINT},
+      </if>
+      <if test="taxRate != null" >
+        tax_rate = #{taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="types != null" >
+        types = #{types,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.profit.model.Invoice" >
+    update invoice
+    set seller_id = #{sellerId,jdbcType=BIGINT},
+      level_id = #{levelId,jdbcType=BIGINT},
+      comany_id = #{comanyId,jdbcType=BIGINT},
+      tax_rate = #{taxRate,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      types = #{types,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

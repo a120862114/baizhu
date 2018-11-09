@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.offer.mapper.OfferGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.offer.model.OfferGroup" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="offer_id" property="offerId" jdbcType="BIGINT" />
+    <result column="smoney" property="smoney" jdbcType="DECIMAL" />
+    <result column="is_send" property="isSend" jdbcType="TINYINT" />
+    <result column="send_seller_id" property="sendSellerId" jdbcType="BIGINT" />
+    <collection property="offer_attr" ofType="com.bzdepot.offer.model.OfferAttr" column="offer_group_id">
+      <id column="aid" property="id" jdbcType="BIGINT" />
+      <result column="a_offer_id" property="offerId" jdbcType="BIGINT" />
+      <result column="a_offer_group_id" property="offerGroupId" jdbcType="BIGINT" />
+      <result column="attr_key" property="attrKey" jdbcType="VARCHAR" />
+      <result column="attr_value" property="attrValue" jdbcType="DECIMAL" />
+    </collection>
+    <collection property="offer_detail" ofType="com.bzdepot.offer.model.OfferDetail" column="offer_group_id">
+      <id column="did" property="id" jdbcType="BIGINT" />
+      <result column="d_offer_id" property="offerId" jdbcType="BIGINT" />
+      <result column="d_offer_group_id" property="offerGroupId" jdbcType="BIGINT" />
+      <result column="nums" property="nums" jdbcType="INTEGER" />
+      <result column="xmoney" property="xmoney" jdbcType="DECIMAL" />
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, offer_id, smoney, is_send, send_seller_id
+  </sql>
+  <select id="selectJoinData" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    SELECT
+    g.id,g.offer_id,g.smoney,g.is_send,g.send_seller_id,a.id as aid,a.offer_id as a_offer_id,a.offer_group_id as a_offer_group_id,a.attr_key,a.attr_value,d.id as did,d.offer_id as d_offer_id,d.offer_group_id as d_offer_group_id,d.nums,d.xmoney
+    FROM offer_group g LEFT JOIN offer_attr a ON g.id = a.offer_group_id LEFT JOIN offer_detail d ON g.id = d.offer_group_id where g.offer_id=#{offerid}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from offer_group
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from offer_group
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.offer.model.OfferGroup" >
+    insert into offer_group (id, offer_id, smoney, 
+      is_send, send_seller_id)
+    values (#{id,jdbcType=BIGINT}, #{offerId,jdbcType=BIGINT}, #{smoney,jdbcType=DECIMAL}, 
+      #{isSend,jdbcType=TINYINT}, #{sendSellerId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyProperty="id" useGeneratedKeys="true" parameterType="com.bzdepot.offer.model.OfferGroup" >
+    insert into offer_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="offerId != null" >
+        offer_id,
+      </if>
+      <if test="smoney != null" >
+        smoney,
+      </if>
+      <if test="isSend != null" >
+        is_send,
+      </if>
+      <if test="sendSellerId != null" >
+        send_seller_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="offerId != null" >
+        #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="smoney != null" >
+        #{smoney,jdbcType=DECIMAL},
+      </if>
+      <if test="isSend != null" >
+        #{isSend,jdbcType=TINYINT},
+      </if>
+      <if test="sendSellerId != null" >
+        #{sendSellerId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.offer.model.OfferGroup" >
+    update offer_group
+    <set >
+      <if test="offerId != null" >
+        offer_id = #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="smoney != null" >
+        smoney = #{smoney,jdbcType=DECIMAL},
+      </if>
+      <if test="isSend != null" >
+        is_send = #{isSend,jdbcType=TINYINT},
+      </if>
+      <if test="sendSellerId != null" >
+        send_seller_id = #{sendSellerId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.offer.model.OfferGroup" >
+    update offer_group
+    set offer_id = #{offerId,jdbcType=BIGINT},
+      smoney = #{smoney,jdbcType=DECIMAL},
+      is_send = #{isSend,jdbcType=TINYINT},
+      send_seller_id = #{sendSellerId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

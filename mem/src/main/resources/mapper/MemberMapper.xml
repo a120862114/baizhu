@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bzdepot.mem.mapper.MemberMapper">
+  <resultMap id="BaseResultMap" type="com.bzdepot.mem.model.Member">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="BIGINT" />
+    <result column="tel_phone" property="telPhone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="qicq" property="qicq" jdbcType="BIGINT" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="wx_account" property="wxAccount" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="TINYINT" />
+    <result column="birthday" property="birthday" jdbcType="VARCHAR" />
+    <result column="head_img_id" property="headImgId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, nickname, mobile, tel_phone, email, qicq, password, create_time, update_time,
+    username, wx_account, sex, birthday, head_img_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from member
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="findMemberByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id,nickname,username,head_img_id,password from member where username = #{uname}
+  </select>
+  <select id="findMemberByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select id,nickname,username,head_img_id,password from member where email = #{mail}
+  </select>
+  <select id="findMemberByMobile" parameterType="java.lang.Long" resultMap="BaseResultMap">
+     select id,nickname,username,head_img_id,password from member where mobile = #{phone}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from member
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.mem.model.Member">
+    insert into member (id, nickname, mobile, 
+      tel_phone, email, qicq, 
+      password, create_time, update_time, 
+      username, wx_account, sex, 
+      birthday)
+    values (#{id,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{mobile,jdbcType=BIGINT}, 
+      #{telPhone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{qicq,jdbcType=BIGINT}, 
+      #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT},
+      #{username,jdbcType=VARCHAR}, #{wxAccount,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, 
+      #{birthday,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyProperty="id" parameterType="com.bzdepot.mem.model.Member" useGeneratedKeys="true">
+    insert into member
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="telPhone != null">
+        tel_phone,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="qicq != null">
+        qicq,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="wxAccount != null">
+        wx_account,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=BIGINT},
+      </if>
+      <if test="telPhone != null">
+        #{telPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="qicq != null">
+        #{qicq,jdbcType=BIGINT},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="wxAccount != null">
+        #{wxAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.mem.model.Member"  >
+    update member
+    <set>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=BIGINT},
+      </if>
+      <if test="telPhone != null">
+        tel_phone = #{telPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="qicq != null">
+        qicq = #{qicq,jdbcType=BIGINT},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="wxAccount != null">
+        wx_account = #{wxAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.mem.model.Member">
+    update member
+    set nickname = #{nickname,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=BIGINT},
+      tel_phone = #{telPhone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      qicq = #{qicq,jdbcType=BIGINT},
+      password = #{password,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      username = #{username,jdbcType=VARCHAR},
+      wx_account = #{wxAccount,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      birthday = #{birthday,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+
+</mapper>

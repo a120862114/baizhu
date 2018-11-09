@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.special.mapper.TechnologyClassMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.special.model.TechnologyClass" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="technology_name" property="technologyName" jdbcType="VARCHAR" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="default_attr_id" property="defaultAttrId" jdbcType="BIGINT" />
+    <result column="is_commonly_used" property="isCommonlyUsed" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.bzdepot.special.model.TechnologyClass" extends="BaseResultMap" >
+    <result column="enable_attr_ids" property="enableAttrIds" jdbcType="LONGVARCHAR" />
+    <collection property="listDetail" ofType="com.bzdepot.special.model.TechnologyAttr" select="com.bzdepot.special.mapper.TechnologyAttrMapper.listAttrDataByTid" column="id"  />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, technology_name, seller_id, sort, status, default_attr_id, is_commonly_used, 
+    create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    enable_attr_ids
+  </sql>
+  <select id="selectPageClassAndAttr" resultMap="ResultMapWithBLOBs">
+    SELECT
+      <include refid="Base_Column_List" />
+      ,
+      <include refid="Blob_Column_List" />
+    from technology_class
+    where seller_id = #{sellerId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+  select
+  <include refid="Base_Column_List" />
+  ,
+  <include refid="Blob_Column_List" />
+  from technology_class
+  where id = #{id,jdbcType=BIGINT}
+</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from technology_class
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.special.model.TechnologyClass" >
+    insert into technology_class (id, technology_name, seller_id, 
+      sort, status, default_attr_id, 
+      is_commonly_used, create_time, update_time, 
+      enable_attr_ids)
+    values (#{id,jdbcType=BIGINT}, #{technologyName,jdbcType=VARCHAR}, #{sellerId,jdbcType=BIGINT}, 
+      #{sort,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{defaultAttrId,jdbcType=BIGINT}, 
+      #{isCommonlyUsed,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, 
+      #{enableAttrIds,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" keyProperty="id" useGeneratedKeys="true" parameterType="com.bzdepot.special.model.TechnologyClass" >
+    insert into technology_class
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="technologyName != null" >
+        technology_name,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="defaultAttrId != null" >
+        default_attr_id,
+      </if>
+      <if test="isCommonlyUsed != null" >
+        is_commonly_used,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="enableAttrIds != null" >
+        enable_attr_ids,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="technologyName != null" >
+        #{technologyName,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="defaultAttrId != null" >
+        #{defaultAttrId,jdbcType=BIGINT},
+      </if>
+      <if test="isCommonlyUsed != null" >
+        #{isCommonlyUsed,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="enableAttrIds != null" >
+        #{enableAttrIds,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.TechnologyClass" >
+    update technology_class
+    <set >
+      <if test="technologyName != null" >
+        technology_name = #{technologyName,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="defaultAttrId != null" >
+        default_attr_id = #{defaultAttrId,jdbcType=BIGINT},
+      </if>
+      <if test="isCommonlyUsed != null" >
+        is_commonly_used = #{isCommonlyUsed,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="enableAttrIds != null" >
+        enable_attr_ids = #{enableAttrIds,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bzdepot.special.model.TechnologyClass" >
+    update technology_class
+    set technology_name = #{technologyName,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=BIGINT},
+      sort = #{sort,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      default_attr_id = #{defaultAttrId,jdbcType=BIGINT},
+      is_commonly_used = #{isCommonlyUsed,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      enable_attr_ids = #{enableAttrIds,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.special.model.TechnologyClass" >
+    update technology_class
+    set technology_name = #{technologyName,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=BIGINT},
+      sort = #{sort,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      default_attr_id = #{defaultAttrId,jdbcType=BIGINT},
+      is_commonly_used = #{isCommonlyUsed,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

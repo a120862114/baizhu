@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.profit.mapper.ConstituteMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.profit.model.Constitute" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="types" property="types" jdbcType="TINYINT" />
+    <result column="is_s" property="isS" jdbcType="TINYINT" />
+    <result column="is_y" property="isY" jdbcType="TINYINT" />
+    <result column="is_f" property="isF" jdbcType="TINYINT" />
+    <result column="srate" property="srate" jdbcType="DECIMAL" />
+    <result column="offer_id" property="offerId" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, types, is_s, is_y, is_f, srate, offer_id, seller_id
+  </sql>
+  <select id="selectByOfferIdAndSellerId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from constitute
+    where offer_id = #{offerId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from constitute
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from constitute
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.profit.model.Constitute" >
+    insert into constitute (id, types, is_s, 
+      is_y, is_f, srate, offer_id, 
+      seller_id)
+    values (#{id,jdbcType=BIGINT}, #{types,jdbcType=TINYINT}, #{isS,jdbcType=TINYINT}, 
+      #{isY,jdbcType=TINYINT}, #{isF,jdbcType=TINYINT}, #{srate,jdbcType=DECIMAL}, #{offerId,jdbcType=BIGINT}, 
+      #{sellerId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyProperty="id"  useGeneratedKeys="true"  parameterType="com.bzdepot.profit.model.Constitute" >
+    insert into constitute
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="types != null" >
+        types,
+      </if>
+      <if test="isS != null" >
+        is_s,
+      </if>
+      <if test="isY != null" >
+        is_y,
+      </if>
+      <if test="isF != null" >
+        is_f,
+      </if>
+      <if test="srate != null" >
+        srate,
+      </if>
+      <if test="offerId != null" >
+        offer_id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="types != null" >
+        #{types,jdbcType=TINYINT},
+      </if>
+      <if test="isS != null" >
+        #{isS,jdbcType=TINYINT},
+      </if>
+      <if test="isY != null" >
+        #{isY,jdbcType=TINYINT},
+      </if>
+      <if test="isF != null" >
+        #{isF,jdbcType=TINYINT},
+      </if>
+      <if test="srate != null" >
+        #{srate,jdbcType=DECIMAL},
+      </if>
+      <if test="offerId != null" >
+        #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.profit.model.Constitute" >
+    update constitute
+    <set >
+      <if test="types != null" >
+        types = #{types,jdbcType=TINYINT},
+      </if>
+      <if test="isS != null" >
+        is_s = #{isS,jdbcType=TINYINT},
+      </if>
+      <if test="isY != null" >
+        is_y = #{isY,jdbcType=TINYINT},
+      </if>
+      <if test="isF != null" >
+        is_f = #{isF,jdbcType=TINYINT},
+      </if>
+      <if test="srate != null" >
+        srate = #{srate,jdbcType=DECIMAL},
+      </if>
+      <if test="offerId != null" >
+        offer_id = #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.profit.model.Constitute" >
+    update constitute
+    set types = #{types,jdbcType=TINYINT},
+      is_s = #{isS,jdbcType=TINYINT},
+      is_y = #{isY,jdbcType=TINYINT},
+      is_f = #{isF,jdbcType=TINYINT},
+      srate = #{srate,jdbcType=DECIMAL},
+      offer_id = #{offerId,jdbcType=BIGINT},
+      seller_id = #{sellerId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

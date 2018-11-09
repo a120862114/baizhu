@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.offer.mapper.OfferMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.offer.model.Offer" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="texture_id" property="textureId" jdbcType="BIGINT" />
+    <result column="thickness" property="thickness" jdbcType="DECIMAL" />
+    <result column="thickness_util" property="thicknessUtil" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="DECIMAL" />
+    <result column="weight_util" property="weightUtil" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="is_supply" property="isSupply" jdbcType="TINYINT" />
+    <result column="types" property="types" jdbcType="TINYINT" />
+    <collection property="offerSonData" ofType="com.bzdepot.offer.model.OfferSon" select="com.bzdepot.offer.mapper.OfferSonMapper.selectByClassIdAndTextureIdAndSellerId" column="{sellerId=seller_id,classId=class_id,textureId=texture_id}"  />
+  </resultMap>
+  <resultMap id="SelectResultMap" type="com.bzdepot.offer.vo.SelectOfferVo" >
+    <result column="group_id" property="group_id" jdbcType="BIGINT" />
+    <result column="offer_id" property="offer_id" jdbcType="BIGINT" />
+    <result column="thickness" property="thickness" jdbcType="DECIMAL" />
+    <result column="weight" property="weight" jdbcType="DECIMAL" />
+    <result column="smoney" property="smoney" jdbcType="DECIMAL" />
+    <result column="xmoney" property="xmoney" jdbcType="DECIMAL" />
+    <result column="seller_id" property="seller_id" jdbcType="BIGINT" />
+    <result column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="texture_id" property="textureId" jdbcType="BIGINT" />
+    <result column="types" property="types" jdbcType="TINYINT" />
+    <collection property="attrs" ofType="com.bzdepot.offer.vo.SelectAttrVo">
+      <result column="attr_key" property="attr_key" jdbcType="VARCHAR" />
+      <result column="attr_value" property="attr_value" jdbcType="DECIMAL" />
+    </collection>
+    <collection property="offerSonData" ofType="com.bzdepot.offer.model.OfferSon" select="com.bzdepot.offer.mapper.OfferSonMapper.selectByClassIdAndTextureIdAndSellerId" column="{sellerId=seller_id,classId=class_id,textureId=texture_id}"  />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, seller_id, class_id, texture_id, thickness, thickness_util, weight, weight_util, 
+    create_time, update_time, status, is_supply,types
+  </sql>
+  <select id="findOfferAllData" resultMap="SelectResultMap">
+    SELECT
+    g.id as group_id,
+    g.offer_id as offer_id,
+    o.seller_id as seller_id,
+    o.class_id as class_id,
+    o.texture_id as texture_id,
+    o.thickness as thickness,
+    o.weight as weight,
+    o.types as types,
+    g.smoney,
+    d.xmoney,
+    a.attr_key,
+    a.attr_value
+    from offer o,offer_group g,offer_attr a,offer_detail d
+    where o.id = g.offer_id
+    and g.id = a.offer_group_id
+    and g.id = d.offer_group_id
+    and g.offer_id = a.offer_id
+    and g.offer_id = d.offer_id
+    and o.seller_id = #{sellerId}
+    and o.class_id = #{classId}
+    and o.texture_id = #{textureId}
+    and d.nums = #{nums}
+    and o.thickness = #{thickness}
+    and o.weight = #{weight}
+  </select>
+  <select id="findMoney" resultMap="SelectResultMap">
+    SELECT
+    g.offer_id as offer_id,
+    o.seller_id as seller_id,
+    o.thickness,
+    o.weight,
+    g.smoney,
+    d.xmoney,
+    a.attr_key,
+    a.attr_value
+    from offer o,offer_group g,offer_attr a,offer_detail d
+    where o.id = g.offer_id
+    and g.id = a.offer_group_id
+    and g.id = d.offer_group_id
+    and g.offer_id = a.offer_id
+    and g.offer_id = d.offer_id
+    and g.offer_id = #{offerId}
+    and d.nums = #{nums}
+  </select>
+  <select id="selectBySidCidTid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from offer where seller_id=#{sellerid} and class_id=#{classid} and texture_id=#{textureid} and types = #{types}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from offer
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from offer
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.offer.model.Offer" >
+    insert into offer (id, seller_id, class_id, 
+      texture_id, thickness, thickness_util, 
+      weight, weight_util, create_time, 
+      update_time, status, is_supply,types
+      )
+    values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{classId,jdbcType=BIGINT}, 
+      #{textureId,jdbcType=BIGINT}, #{thickness,jdbcType=DECIMAL}, #{thicknessUtil,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=DECIMAL}, #{weightUtil,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{isSupply,jdbcType=TINYINT},#{types,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyProperty="id"  useGeneratedKeys="true" parameterType="com.bzdepot.offer.model.Offer" >
+    insert into offer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="textureId != null" >
+        texture_id,
+      </if>
+      <if test="thickness != null" >
+        thickness,
+      </if>
+      <if test="thicknessUtil != null" >
+        thickness_util,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="weightUtil != null" >
+        weight_util,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isSupply != null" >
+        is_supply,
+      </if>
+      <if test="types != null" >
+        types,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="textureId != null" >
+        #{textureId,jdbcType=BIGINT},
+      </if>
+      <if test="thickness != null" >
+        #{thickness,jdbcType=DECIMAL},
+      </if>
+      <if test="thicknessUtil != null" >
+        #{thicknessUtil,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="weightUtil != null" >
+        #{weightUtil,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isSupply != null" >
+        #{isSupply,jdbcType=TINYINT},
+      </if>
+      <if test="types != null" >
+        #{types,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.offer.model.Offer" >
+    update offer
+    <set >
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="textureId != null" >
+        texture_id = #{textureId,jdbcType=BIGINT},
+      </if>
+      <if test="thickness != null" >
+        thickness = #{thickness,jdbcType=DECIMAL},
+      </if>
+      <if test="thicknessUtil != null" >
+        thickness_util = #{thicknessUtil,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="weightUtil != null" >
+        weight_util = #{weightUtil,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isSupply != null" >
+        is_supply = #{isSupply,jdbcType=TINYINT},
+      </if>
+      <if test="types != null" >
+        types = #{types,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.offer.model.Offer" >
+    update offer
+    set seller_id = #{sellerId,jdbcType=BIGINT},
+      class_id = #{classId,jdbcType=BIGINT},
+      texture_id = #{textureId,jdbcType=BIGINT},
+      thickness = #{thickness,jdbcType=DECIMAL},
+      thickness_util = #{thicknessUtil,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=DECIMAL},
+      weight_util = #{weightUtil,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      is_supply = #{isSupply,jdbcType=TINYINT},
+      types = #{types,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

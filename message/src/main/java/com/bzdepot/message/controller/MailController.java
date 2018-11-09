@@ -40,12 +40,6 @@ public class MailController {
         message.setHostName(emailConfig.getHostName());
         message.setEmailName(emailConfig.getEmailName());
         message.setEmailPass(emailConfig.getEmailPass());
-
-        message.setAccessKeyId(smsConfig.getAccessKeyId());
-        message.setAccesskeySecret(smsConfig.getAccesskeySecret());
-        message.setSignName(smsConfig.getSignName());
-        message.setRegistTempleteCode(smsConfig.getRegistTempleteCode());
-        message.setIdentifyingTempleteCode(smsConfig.getIdentifyingTempleteCode());
         message.setContent(String.valueOf(code));
 
         int ret=10010;

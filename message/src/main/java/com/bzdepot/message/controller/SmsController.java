@@ -33,25 +33,32 @@ public class SmsController {
     @RequestMapping(value = "/send",method = RequestMethod.POST)
     public  Object SmsSend(HttpServletRequest request, @Valid @ModelAttribute("message") Message message){
         int code=(int)((Math.random()*9+1)*100000);
-        redisTemplate.opsForValue().set(message.getMobile(),code,3,TimeUnit.MINUTES);
+        String ukey=message.getMobile()+"_time";
+        Long utime=(Long)redisTemplate.opsForValue().get(ukey);
+        int ret = 10010;
+        String msg="";
+        if(utime==null) {
+            redisTemplate.opsForValue().set(message.getMobile(), code, 3, TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set(ukey, System.currentTimeMillis(), 1, TimeUnit.MINUTES);
+            message.setAccessKeyId(smsConfig.getAccessKeyId());
+            message.setAccesskeySecret(smsConfig.getAccesskeySecret());
+            message.setSignName(smsConfig.getSignName());
+            message.setRegistTempleteCode(smsConfig.getRegistTempleteCode());
+            message.setIdentifyingTempleteCode(smsConfig.getIdentifyingTempleteCode());
+            JSONObject json = new JSONObject();
 
-        message.setHostName(emailConfig.getHostName());
-        message.setEmailName(emailConfig.getEmailName());
-        message.setEmailPass(emailConfig.getEmailPass());
-        message.setAccessKeyId(smsConfig.getAccessKeyId());
-        message.setAccesskeySecret(smsConfig.getAccesskeySecret());
-        message.setSignName(smsConfig.getSignName());
-        message.setRegistTempleteCode(smsConfig.getRegistTempleteCode());
-        message.setIdentifyingTempleteCode(smsConfig.getIdentifyingTempleteCode());
-        JSONObject json=new JSONObject();
-        int ret=10010;
-        String msg="短信发送成功";
-        String mobile=message.getMobile();
-        message.setMobile(mobile);
-        message.setContent(String.valueOf(code));
-        boolean flag= SmsSender.sendSms(message);
-        if(flag) ret=0;
-        if(ret!=0) msg="短信发送失败";
+            msg = "短信发送成功";
+            String mobile = message.getMobile();
+            message.setMobile(mobile);
+            message.setContent(String.valueOf(code));
+            boolean flag = SmsSender.sendSms(message);
+            if (flag) ret = 0;
+            if (ret != 0) msg = "短信发送失败";
+        }else {
+            ret=0;
+            msg="验证码还在有效期内";
+        }
+
         return JsonReturn.SetMsg(ret,msg,"");
     }
 }

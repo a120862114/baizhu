@@ -106,7 +106,29 @@ public class ConfigController {
         }
         return JsonReturn.SetMsg(10011,"获取配置失败!","");
     }
-
+    /**
+     *  获取报价配置的厚度与重量
+     * @param findImgVo
+     * @param result
+     * @return
+     */
+    @PostMapping(value = "/offer/data/all/type")
+    public Object offerListForFieldAllType(@Valid @ModelAttribute FindImgVo findImgVo,BindingResult result){
+        if(result.hasErrors()){
+            String ErrorMsg = result.getFieldError().getDefaultMessage();
+            String ErrorCode = result.getFieldError().getCode();
+            if(ErrorCode.equals("typeMismatch")){
+                return JsonReturn.SetMsg(10010,result.getFieldError().getField()+"参数传递的类型错误!","");
+            }
+            return JsonReturn.SetMsg(10010,ErrorMsg,"");
+        }
+        List<Offer> OfferData = offerService.getOfferListForFieldAll(findImgVo.getSeller_id(),findImgVo.getClass_id(),findImgVo.getTexture_id());
+        System.out.println(OfferData);
+        if(OfferData.size() > 0){
+            return JsonReturn.SetMsg(0,"获取配置成功!",OfferData);
+        }
+        return JsonReturn.SetMsg(10011,"获取配置失败!","");
+    }
     /**
      *  获取报价配置组详情
      * @param offerGroupFindVo

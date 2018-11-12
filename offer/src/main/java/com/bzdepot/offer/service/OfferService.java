@@ -191,7 +191,16 @@ public class OfferService {
     public List<Offer> getOfferListForField(Long SellerId, Long ClassId, Long TextureId,Byte types){
         return offerMapper.selectBySidCidTid(SellerId,ClassId,TextureId,types);
     }
-
+    /**
+     *  获取报价配置所有类型的厚度与重量
+     * @param SellerId
+     * @param ClassId
+     * @param TextureId
+     * @return
+     */
+    public List<Offer> getOfferListForFieldAll(Long SellerId, Long ClassId, Long TextureId){
+        return offerMapper.selectBySidCidTidAll(SellerId,ClassId,TextureId);
+    }
     /**
      *  通过关联查询获取配置组的详细数据
      * @param OfferId

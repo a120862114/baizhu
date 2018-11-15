@@ -416,4 +416,20 @@ public class ConfigController {
         }
         return JsonReturn.SetMsg(10011,"获取报价子配置失败!","");
     }
+
+    /**
+     * 删除报价配置及相关子数据
+     * @param offerId
+     * @return
+     */
+    @GetMapping(value = "/del/offer/{offerId}")
+    public Object deleteOfferById(@PathVariable("offerId") Long offerId){
+        if(offerId == null){
+            return JsonReturn.SetMsg(10010,"报价配置编号不能为空!","");
+        }
+        if(offerService.deleteOfferDataById(offerId) > 0){
+            return JsonReturn.SetMsg(0,"删除报价配置及相关数据成功!","");
+        }
+        return JsonReturn.SetMsg(10011,"删除报价配置及相关数据失败!","");
+    }
 }

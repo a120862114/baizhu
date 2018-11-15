@@ -1,5 +1,5 @@
 server:
-  port: 9492
+  port: 9493
 spring:
     application:
       name: message-server
@@ -9,7 +9,7 @@ spring:
         port: 8500
         discovery:
           healthCheckInterval: 15s
-          instance-id: message-server1
+          instance-id: message-server
     redis:
         database:  0
         host:  192.168.0.15

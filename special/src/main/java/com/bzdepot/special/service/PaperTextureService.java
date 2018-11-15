@@ -4,11 +4,15 @@ import com.bzdepot.common.util.UserUtil;
 import com.bzdepot.special.mapper.PaperTextureMapper;
 import com.bzdepot.special.model.PaperTexture;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames="PaperTexture")
 public class PaperTextureService {
 
     @Autowired
@@ -19,6 +23,7 @@ public class PaperTextureService {
      * @param paperTexture
      * @return
      */
+    @CacheEvict(allEntries = true)
     public int updatePaperTexture(PaperTexture paperTexture){
         paperTexture.setSellerId(UserUtil.getId());
         paperTexture.settBs(paperTexture.getNames());
@@ -34,6 +39,7 @@ public class PaperTextureService {
      * @param id
      * @return
      */
+    @Cacheable()
     public PaperTexture findPaperTexture(Long id){
         return paperTextureMapper.selectByPrimaryKey(id);
     }
@@ -43,6 +49,7 @@ public class PaperTextureService {
      * @param id
      * @return
      */
+    @CacheEvict(allEntries = true)
     public int deletePaperTexture(Long id){
         Long sellerId = UserUtil.getId();
         PaperTexture paperTexture = this.findPaperTexture(id);
@@ -59,7 +66,8 @@ public class PaperTextureService {
      * 获取纸张材质列表
      * @return
      */
-    public List<PaperTexture> listPaperTexture(){
-        return paperTextureMapper.selectBySellerId(UserUtil.getId());
+    @Cacheable()
+    public List<PaperTexture> listPaperTexture(Long UserId){
+        return paperTextureMapper.selectBySellerId(UserId);
     }
 }

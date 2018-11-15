@@ -14,4 +14,6 @@ public interface ProfitMapper {
     int updateByPrimaryKeySelective(Profit record);
 
     int updateByPrimaryKey(Profit record);
+
+    int deleteByOfferId(Long offerId);
 }

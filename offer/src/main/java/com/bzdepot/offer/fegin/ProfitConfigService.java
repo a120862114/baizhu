@@ -19,4 +19,7 @@ public interface ProfitConfigService {
     @Headers("Content-Type: application/x-www-form-urlencoded")
     public Object findDataByLevel(@PathVariable("sellerid") Long sellerid,@PathVariable("comanyid") Long comanyid,@PathVariable("types") Byte types,@PathVariable("levelid") Long levelid);
 
+    @RequestMapping(value = "/profit/del/by/offer/{offerId}", method =RequestMethod.GET, consumes = "application/x-www-form-urlencoded")
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    public Object deleteProfitByOfferIdApi(@PathVariable("offerId") Long offerId);
 }

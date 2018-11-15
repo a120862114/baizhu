@@ -148,4 +148,13 @@ public class ProfitService {
     public int delProfit(Long id){
         return profitMapper.deleteByPrimaryKey(id);
     }
+
+    /**
+     * 通过offerId 删除利润配置
+     * @param offerId
+     * @return
+     */
+    public int deleteProfitByOfferId(Long offerId){
+        return profitMapper.deleteByOfferId(offerId);
+    }
 }

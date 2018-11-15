@@ -3,6 +3,7 @@ package com.bzdepot.offer.controller;
 import com.bzdepot.common.message.JsonReturn;
 import com.bzdepot.offer.model.Texture;
 import com.bzdepot.offer.service.TextureService;
+import com.bzdepot.offer.vo.SidCidTidBo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -40,7 +41,7 @@ public class TextureController {
         return JsonReturn.SetMsg(10011,"添加材质数据失败 !","");
     }
 
-    @PostMapping(value = "edit")
+    @PostMapping(value = "/edit")
     public Object editTexture(@Valid @ModelAttribute Texture texture, BindingResult result){
         if(result.hasErrors()){
             String ErrorMsg = result.getFieldError().getDefaultMessage();
@@ -63,4 +64,31 @@ public class TextureController {
         }
         return JsonReturn.SetMsg(10011,"添加材质数据失败!","");
     }
+
+    /**
+     * 删除材质分类数据,同时mysql触发器删除产品图片数据product_img
+     * @param sidCidTidBo
+     * @param result
+     * @return
+     */
+    @PostMapping(value = "/del")
+    public Object delTextureData(@ModelAttribute SidCidTidBo sidCidTidBo,BindingResult result){
+        if(result.hasErrors()){
+            String ErrorMsg = result.getFieldError().getDefaultMessage();
+            String ErrorCode = result.getFieldError().getCode();
+            if(ErrorCode.equals("typeMismatch")){
+                return JsonReturn.SetMsg(10010,result.getFieldError().getField()+"参数传递的类型错误!","");
+            }
+            return JsonReturn.SetMsg(10010,ErrorMsg,"");
+        }
+        int Code = textureService.deleteTexture(sidCidTidBo.getSellerId(),sidCidTidBo.getClassId(),sidCidTidBo.getTextureId());
+        if(Code == -1){
+            return JsonReturn.SetMsg(10011,"材质分类下包含报价配置数据，暂不能删除！","");
+        }
+        if(Code == 1){
+            return JsonReturn.SetMsg(0,"删除材质分类数据成功!","");
+        }
+        return JsonReturn.SetMsg(10011,"删除材质分类失败!","");
+    }
+
 }

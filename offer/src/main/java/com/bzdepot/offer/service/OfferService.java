@@ -610,7 +610,9 @@ public class OfferService {
                 if(selectOfferMoneyVo.getIsY().equals(new Byte("1"))) {
                     expressMoney = this.getExpressMoney(selectOfferMoneyVo.getSellerId(), selectOfferMoneyVo.getComanyId(), selectOfferMoneyVo.getCityId(), selectOfferMoneyVo.getNums(), selectOfferMoneyVo.getLongsData(), selectOfferMoneyVo.getWidthData(), selectOfferMoneyVo.getWeight());
                 }
+                System.out.println("快递费开始");
                 System.out.println(expressMoney);
+                System.out.println("快递费结束");
                 //获取发票
                 Invoice invoice = null;
                 if(selectOfferMoneyVo.getIsF().equals(new Byte("1"))){
@@ -641,10 +643,16 @@ public class OfferService {
                             }
                         }
                     }
+                    System.out.println("常规报价快递利润率开始");
+                    System.out.println(ExpressRate);
+                    System.out.println("常规报价快递利润率结束");
                     BigDecimal ExpressRateLast = ExpressRate.divide(BigDecimal.valueOf(100)); //邮费利润率转换百分小数
                     if(expressMoney != null){
                         BigDecimal ExpressProfitMoney = ExpressRateLast.multiply(expressMoney.get("money")); //邮费利润
-                        selectOfferVos.get(i).setExpressMoney(ExpressProfitMoney.add(expressMoney.get("money"))); //设置最终邮费，邮费成本加邮费利润
+                        selectOfferVos.get(i).setExpressMoney(ExpressProfitMoney); //设置最终邮费，邮费成本加邮费利润
+                        System.out.println("常规报价快递最终价开始");
+                        System.out.println(selectOfferVos.get(i).getExpressMoney());
+                        System.out.println("常规报价快递最终价结束");
                         selectOfferVos.get(i).setExpressStartMoney(expressMoney.get("startMoney")); //首重价格
                     }
 
@@ -679,7 +687,7 @@ public class OfferService {
                         BigDecimal ExpressRateLast = ExpressRate.divide(BigDecimal.valueOf(100)); //邮费利润率转换百分小数
                         if(expressMoney != null){
                             BigDecimal ExpressProfitMoney = ExpressRateLast.multiply(expressMoney.get("money")); //邮费利润
-                            selectOfferVos.get(i).setExpressMoney(ExpressProfitMoney.add(expressMoney.get("money"))); //设置最终邮费，邮费成本加邮费利润
+                            selectOfferVos.get(i).setExpressMoney(ExpressProfitMoney); //设置最终邮费，邮费成本加邮费利润
                             selectOfferVos.get(i).setExpressStartMoney(expressMoney.get("startMoney")); //首重价格
                         }
                     }
@@ -692,6 +700,8 @@ public class OfferService {
                         Map<String, BigDecimal> invoiceExpressMoney = this.getExpressMoney(selectOfferMoneyVo.getSellerId(), invoice.getComanyId(), selectOfferMoneyVo.getCityId(), selectOfferMoneyVo.getNums(), selectOfferMoneyVo.getLongsData(), selectOfferMoneyVo.getWidthData(), BigDecimal.valueOf(0));
                         if (invoiceExpressMoney != null) {
                             selectOfferVos.get(i).setExpressStartMoney(invoiceExpressMoney.get("startMoney")); //首重价格
+                        }else{
+                            selectOfferVos.get(i).setExpressStartMoney(null); //首重价格
                         }
                     }
                 }
@@ -1030,5 +1040,33 @@ public class OfferService {
      */
     public int deleteOfferSonExpress(Long id){
         return offerSonExpressMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 删除报价配置及相关子数据和远程利润服务的相关数据
+     * @param id
+     * @return
+     */
+    @Transactional
+    public int deleteOfferDataById(Long id){
+        Offer offer = offerMapper.selectByPrimaryKey(id);
+        if(offer == null){
+            return 0;
+        }
+        int Code = 0;
+        try {
+            Code = offerMapper.deleteByPrimaryKey(id);
+            if(Code == 1){
+                if(offer.getTypes().equals(new Byte("0"))){
+                    Object Result = profitConfigService.deleteProfitByOfferIdApi(id);
+                    System.out.println(Result);
+                }
+            }
+        }catch (Exception e){
+            loger.error(e.getMessage());
+            Code = 0;
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return Code;
     }
 }

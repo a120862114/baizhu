@@ -1,6 +1,7 @@
 package com.bzdepot.special.controller;
 
 import com.bzdepot.common.message.JsonReturn;
+import com.bzdepot.common.util.UserUtil;
 import com.bzdepot.special.model.PaperTexture;
 import com.bzdepot.special.service.PaperTextureService;
 import org.slf4j.Logger;
@@ -50,7 +51,7 @@ public class PaperTextureController {
      */
     @GetMapping(value = "/list")
     public Object listTexture(){
-        List<PaperTexture> paperTextures = paperTextureService.listPaperTexture();
+        List<PaperTexture> paperTextures = paperTextureService.listPaperTexture(UserUtil.getId());
         if(paperTextures != null && paperTextures.size() > 0){
             return JsonReturn.SetMsg(0,"获取纸张材质列表成功!",paperTextures);
         }

@@ -112,4 +112,19 @@ public class ProfitController {
         return JsonReturn.SetMsg(10011,"利润数据删除失败!","");
     }
 
+    /**
+     * 通过offerId 删除利润配置及规则
+     * @param offerId
+     * @return
+     */
+    @GetMapping(value = "/del/by/offer/{offerId}")
+    public Object deleteProfitByOfferIdApi(@PathVariable("offerId") Long offerId){
+        if(offerId == null){
+            return JsonReturn.SetMsg(10010,"报价配置编号不能为空!","");
+        }
+        if(profitService.deleteProfitByOfferId(offerId) > 0){
+            return JsonReturn.SetMsg(0,"删除利润配置及规则成功!","");
+        }
+        return JsonReturn.SetMsg(10011,"删除利润配置及规则失败!","");
+    }
 }

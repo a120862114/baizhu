@@ -23,4 +23,9 @@ public class ProfitConfigServiceFallback implements ProfitConfigService {
         return JsonReturn.SetMsg(10011,"发票信息调用异常!","");
     }
 
+    @Override
+    public Object deleteProfitByOfferIdApi(@PathVariable("offerId") Long offerId){
+        loger.error("fegin 调用删除利润配置及规则错误!");
+        return JsonReturn.SetMsg(10011,"删除利润及规则调用异常!","");
+    }
 }

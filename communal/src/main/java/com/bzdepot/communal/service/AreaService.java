@@ -16,7 +16,9 @@ import java.util.List;
 @EnableCaching
 @CacheConfig(cacheNames="AreaCache")
 public class AreaService {
+
     private final static Logger loger = LoggerFactory.getLogger(AreaService.class);
+
     @Autowired
     private AreaMapper areaMapper;
 

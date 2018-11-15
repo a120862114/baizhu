@@ -20,6 +20,10 @@
     from profit
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <delete id="deleteByOfferId" parameterType="java.lang.Long" >
+    delete from profit
+    where offer_id = #{offerId,jdbcType=BIGINT}
+  </delete>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from profit
     where id = #{id,jdbcType=BIGINT}

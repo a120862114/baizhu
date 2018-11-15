@@ -39,7 +39,6 @@ public class RedisConfiguration extends CachingConfigurerSupport{
 
     }
 
-
     private Duration timeToLive = Duration.ZERO;
     public void setTimeToLive(Duration timeToLive) {
         this.timeToLive = timeToLive;

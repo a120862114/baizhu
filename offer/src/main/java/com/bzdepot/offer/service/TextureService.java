@@ -48,6 +48,16 @@ public class TextureService {
     }
 
     /**
+     * 获取单挑材质数据
+     * @param sellerId
+     * @param classId
+     * @param title
+     * @return
+     */
+    public Texture findTextureByClassIdAndSellerIdAndTitleForOne(Long sellerId,Long classId,String title){
+        return textureMapper.selectByTitleAndSellerIdAndClassId(sellerId,classId,title);
+    }
+    /**
      * 删除材质数据,同时MYSQL触发器删除材质对应的产品图片
      * @param sellerId
      * @param classId

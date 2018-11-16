@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.special.mapper.ProductTechnologyMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.special.model.ProductTechnology" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="pconfig_id" property="pconfigId" jdbcType="BIGINT" />
+    <result column="technology_id" property="technologyId" jdbcType="BIGINT" />
+    <result column="echnology_attr_id" property="echnologyAttrId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, seller_id, pconfig_id, technology_id, echnology_attr_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from product_technology
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from product_technology
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.special.model.ProductTechnology" >
+    insert into product_technology (id, seller_id, pconfig_id, 
+      technology_id, echnology_attr_id)
+    values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{pconfigId,jdbcType=BIGINT}, 
+      #{technologyId,jdbcType=BIGINT}, #{echnologyAttrId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.special.model.ProductTechnology" >
+    insert into product_technology
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="pconfigId != null" >
+        pconfig_id,
+      </if>
+      <if test="technologyId != null" >
+        technology_id,
+      </if>
+      <if test="echnologyAttrId != null" >
+        echnology_attr_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="pconfigId != null" >
+        #{pconfigId,jdbcType=BIGINT},
+      </if>
+      <if test="technologyId != null" >
+        #{technologyId,jdbcType=BIGINT},
+      </if>
+      <if test="echnologyAttrId != null" >
+        #{echnologyAttrId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.ProductTechnology" >
+    update product_technology
+    <set >
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="pconfigId != null" >
+        pconfig_id = #{pconfigId,jdbcType=BIGINT},
+      </if>
+      <if test="technologyId != null" >
+        technology_id = #{technologyId,jdbcType=BIGINT},
+      </if>
+      <if test="echnologyAttrId != null" >
+        echnology_attr_id = #{echnologyAttrId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.special.model.ProductTechnology" >
+    update product_technology
+    set seller_id = #{sellerId,jdbcType=BIGINT},
+      pconfig_id = #{pconfigId,jdbcType=BIGINT},
+      technology_id = #{technologyId,jdbcType=BIGINT},
+      echnology_attr_id = #{echnologyAttrId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -31,6 +31,13 @@
     <result column="other_size_ids" property="otherSizeIds" jdbcType="LONGVARCHAR" />
     <result column="other_size_values" property="otherSizeValues" jdbcType="LONGVARCHAR" />
   </resultMap>
+
+  <resultMap id="ProductSetWantDataMap" type="com.bzdepot.special.bo.ProductWantTextureBo">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="paper_tid" property="paperTid" jdbcType="BIGINT" />
+    <collection property="paperData" ofType="com.bzdepot.special.model.PaperTexture" select="com.bzdepot.special.mapper.PaperTextureMapper.selectByPrimaryKey" column="paper_tid" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, seller_id, paper_tid, paper_tname, brand_id, brand_name, packing_id, packing_name, 
     gram_id, gram_name, thickness_start, thickness_end, supplier_id, supplier_name, status, 
@@ -39,6 +46,19 @@
   <sql id="Blob_Column_List" >
     drum_ids, drum_values, other_size_ids, other_size_values
   </sql>
+  <select id="findPaperGramNoRepeat" resultType="com.bzdepot.special.bo.ProductWantGramBo">
+    SELECT
+    pc.gram_id as id,pg.gram_nums as gram
+    FROM paper_cost pc
+    LEFT JOIN paper_gram pg
+    on pc.gram_id = pg.id
+    where pc.seller_id = #{sellerId}
+    AND pc.paper_tid = #{paperTid}
+    GROUP BY pg.gram_nums
+  </select>
+  <select id="findPaperTextureNoRepeat" resultMap="ProductSetWantDataMap">
+    select id,seller_id,paper_tid from paper_cost where seller_id = #{sellerId} and status = #{status} group by paper_tid
+  </select>
   <select id="selectBySellerIdPageList" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List" />

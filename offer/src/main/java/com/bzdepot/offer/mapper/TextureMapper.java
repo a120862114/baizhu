@@ -19,4 +19,6 @@ public interface TextureMapper {
     int countTexture(@Param("classid") Long classid,@Param("sellerid") Long sellerid,@Param("groupid") Long groupid);
 
     Texture selectByTitleAndSellerId(@Param("sellerId") Long sellerId,@Param("title") String title);
+
+    Texture selectByTitleAndSellerIdAndClassId(@Param("sellerId") Long sellerId,@Param("classId") Long classId,@Param("title") String title);
 }

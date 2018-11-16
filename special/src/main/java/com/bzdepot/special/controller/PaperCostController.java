@@ -2,6 +2,8 @@ package com.bzdepot.special.controller;
 
 import com.bzdepot.common.message.JsonReturn;
 import com.bzdepot.special.bo.PaperCostBo;
+import com.bzdepot.special.bo.ProductWantGramBo;
+import com.bzdepot.special.bo.ProductWantTextureBo;
 import com.bzdepot.special.service.PaperCostService;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/paper/config")
@@ -80,5 +83,47 @@ public class PaperCostController {
             return JsonReturn.SetMsg(0,"获取纸张费配置列表成功!",pageInfo);
        }
        return JsonReturn.SetMsg(10011,"获取纸张费配置列表失败!","");
+    }
+
+    /**
+     * 获取配置过的材质数据API接口
+     * @param sellerId
+     * @param Status
+     * @return
+     */
+    @GetMapping(value = "/product/texture/{sellerId}/{Status}")
+    public Object findProductTextureApi(@PathVariable("sellerId") Long sellerId,@PathVariable("Status") Byte Status){
+        if(sellerId == null){
+            return JsonReturn.SetMsg(10010,"商家编号不能为空！","");
+        }
+        if(Status == null){
+            return JsonReturn.SetMsg(10010,"状态不能为空!","");
+        }
+        List<ProductWantTextureBo> productWantTextureBos = paperCostService.findProductTextureData(sellerId,Status);
+        if(productWantTextureBos != null && productWantTextureBos.size() > 0){
+            return JsonReturn.SetMsg(0,"获取材质数据成功!",productWantTextureBos);
+        }
+        return JsonReturn.SetMsg(10011,"暂没有材质数据!","");
+    }
+
+    /**
+     * 获取产品设置所需的材质厚度数据的API接口
+     * @param sellerId
+     * @param paperTid
+     * @return
+     */
+    @GetMapping(value = "/product/gram/{sellerId}/{paperTid}")
+    public Object findProductGramApi(@PathVariable("sellerId") Long sellerId,@PathVariable("paperTid") Long paperTid){
+        if(sellerId == null){
+            return JsonReturn.SetMsg(10010,"商家编号不能为空!","");
+        }
+        if(paperTid == null){
+            return JsonReturn.SetMsg(10010,"材质编号不能为空!","");
+        }
+        List<ProductWantGramBo> productWantGramBos = paperCostService.findProductGramData(sellerId,paperTid);
+        if(productWantGramBos != null && productWantGramBos.size() > 0){
+            return JsonReturn.SetMsg(0,"获取材质的厚度数据成功!",productWantGramBos);
+        }
+        return JsonReturn.SetMsg(10011,"此材质暂无配置的厚度数据!","");
     }
 }

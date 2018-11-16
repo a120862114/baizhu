@@ -4,11 +4,15 @@ import com.bzdepot.common.util.UserUtil;
 import com.bzdepot.special.mapper.PaperGramMapper;
 import com.bzdepot.special.model.PaperGram;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames = "PaperGram")
 public class PaperGramService {
 
     @Autowired
@@ -19,6 +23,7 @@ public class PaperGramService {
      * @param paperGram
      * @return
      */
+    @CacheEvict(allEntries = true)
     public int updatePaperGram(PaperGram paperGram){
         paperGram.setSellerId(UserUtil.getId());
         if(paperGram.getId() == null){
@@ -33,6 +38,7 @@ public class PaperGramService {
      * @param id
      * @return
      */
+    @Cacheable()
     public PaperGram findPaperGram(Long id){
         return paperGramMapper.selectByPrimaryKey(id);
     }
@@ -42,6 +48,7 @@ public class PaperGramService {
      * @param id
      * @return
      */
+    @CacheEvict(allEntries = true)
     public int deletePaperGram(Long id){
         //验证删除的数据是否属于当前商家
         PaperGram paperGram = this.findPaperGram(id);
@@ -58,8 +65,8 @@ public class PaperGramService {
      * 获取纸张克重列表
      * @return
      */
-    public List<PaperGram> listPaperGram(){
-        Long sellerId = UserUtil.getId();
+    @Cacheable()
+    public List<PaperGram> listPaperGram(Long sellerId){
         return paperGramMapper.selectBySellerId(sellerId);
     }
 }

@@ -30,7 +30,7 @@ public class TextureController {
             }
             return JsonReturn.SetMsg(10010,ErrorMsg,"");
         }
-        Texture textureData = textureService.findTextureByTitle(texture.getSellerId(),texture.getTitle());
+        Texture textureData = textureService.findTextureByClassIdAndSellerIdAndTitleForOne(texture.getSellerId(),texture.getClassId(),texture.getTitle());
         if(textureData != null){
             return JsonReturn.SetMsg(10010,"材质名称已经存在，请更换名称后在试!","");
         }
@@ -54,7 +54,7 @@ public class TextureController {
         if(texture.getId() == null){
             return JsonReturn.SetMsg(10010,"材质数据编号不能为空!","");
         }
-        Texture textureData = textureService.findTextureByTitle(texture.getSellerId(),texture.getTitle());
+        Texture textureData = textureService.findTextureByClassIdAndSellerIdAndTitleForOne(texture.getSellerId(),texture.getClassId(),texture.getTitle());
         if(textureData != null && textureData.getId() != texture.getId()){
             return JsonReturn.SetMsg(10010,"材质名称已经存在，请更换名称后在试!","");
         }

@@ -14,6 +14,12 @@
   <sql id="Base_Column_List" >
     id, title, class_id, seller_id, status, create_time, update_time, group_id
   </sql>
+  <select id="selectByTitleAndSellerIdAndClassId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from texture
+    where seller_id = #{sellerId} and class_id = #{classId} and title = #{title}
+  </select>
   <select id="selectByTitleAndSellerId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

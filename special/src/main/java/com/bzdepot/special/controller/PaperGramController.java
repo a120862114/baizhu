@@ -1,6 +1,7 @@
 package com.bzdepot.special.controller;
 
 import com.bzdepot.common.message.JsonReturn;
+import com.bzdepot.common.util.UserUtil;
 import com.bzdepot.special.model.PaperGram;
 import com.bzdepot.special.service.PaperGramService;
 import org.slf4j.Logger;
@@ -50,7 +51,7 @@ public class PaperGramController {
      */
     @GetMapping(value = "/list")
     public Object listGram(){
-        List<PaperGram> paperGrams = paperGramService.listPaperGram();
+        List<PaperGram> paperGrams = paperGramService.listPaperGram(UserUtil.getId());
         if(paperGrams != null && paperGrams.size() > 0){
             return JsonReturn.SetMsg(0,"获取纸张克重列表成功!",paperGrams);
         }

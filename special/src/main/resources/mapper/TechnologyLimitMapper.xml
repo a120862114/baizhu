@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.special.mapper.TechnologyLimitMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.special.model.TechnologyLimit" >
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="t_class_id" property="tClassId" jdbcType="BIGINT" />
+    <result column="t_attr_id" property="tAttrId" jdbcType="BIGINT" />
+    <result column="less_than_type" property="lessThanType" jdbcType="TINYINT" />
+    <result column="size_start_longs" property="sizeStartLongs" jdbcType="DECIMAL" />
+    <result column="size_start_width" property="sizeStartWidth" jdbcType="DECIMAL" />
+    <result column="greater_than_type" property="greaterThanType" jdbcType="TINYINT" />
+    <result column="size_end_longs" property="sizeEndLongs" jdbcType="DECIMAL" />
+    <result column="size_end_width" property="sizeEndWidth" jdbcType="DECIMAL" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="unit_type" property="unitType" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    seller_id, t_class_id, t_attr_id,
+    less_than_type, size_start_longs, size_start_width,
+    greater_than_type, size_end_longs, size_end_width,
+    money, unit_type
+  </sql>
+  <select id="selectData" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from technology_limit
+    where seller_id = #{sellerId} and t_class_id = #{tClassId} and t_attr_id = #{tAttrId}
+  </select>
+  <delete id="deleteData">
+    delete from technology_limit where seller_id = #{sellerId} and t_class_id = #{tClassId} and t_attr_id = #{tAttrId}
+  </delete>
+  <insert id="insert">
+    insert into technology_limit (seller_id, t_class_id, t_attr_id, 
+      less_than_type, size_start_longs, size_start_width, 
+      greater_than_type, size_end_longs, size_end_width, 
+      money, unit_type)
+    values
+    <foreach collection="limitData" item="params" index="index" separator=",">
+    (
+      #{sellerId,jdbcType=BIGINT}, #{tClassId,jdbcType=BIGINT}, #{tAttrId,jdbcType=BIGINT},
+      #{params.lessThanType,jdbcType=TINYINT}, #{params.sizeStartLongs,jdbcType=DECIMAL}, #{params.sizeStartWidth,jdbcType=DECIMAL},
+      #{params.greaterThanType,jdbcType=TINYINT}, #{params.sizeEndLongs,jdbcType=DECIMAL}, #{params.sizeEndWidth,jdbcType=DECIMAL},
+      #{params.money,jdbcType=DECIMAL}, #{params.unitType,jdbcType=TINYINT}
+      )
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.special.model.TechnologyLimit" >
+    insert into technology_limit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="tClassId != null" >
+        t_class_id,
+      </if>
+      <if test="tAttrId != null" >
+        t_attr_id,
+      </if>
+      <if test="lessThanType != null" >
+        less_than_type,
+      </if>
+      <if test="sizeStartLongs != null" >
+        size_start_longs,
+      </if>
+      <if test="sizeStartWidth != null" >
+        size_start_width,
+      </if>
+      <if test="greaterThanType != null" >
+        greater_than_type,
+      </if>
+      <if test="sizeEndLongs != null" >
+        size_end_longs,
+      </if>
+      <if test="sizeEndWidth != null" >
+        size_end_width,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="unitType != null" >
+        unit_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="tClassId != null" >
+        #{tClassId,jdbcType=BIGINT},
+      </if>
+      <if test="tAttrId != null" >
+        #{tAttrId,jdbcType=BIGINT},
+      </if>
+      <if test="lessThanType != null" >
+        #{lessThanType,jdbcType=TINYINT},
+      </if>
+      <if test="sizeStartLongs != null" >
+        #{sizeStartLongs,jdbcType=DECIMAL},
+      </if>
+      <if test="sizeStartWidth != null" >
+        #{sizeStartWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="greaterThanType != null" >
+        #{greaterThanType,jdbcType=TINYINT},
+      </if>
+      <if test="sizeEndLongs != null" >
+        #{sizeEndLongs,jdbcType=DECIMAL},
+      </if>
+      <if test="sizeEndWidth != null" >
+        #{sizeEndWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="unitType != null" >
+        #{unitType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

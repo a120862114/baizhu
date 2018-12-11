@@ -1,5 +1,6 @@
 package com.bzdepot.special.mapper;
 
+import com.bzdepot.special.bo.GetNamesBo;
 import com.bzdepot.special.model.TechnologyAttr;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,4 +24,6 @@ public interface TechnologyAttrMapper {
     Integer countAttrDataByTid(@Param("sellerId") Long sellerId,@Param("tId") Long tId);
 
     List<TechnologyAttr> listAttrDataByTid(Long tId);
+
+    GetNamesBo selectByPrimaryKeyForNames(Long id);
 }

@@ -27,4 +27,6 @@ public interface BlockGroupMapper {
     int updateBlockDatas(BlockGroupWithBLOBs record);
 
     List<BlockGroupData> findGroupAndPrice(BlockGroupData record);
+
+    List<BlockGroup> selectBySellerIdAndCompanyId(@Param("sellerId") Long sellerId,@Param("companyId") Long companyId);
 }

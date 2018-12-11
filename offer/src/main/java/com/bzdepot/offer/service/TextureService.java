@@ -75,4 +75,13 @@ public class TextureService {
        }
         return 0;
     }
+
+    /**
+     * 获取当前商家下所有材质名称
+     * @param sellerId
+     * @return
+     */
+    public List<Texture> findTextureList(Long sellerId){
+        return textureMapper.selectBySellerId(sellerId);
+    }
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.special.mapper.SpotColorMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.special.model.SpotColor" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="spot_color_name" property="spotColorName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, spot_color_name
+  </sql>
+  <select id="selectAllData" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from spot_color
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from spot_color
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from spot_color
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.special.model.SpotColor" >
+    insert into spot_color (id, spot_color_name)
+    values (#{id,jdbcType=BIGINT}, #{spotColorName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.special.model.SpotColor" >
+    insert into spot_color
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="spotColorName != null" >
+        spot_color_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="spotColorName != null" >
+        #{spotColorName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.SpotColor" >
+    update spot_color
+    <set >
+      <if test="spotColorName != null" >
+        spot_color_name = #{spotColorName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.special.model.SpotColor" >
+    update spot_color
+    set spot_color_name = #{spotColorName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

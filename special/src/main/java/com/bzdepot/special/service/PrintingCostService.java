@@ -3,7 +3,9 @@ package com.bzdepot.special.service;
 import com.bzdepot.common.util.UserUtil;
 import com.bzdepot.special.bo.PrintingCostBo;
 import com.bzdepot.special.mapper.PrintingCostMapper;
+import com.bzdepot.special.mapper.PrintingSpotConfigMapper;
 import com.bzdepot.special.model.PrintingCost;
+import com.bzdepot.special.model.PrintingSpotConfig;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -24,6 +26,9 @@ public class PrintingCostService {
     @Autowired
     private PrintingCostMapper printingCostMapper;
 
+    @Autowired
+    private PrintingSpotConfigMapper printingSpotConfigMapper;
+
     /**
      * 更新印刷费配置
      * @param printingCostBo
@@ -35,7 +40,7 @@ public class PrintingCostService {
         try {
             for(int i = 0; i < printingCostBo.getPostData().length; i++){
                 PrintingCost printingCost = printingCostBo.getPostData()[i];
-                if(UserUtil.getId() != null){
+                if(UserUtil.getId() != null && printingCost.getSellerId() == null){
                     printingCost.setSellerId(UserUtil.getId());
                 }
                 printingCost.setCreateTime(new Date().getTime());
@@ -44,6 +49,25 @@ public class PrintingCostService {
                     Status = printingCostMapper.insertSelective(printingCost);
                 }else{
                     Status = printingCostMapper.updateByPrimaryKeySelective(printingCost);
+                }
+                if(Status == 0){
+                    break;
+                }
+                if(printingCost.getColorConfigs() == null || printingCost.getColorConfigs().size() == 0){
+                    continue;
+                }
+                for(int a = 0; a < printingCost.getColorConfigs().size(); a++){
+                    PrintingSpotConfig printingSpotConfig = printingCost.getColorConfigs().get(a);
+                    printingSpotConfig.setSellerId(printingCost.getSellerId());
+                    printingSpotConfig.setPrintingCostId(printingCost.getId());
+                    if(printingSpotConfig.getId() == null){
+                        Status = printingSpotConfigMapper.insertSelective(printingSpotConfig);
+                    }else {
+                        Status = printingSpotConfigMapper.updateByPrimaryKeySelective(printingSpotConfig);
+                    }
+                    if(Status == 0){
+                        break;
+                    }
                 }
                 if(Status == 0){
                     break;

@@ -27,4 +27,6 @@ public interface OfferMapper {
     SelectOfferVo findMoney(@Param("offerId") Long offerId,@Param("nums") Integer nums);
 
     List<SelectOfferVo> findOfferAllData(@Param("sellerId") Long sellerId, @Param("classId") Long classId, @Param("textureId") Long textureId, @Param("nums") Integer nums, @Param("thickness") BigDecimal thickness,@Param("weight") BigDecimal weight);
+
+    List<SelectOfferVo> findOfferAllDataForSumer(@Param("sellerId") Long sellerId, @Param("classId") Long classId, @Param("textureId") Long textureId,@Param("thickness") BigDecimal thickness,@Param("weight") BigDecimal weight,@Param("typesData") Byte typesData);
 }

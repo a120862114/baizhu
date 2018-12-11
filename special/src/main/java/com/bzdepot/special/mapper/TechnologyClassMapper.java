@@ -1,5 +1,6 @@
 package com.bzdepot.special.mapper;
 
+import com.bzdepot.special.bo.GetNamesBo;
 import com.bzdepot.special.model.TechnologyClass;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,4 +22,6 @@ public interface TechnologyClassMapper {
     int updateByPrimaryKey(TechnologyClass record);
 
     List<TechnologyClass> selectPageClassAndAttr(@Param("sellerId") Long sellerId);
+
+    GetNamesBo selectByPrimaryKeyForNames(Long id);
 }

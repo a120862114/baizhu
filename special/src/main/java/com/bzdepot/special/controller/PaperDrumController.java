@@ -1,7 +1,9 @@
 package com.bzdepot.special.controller;
 
 import com.bzdepot.common.message.JsonReturn;
+import com.bzdepot.special.model.PaperCost;
 import com.bzdepot.special.model.PaperDrum;
+import com.bzdepot.special.service.PaperCostService;
 import com.bzdepot.special.service.PaperDrumService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,9 @@ public class PaperDrumController {
 
     @Autowired
     private PaperDrumService paperDrumService;
+
+    @Autowired
+    private PaperCostService paperCostService;
 
     /**
      * 更新纸张卷筒数据API接口
@@ -66,6 +71,11 @@ public class PaperDrumController {
     public Object deleteDrum(@PathVariable("drumId") Long drumId){
         if(drumId == null){
             return JsonReturn.SetMsg(10010,"纸张卷筒编号不能为空!","");
+        }
+        List<PaperCost> paperCosts = paperCostService.findInSetDrumIdsInPaperCost(drumId);
+        System.out.println(paperCosts.toString());
+        if(paperCosts != null && paperCosts.size() > 0){
+            return JsonReturn.SetMsg(10010,"此卷筒纸尺寸存在于其他的纸张费配置中，暂不能删除!","");
         }
         if(paperDrumService.deletePaperDrum(drumId) > 0){
             return JsonReturn.SetMsg(0,"删除纸张卷筒数据成功!","");

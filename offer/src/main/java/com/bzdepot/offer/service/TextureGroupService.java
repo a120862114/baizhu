@@ -64,4 +64,14 @@ public class TextureGroupService {
     public TextureGroup findTextureGroupByGroupName(Long sellerId,String groupName){
        return textureGroupMapper.selectBySellerIdAndGroupName(sellerId,groupName);
     }
+
+    /**
+     * 获取单条的材质分组
+     * @param sellerId
+     * @param groupName
+     * @return
+     */
+    public TextureGroup findTextureGroupByGroupNameMore(Long sellerId,Long classId,String groupName){
+        return textureGroupMapper.countTextureGroupByMore(sellerId,classId,groupName);
+    }
 }

@@ -12,26 +12,33 @@
     <result column="is_edition" property="isEdition" jdbcType="TINYINT" />
     <result column="on_money" property="onMoney" jdbcType="DECIMAL" />
     <result column="machining_nums" property="machiningNums" jdbcType="INTEGER" />
-    <result column="calculation_type" property="calculationType" jdbcType="TINYINT" />
-    <result column="calculation_nums_money" property="calculationNumsMoney" jdbcType="DECIMAL" />
-    <result column="calculation_mj_money" property="calculationMjMoney" jdbcType="DECIMAL" />
-    <result column="set_limit_type" property="setLimitType" jdbcType="TINYINT" />
-    <result column="limit_size_max_long" property="limitSizeMaxLong" jdbcType="DECIMAL" />
-    <result column="limit_size_max_wight" property="limitSizeMaxWight" jdbcType="DECIMAL" />
-    <result column="limit_size_min_long" property="limitSizeMinLong" jdbcType="DECIMAL" />
-    <result column="limit_size_min_wight" property="limitSizeMinWight" jdbcType="DECIMAL" />
-    <result column="limit_area_id" property="limitAreaId" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="create_time" property="createTime" jdbcType="BIGINT" />
     <result column="update_time" property="updateTime" jdbcType="BIGINT" />
     <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="select_uit_type" property="selectUitType" jdbcType="TINYINT" />
+    <result column="robot_size_max_longs" property="robotSizeMaxLongs" jdbcType="DECIMAL" />
+    <result column="robot_size_max_width" property="robotSizeMaxWidth" jdbcType="DECIMAL" />
+    <result column="robot_size_min_longs" property="robotSizeMinLongs" jdbcType="DECIMAL" />
+    <result column="robot_size_min_width" property="robotSizeMinWidth" jdbcType="DECIMAL" />
+    <result column="limit_type" property="limitType" jdbcType="TINYINT" />
+    <result column="limit_number" property="limitNumber" jdbcType="DECIMAL" />
+    <collection property="limitList" ofType="com.bzdepot.special.model.TechnologyLimit" select="com.bzdepot.special.mapper.TechnologyLimitMapper.selectData" column="{sellerId=seller_id,tClassId=t_id,tAttrId=id}"  />
+  </resultMap>
+  <resultMap id="GetNamesResultMap" type="com.bzdepot.special.bo.GetNamesBo" >
+    <result column="category" property="Names" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, t_id, category, hs_in_num, hs_hs_num, hs_md_num, hs_md_hs_num, is_edition, on_money, 
-    machining_nums, calculation_type, calculation_nums_money, calculation_mj_money, set_limit_type, 
-    limit_size_max_long, limit_size_max_wight, limit_size_min_long, limit_size_min_wight, 
-    limit_area_id, status, create_time, update_time, seller_id
+    machining_nums,status, create_time, update_time, seller_id,select_uit_type,robot_size_max_longs,
+    robot_size_max_width,robot_size_min_longs,robot_size_min_width,limit_type,limit_number
   </sql>
+  <select id="selectByPrimaryKeyForNames" resultMap="GetNamesResultMap" parameterType="java.lang.Long" >
+
+    select category from technology_attr
+    where id = #{id,jdbcType=BIGINT}
+
+  </select>
   <select id="countAttrDataByTid" resultType="java.lang.Integer">
     select count(id) from technology_attr where seller_id = #{sellerId,jdbcType=BIGINT} and t_id = #{tId,jdbcType=BIGINT}
   </select>
@@ -58,19 +65,17 @@
     insert into technology_attr (id, t_id, category, 
       hs_in_num, hs_hs_num, hs_md_num, 
       hs_md_hs_num, is_edition, on_money, 
-      machining_nums, calculation_type, calculation_nums_money, 
-      calculation_mj_money, set_limit_type, limit_size_max_long, 
-      limit_size_max_wight, limit_size_min_long, limit_size_min_wight, 
-      limit_area_id, status, create_time, 
-      update_time, seller_id)
+      machining_nums,status, create_time,
+      update_time, seller_id,select_uit_type,robot_size_max_longs,
+    robot_size_max_width,robot_size_min_longs,robot_size_min_width,limit_type,limit_number)
     values (#{id,jdbcType=BIGINT}, #{tId,jdbcType=BIGINT}, #{category,jdbcType=VARCHAR}, 
       #{hsInNum,jdbcType=INTEGER}, #{hsHsNum,jdbcType=INTEGER}, #{hsMdNum,jdbcType=INTEGER}, 
       #{hsMdHsNum,jdbcType=INTEGER}, #{isEdition,jdbcType=TINYINT}, #{onMoney,jdbcType=DECIMAL}, 
-      #{machiningNums,jdbcType=INTEGER}, #{calculationType,jdbcType=TINYINT}, #{calculationNumsMoney,jdbcType=DECIMAL}, 
-      #{calculationMjMoney,jdbcType=DECIMAL}, #{setLimitType,jdbcType=TINYINT}, #{limitSizeMaxLong,jdbcType=DECIMAL}, 
-      #{limitSizeMaxWight,jdbcType=DECIMAL}, #{limitSizeMinLong,jdbcType=DECIMAL}, #{limitSizeMinWight,jdbcType=DECIMAL}, 
-      #{limitAreaId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, 
-      #{updateTime,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT})
+      #{machiningNums,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT},
+      #{updateTime,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT},#{selectUitType,jdbcType=TINYINT},
+    #{robotSizeMaxLongs,jdbcType=DECIMAL}, #{robotSizeMaxWidth,jdbcType=DECIMAL}, #{robotSizeMinLongs,jdbcType=DECIMAL},
+    #{robotSizeMinWidth,jdbcType=DECIMAL},#{limitType,jdbcType=TINYINT},#{limitNumber,jdbcType=DECIMAL})
+
   </insert>
   <insert id="insertSelective" keyProperty="id" useGeneratedKeys="true" parameterType="com.bzdepot.special.model.TechnologyAttr" >
     insert into technology_attr
@@ -105,33 +110,6 @@
       <if test="machiningNums != null" >
         machining_nums,
       </if>
-      <if test="calculationType != null" >
-        calculation_type,
-      </if>
-      <if test="calculationNumsMoney != null" >
-        calculation_nums_money,
-      </if>
-      <if test="calculationMjMoney != null" >
-        calculation_mj_money,
-      </if>
-      <if test="setLimitType != null" >
-        set_limit_type,
-      </if>
-      <if test="limitSizeMaxLong != null" >
-        limit_size_max_long,
-      </if>
-      <if test="limitSizeMaxWight != null" >
-        limit_size_max_wight,
-      </if>
-      <if test="limitSizeMinLong != null" >
-        limit_size_min_long,
-      </if>
-      <if test="limitSizeMinWight != null" >
-        limit_size_min_wight,
-      </if>
-      <if test="limitAreaId != null" >
-        limit_area_id,
-      </if>
       <if test="status != null" >
         status,
       </if>
@@ -144,7 +122,29 @@
       <if test="sellerId != null" >
         seller_id,
       </if>
+      <if test="selectUitType != null" >
+        select_uit_type,
+      </if>
+      <if test="robotSizeMaxLongs != null" >
+        robot_size_max_longs,
+      </if>
+      <if test="robotSizeMaxWidth != null" >
+        robot_size_max_width,
+      </if>
+      <if test="robotSizeMinLongs != null" >
+        robot_size_min_longs,
+      </if>
+      <if test="robotSizeMinWidth != null" >
+        robot_size_min_width,
+      </if>
+      <if test="limitType != null" >
+        limit_type,
+      </if>
+      <if test="limitNumber != null" >
+        limit_number,
+      </if>
     </trim>
+
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=BIGINT},
@@ -176,33 +176,6 @@
       <if test="machiningNums != null" >
         #{machiningNums,jdbcType=INTEGER},
       </if>
-      <if test="calculationType != null" >
-        #{calculationType,jdbcType=TINYINT},
-      </if>
-      <if test="calculationNumsMoney != null" >
-        #{calculationNumsMoney,jdbcType=DECIMAL},
-      </if>
-      <if test="calculationMjMoney != null" >
-        #{calculationMjMoney,jdbcType=DECIMAL},
-      </if>
-      <if test="setLimitType != null" >
-        #{setLimitType,jdbcType=TINYINT},
-      </if>
-      <if test="limitSizeMaxLong != null" >
-        #{limitSizeMaxLong,jdbcType=DECIMAL},
-      </if>
-      <if test="limitSizeMaxWight != null" >
-        #{limitSizeMaxWight,jdbcType=DECIMAL},
-      </if>
-      <if test="limitSizeMinLong != null" >
-        #{limitSizeMinLong,jdbcType=DECIMAL},
-      </if>
-      <if test="limitSizeMinWight != null" >
-        #{limitSizeMinWight,jdbcType=DECIMAL},
-      </if>
-      <if test="limitAreaId != null" >
-        #{limitAreaId,jdbcType=BIGINT},
-      </if>
       <if test="status != null" >
         #{status,jdbcType=TINYINT},
       </if>
@@ -215,6 +188,28 @@
       <if test="sellerId != null" >
         #{sellerId,jdbcType=BIGINT},
       </if>
+      <if test="selectUitType != null" >
+        #{selectUitType,jdbcType=TINYINT},
+      </if>
+      <if test="robotSizeMaxLongs != null" >
+        #{robotSizeMaxLongs,jdbcType=DECIMAL},
+      </if>
+      <if test="robotSizeMaxWidth != null" >
+        #{robotSizeMaxWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="robotSizeMinLongs != null" >
+        #{robotSizeMinLongs,jdbcType=DECIMAL},
+      </if>
+      <if test="robotSizeMinWidth != null" >
+        #{robotSizeMinWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="limitType != null" >
+        #{limitType,jdbcType=TINYINT},
+      </if>
+      <if test="limitNumber != null" >
+        #{limitNumber,jdbcType=DECIMAL},
+      </if>
+
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.TechnologyAttr" >
@@ -247,33 +242,6 @@
       <if test="machiningNums != null" >
         machining_nums = #{machiningNums,jdbcType=INTEGER},
       </if>
-      <if test="calculationType != null" >
-        calculation_type = #{calculationType,jdbcType=TINYINT},
-      </if>
-      <if test="calculationNumsMoney != null" >
-        calculation_nums_money = #{calculationNumsMoney,jdbcType=DECIMAL},
-      </if>
-      <if test="calculationMjMoney != null" >
-        calculation_mj_money = #{calculationMjMoney,jdbcType=DECIMAL},
-      </if>
-      <if test="setLimitType != null" >
-        set_limit_type = #{setLimitType,jdbcType=TINYINT},
-      </if>
-      <if test="limitSizeMaxLong != null" >
-        limit_size_max_long = #{limitSizeMaxLong,jdbcType=DECIMAL},
-      </if>
-      <if test="limitSizeMaxWight != null" >
-        limit_size_max_wight = #{limitSizeMaxWight,jdbcType=DECIMAL},
-      </if>
-      <if test="limitSizeMinLong != null" >
-        limit_size_min_long = #{limitSizeMinLong,jdbcType=DECIMAL},
-      </if>
-      <if test="limitSizeMinWight != null" >
-        limit_size_min_wight = #{limitSizeMinWight,jdbcType=DECIMAL},
-      </if>
-      <if test="limitAreaId != null" >
-        limit_area_id = #{limitAreaId,jdbcType=BIGINT},
-      </if>
       <if test="status != null" >
         status = #{status,jdbcType=TINYINT},
       </if>
@@ -286,6 +254,28 @@
       <if test="sellerId != null" >
         seller_id = #{sellerId,jdbcType=BIGINT},
       </if>
+      <if test="selectUitType != null" >
+        select_uit_type = #{selectUitType,jdbcType=TINYINT},
+      </if>
+      <if test="robotSizeMaxLongs != null" >
+        robot_size_max_longs = #{robotSizeMaxLongs,jdbcType=DECIMAL},
+      </if>
+      <if test="robotSizeMaxWidth != null" >
+        robot_size_max_width = #{robotSizeMaxWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="robotSizeMinLongs != null" >
+        robot_size_min_longs = #{robotSizeMinLongs,jdbcType=DECIMAL},
+      </if>
+      <if test="robotSizeMinWidth != null" >
+        robot_size_min_width = #{robotSizeMinWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="limitType != null" >
+        limit_type = #{limitType,jdbcType=TINYINT},
+      </if>
+      <if test="limitNumber != null" >
+        limit_number = #{limitNumber,jdbcType=DECIMAL},
+      </if>
+
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -300,19 +290,17 @@
       is_edition = #{isEdition,jdbcType=TINYINT},
       on_money = #{onMoney,jdbcType=DECIMAL},
       machining_nums = #{machiningNums,jdbcType=INTEGER},
-      calculation_type = #{calculationType,jdbcType=TINYINT},
-      calculation_nums_money = #{calculationNumsMoney,jdbcType=DECIMAL},
-      calculation_mj_money = #{calculationMjMoney,jdbcType=DECIMAL},
-      set_limit_type = #{setLimitType,jdbcType=TINYINT},
-      limit_size_max_long = #{limitSizeMaxLong,jdbcType=DECIMAL},
-      limit_size_max_wight = #{limitSizeMaxWight,jdbcType=DECIMAL},
-      limit_size_min_long = #{limitSizeMinLong,jdbcType=DECIMAL},
-      limit_size_min_wight = #{limitSizeMinWight,jdbcType=DECIMAL},
-      limit_area_id = #{limitAreaId,jdbcType=BIGINT},
       status = #{status,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT},
-      seller_id = #{sellerId,jdbcType=BIGINT}
+      seller_id = #{sellerId,jdbcType=BIGINT},
+      select_uit_type = #{selectUitType,jdbcType=TINYINT},
+      robot_size_max_longs = #{robotSizeMaxLongs,jdbcType=DECIMAL},
+      robot_size_max_width = #{robotSizeMaxWidth,jdbcType=DECIMAL},
+      robot_size_min_longs = #{robotSizeMinLongs,jdbcType=DECIMAL},
+      robot_size_min_width = #{robotSizeMinWidth,jdbcType=DECIMAL},
+      limit_type = #{limitType,jdbcType=TINYINT},
+      limit_number = #{limitNumber,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

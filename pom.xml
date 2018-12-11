@@ -32,6 +32,7 @@
         <module>profit</module>
         <module>special</module>
         <module>message</module>
+        <module>calculate</module>
     </modules>
 
     <dependencies>

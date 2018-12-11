@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -130,5 +131,37 @@ public class PaperCostService {
     @Cacheable()
     public List<ProductWantGramBo> findProductGramData(Long sellerId,Long paperTid){
         return paperCostMapper.findPaperGramNoRepeat(sellerId,paperTid);
+    }
+
+    /**
+     * 查询卷筒纸的是否存在
+     * @param drumId
+     * @return
+     */
+    public List<PaperCost> findInSetDrumIdsInPaperCost(Long drumId){
+        return paperCostMapper.findInSetDrumIdsData(drumId);
+    }
+
+    /**
+     * 查询其他尺寸是否存在
+     * @param otherId
+     * @return
+     */
+    public List<PaperCost> findInSetOtherSizeIdsInPaperCost(Long otherId){
+        return paperCostMapper.findInSetOtherSizeIdsData(otherId);
+    }
+
+    /**
+     * 查找纸张配置与对应的符合条件的印刷机
+     * @param sellerId
+     * @param textureId
+     * @param gramNums
+     * @param printingColorId
+     * @param Longs
+     * @param Width
+     * @return
+     */
+    public List<PaperCostWithBLOBs> findPaperAndPrintingJoinData(Long sellerId, Long textureId, BigDecimal gramNums,Long printingColorId,BigDecimal Longs,BigDecimal Width){
+        return paperCostMapper.joinFindPaperAndPrintingData(sellerId,textureId,gramNums,printingColorId,Longs,Width);
     }
 }

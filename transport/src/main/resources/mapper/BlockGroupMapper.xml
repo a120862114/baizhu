@@ -43,6 +43,14 @@
   <sql id="Blob_Column_List" >
     cityids, cityname, pid
   </sql>
+  <select id="selectBySellerIdAndCompanyId" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from block_group
+    where seller_id = #{sellerId,jdbcType=BIGINT} and company_id = #{companyId,jdbcType=BIGINT}
+  </select>
   <select id="findGroupAndPrice" resultMap="ResultMapAll" parameterType="com.bzdepot.transport.model.BlockGroupData">
     SELECT
     g.id,g.seller_id,g.company_id,g.region_id,g.block_id,g.cityids,g.cityname,pid,p.seller_id as p_seller_id,p.company_id as p_company_id,p.region_id as p_region_id,p.block_id as  p_block_id,p.weight_start,p.weight_end,p.start_price,p.end_price,p.count_type,p.id as p_id

@@ -46,6 +46,16 @@ public class SelectOfferMoneyVo {
 
     private Long levelId; //用户等级
 
+    private Byte postType = new Byte("0"); // 0 常规 1固定 2代表所有类型
+
+    private Byte isSumer = new Byte("0"); //是否需要算法的成本价 0 不需要 1需要
+
+    private BigDecimal xmoney; //计算出的成本价
+
+    private BigDecimal cxmoney; //常规成本价
+
+    private BigDecimal gxmoney; //固定成本价
+
     public Long getSellerId() {
         return sellerId;
     }
@@ -174,6 +184,46 @@ public class SelectOfferMoneyVo {
         this.levelId = levelId;
     }
 
+    public Byte getPostType() {
+        return postType;
+    }
+
+    public void setPostType(Byte postType) {
+        this.postType = postType;
+    }
+
+    public BigDecimal getXmoney() {
+        return xmoney;
+    }
+
+    public void setXmoney(BigDecimal xmoney) {
+        this.xmoney = xmoney;
+    }
+
+    public Byte getIsSumer() {
+        return isSumer;
+    }
+
+    public void setIsSumer(Byte isSumer) {
+        this.isSumer = isSumer;
+    }
+
+    public BigDecimal getCxmoney() {
+        return cxmoney;
+    }
+
+    public void setCxmoney(BigDecimal cxmoney) {
+        this.cxmoney = cxmoney;
+    }
+
+    public BigDecimal getGxmoney() {
+        return gxmoney;
+    }
+
+    public void setGxmoney(BigDecimal gxmoney) {
+        this.gxmoney = gxmoney;
+    }
+
     @Override
     public String toString() {
         return "SelectOfferMoneyVo{" +
@@ -193,6 +243,11 @@ public class SelectOfferMoneyVo {
                 ", widthData=" + widthData +
                 ", heightData=" + heightData +
                 ", levelId=" + levelId +
+                ", postType=" + postType +
+                ", isSumer=" + isSumer +
+                ", xmoney=" + xmoney +
+                ", cxmoney=" + cxmoney +
+                ", gxmoney=" + gxmoney +
                 '}';
     }
 }

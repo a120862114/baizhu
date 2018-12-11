@@ -6,10 +6,25 @@
     <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
     <result column="nums" property="nums" jdbcType="INTEGER" />
     <result column="pconfig_id" property="pconfigId" jdbcType="BIGINT" />
+    <result column="is_default" property="isDefault" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, seller_id, nums, pconfig_id
+    id, seller_id, nums, pconfig_id,is_default
   </sql>
+  <select id="findByMoreCondition" resultMap="BaseResultMap" parameterType="com.bzdepot.special.model.ProductNumber">
+      select
+      <include refid="Base_Column_List" />
+      from product_number
+      where seller_id = #{sellerId,jdbcType=BIGINT}
+            and pconfig_id = #{pconfigId,jdbcType=BIGINT}
+            and nums = #{nums,jdbcType=INTEGER}
+  </select>
+  <select id="selectBySellerId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_number
+    where seller_id = #{sellerId} and pconfig_id = #{pconfigId}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -22,9 +37,9 @@
   </delete>
   <insert id="insert" parameterType="com.bzdepot.special.model.ProductNumber" >
     insert into product_number (id, seller_id, nums, 
-      pconfig_id)
+      pconfig_id,is_default)
     values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{nums,jdbcType=INTEGER}, 
-      #{pconfigId,jdbcType=BIGINT})
+      #{pconfigId,jdbcType=BIGINT},#{isDefault,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.bzdepot.special.model.ProductNumber" >
     insert into product_number
@@ -41,6 +56,9 @@
       <if test="pconfigId != null" >
         pconfig_id,
       </if>
+      <if test="isDefault != null" >
+        is_default,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -54,6 +72,9 @@
       </if>
       <if test="pconfigId != null" >
         #{pconfigId,jdbcType=BIGINT},
+      </if>
+      <if test="isDefault != null" >
+        #{isDefault,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -69,6 +90,9 @@
       <if test="pconfigId != null" >
         pconfig_id = #{pconfigId,jdbcType=BIGINT},
       </if>
+      <if test="isDefault != null" >
+        is_default = #{isDefault,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -76,7 +100,12 @@
     update product_number
     set seller_id = #{sellerId,jdbcType=BIGINT},
       nums = #{nums,jdbcType=INTEGER},
-      pconfig_id = #{pconfigId,jdbcType=BIGINT}
+      pconfig_id = #{pconfigId,jdbcType=BIGINT},
+    is_default = #{isDefault,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="setIsDefault" parameterType="com.bzdepot.special.model.ProductNumber" >
+    update product_number set is_default = 0 where seller_id = #{sellerId,jdbcType=BIGINT} and pconfig_id = #{pconfigId,jdbcType=BIGINT};
+    update product_number set is_default = 1 where seller_id = #{sellerId,jdbcType=BIGINT} and pconfig_id = #{pconfigId,jdbcType=BIGINT} and nums = #{nums,jdbcType=INTEGER};
   </update>
 </mapper>

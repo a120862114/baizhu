@@ -369,6 +369,15 @@ public class ConfigController {
         ProductImg productImg = new ProductImg();
         productImg.setId(ImgId);
         productImg.setImgIds(request.getParameter("imgdata"));
+        System.out.println("接收的 BEEN ================================== 开始");
+        System.out.println(offer.toString());
+        System.out.println(productImg.toString());
+        System.out.println(offerGroup.toString());
+        System.out.println(offerSon.toString());
+        if(offerSonExpresses != null){
+            System.out.println(offerSonExpresses.toString());
+        }
+        System.out.println("接收的 BEEN ================================== 结束");
        int Ok = offerService.editOfferAndImg(offer,productImg,offerGroup,offerSon,offerSonExpresses);
         if(Ok > 0){
             return JsonReturn.SetMsg(0,"更新主配置与图片数据成功!","");

@@ -49,7 +49,10 @@ public class UserLevelController {
             }
             return JsonReturn.SetMsg(10010,ErrorMsg,"");
         }
-
+        UserLevel userData = userLevelService.findUserLevelBySellerIdAndLevelName(userLevel.getSellerId(),userLevel.getLevelName());
+        if(userData != null){
+            return JsonReturn.SetMsg(10010,"会员等级名称已存在!","");
+        }
         Long LevelId = userLevelService.addUserLevel(userLevel);
         if(LevelId != null){
             return JsonReturn.SetMsg(0,"创建用户等级数据成功!",LevelId);
@@ -70,6 +73,10 @@ public class UserLevelController {
         }
         if(userLevel.getId() == null){
             return JsonReturn.SetMsg(10010,"等级编号不能为空!","");
+        }
+        UserLevel userData = userLevelService.findUserLevelBySellerIdAndLevelName(userLevel.getSellerId(),userLevel.getLevelName());
+        if(userData != null && userData.getId() != userLevel.getId()){
+            return JsonReturn.SetMsg(10010,"会员等级名称已存在!","");
         }
         int Status = userLevelService.editUserLevel(userLevel);
         if(Status > 0){

@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -25,7 +26,7 @@ public class PaperGramService {
      */
     @CacheEvict(allEntries = true)
     public int updatePaperGram(PaperGram paperGram){
-        paperGram.setSellerId(UserUtil.getId());
+
         if(paperGram.getId() == null){
             return paperGramMapper.insertSelective(paperGram);
         }else{
@@ -43,6 +44,15 @@ public class PaperGramService {
         return paperGramMapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 根据克重查找当前商家的数据
+     * @param sellerId
+     * @param gramNums
+     * @return
+     */
+    public PaperGram findPaperGramByGramNums(Long sellerId, BigDecimal gramNums){
+        return paperGramMapper.selectBySellerIdAndGramNums(sellerId,gramNums);
+    }
     /**
      * 删除单条纸张克重
      * @param id

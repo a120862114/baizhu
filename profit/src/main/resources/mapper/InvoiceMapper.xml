@@ -14,6 +14,12 @@
   <sql id="Base_Column_List" >
     id, seller_id, level_id, comany_id, tax_rate, create_time, update_time, types
   </sql>
+  <select id="selectBySellerIdAndComanyId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from invoice
+    where seller_id = #{sellerId} and comany_id = #{comanyId}
+  </select>
   <select id="findInvoiceByLevelIdFuncm" resultType="com.bzdepot.profit.model.Invoice" statementType="CALLABLE">
     call findInvoiceByLevelIdFunc(#{sellerId},#{comanyId},#{types},#{levelId})
   </select>

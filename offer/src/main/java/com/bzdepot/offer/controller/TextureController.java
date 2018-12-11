@@ -6,12 +6,10 @@ import com.bzdepot.offer.service.TextureService;
 import com.bzdepot.offer.vo.SidCidTidBo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/texture/list")
@@ -89,6 +87,23 @@ public class TextureController {
             return JsonReturn.SetMsg(0,"删除材质分类数据成功!","");
         }
         return JsonReturn.SetMsg(10011,"删除材质分类失败!","");
+    }
+
+    /**
+     * 获取材质的列表API接口
+     * @param sellerId
+     * @return
+     */
+    @GetMapping(value = "/list/{sellerId}")
+    public Object listTextureApi(@PathVariable("sellerId") Long sellerId){
+        if(sellerId == null){
+            return JsonReturn.SetMsg(10010,"商家编号不能为空!","");
+        }
+        List<Texture> textures = textureService.findTextureList(sellerId);
+        if(textures != null && textures.size() > 0){
+            return JsonReturn.SetMsg(0,"获取材质列表成功!",textures);
+        }
+        return JsonReturn.SetMsg(10011,"此商家暂无材质数据信息!","");
     }
 
 }

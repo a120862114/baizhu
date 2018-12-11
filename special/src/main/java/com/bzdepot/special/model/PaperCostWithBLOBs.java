@@ -1,5 +1,7 @@
 package com.bzdepot.special.model;
 
+import java.util.List;
+
 public class PaperCostWithBLOBs extends PaperCost {
     private String drumIds;
 
@@ -8,6 +10,10 @@ public class PaperCostWithBLOBs extends PaperCost {
     private String otherSizeIds;
 
     private String otherSizeValues;
+
+    private List<PaperDrum> drumList;
+
+    private List<PaperOtherSize> otherSizeList;
 
     public String getDrumIds() {
         return drumIds;
@@ -41,6 +47,22 @@ public class PaperCostWithBLOBs extends PaperCost {
         this.otherSizeValues = otherSizeValues == null ? null : otherSizeValues.trim();
     }
 
+    public List<PaperDrum> getDrumList() {
+        return drumList;
+    }
+
+    public void setDrumList(List<PaperDrum> drumList) {
+        this.drumList = drumList;
+    }
+
+    public List<PaperOtherSize> getOtherSizeList() {
+        return otherSizeList;
+    }
+
+    public void setOtherSizeList(List<PaperOtherSize> otherSizeList) {
+        this.otherSizeList = otherSizeList;
+    }
+
     @Override
     public String toString() {
         return "PaperCostWithBLOBs{" +
@@ -48,6 +70,8 @@ public class PaperCostWithBLOBs extends PaperCost {
                 ", drumValues='" + drumValues + '\'' +
                 ", otherSizeIds='" + otherSizeIds + '\'' +
                 ", otherSizeValues='" + otherSizeValues + '\'' +
+                ", drumList=" + drumList +
+                ", otherSizeList=" + otherSizeList +
                 '}';
     }
 }

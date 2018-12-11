@@ -1,6 +1,7 @@
 package com.bzdepot.special.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class PrintingCost {
     private Long id;
@@ -51,21 +52,13 @@ public class PrintingCost {
 
     private Byte specialColorType;
 
-    private BigDecimal specialColorStartMoney;
+    private BigDecimal specialColorOneRate;
 
-    private Integer specialColorStartNums;
+    private Byte isAnColorStatus;
 
-    private Integer specialColorTwoNums;
+    private Byte isBigSize;
 
-    private BigDecimal specialColorTwoOneMoney;
-
-    private BigDecimal specialColorTwoTwoMoney;
-
-    private Integer specialColorThreeNums;
-
-    private BigDecimal specialColorThreeOneMoney;
-
-    private BigDecimal specialColorThreeTwoMoney;
+    private Byte isBigColor;
 
     private Byte status;
 
@@ -80,6 +73,28 @@ public class PrintingCost {
     private String robotColorTitle;
 
     private String manufactorTitle;
+
+    private BigDecimal bigSizeOne;
+
+    private BigDecimal bigSizeTwo;
+
+    private BigDecimal bigSizeThree;
+
+    private BigDecimal bigSizeFour;
+
+    private BigDecimal bigSizeFive;
+
+    private BigDecimal bigColorOne;
+
+    private BigDecimal bigColorTwo;
+
+    private BigDecimal bigColorThree;
+
+    private BigDecimal bigColorFour;
+
+    private BigDecimal bigColorFive;
+
+    private List<PrintingSpotConfig> colorConfigs;
 
     public Long getId() {
         return id;
@@ -273,70 +288,6 @@ public class PrintingCost {
         this.specialColorType = specialColorType;
     }
 
-    public BigDecimal getSpecialColorStartMoney() {
-        return specialColorStartMoney;
-    }
-
-    public void setSpecialColorStartMoney(BigDecimal specialColorStartMoney) {
-        this.specialColorStartMoney = specialColorStartMoney;
-    }
-
-    public Integer getSpecialColorStartNums() {
-        return specialColorStartNums;
-    }
-
-    public void setSpecialColorStartNums(Integer specialColorStartNums) {
-        this.specialColorStartNums = specialColorStartNums;
-    }
-
-    public Integer getSpecialColorTwoNums() {
-        return specialColorTwoNums;
-    }
-
-    public void setSpecialColorTwoNums(Integer specialColorTwoNums) {
-        this.specialColorTwoNums = specialColorTwoNums;
-    }
-
-    public BigDecimal getSpecialColorTwoOneMoney() {
-        return specialColorTwoOneMoney;
-    }
-
-    public void setSpecialColorTwoOneMoney(BigDecimal specialColorTwoOneMoney) {
-        this.specialColorTwoOneMoney = specialColorTwoOneMoney;
-    }
-
-    public BigDecimal getSpecialColorTwoTwoMoney() {
-        return specialColorTwoTwoMoney;
-    }
-
-    public void setSpecialColorTwoTwoMoney(BigDecimal specialColorTwoTwoMoney) {
-        this.specialColorTwoTwoMoney = specialColorTwoTwoMoney;
-    }
-
-    public Integer getSpecialColorThreeNums() {
-        return specialColorThreeNums;
-    }
-
-    public void setSpecialColorThreeNums(Integer specialColorThreeNums) {
-        this.specialColorThreeNums = specialColorThreeNums;
-    }
-
-    public BigDecimal getSpecialColorThreeOneMoney() {
-        return specialColorThreeOneMoney;
-    }
-
-    public void setSpecialColorThreeOneMoney(BigDecimal specialColorThreeOneMoney) {
-        this.specialColorThreeOneMoney = specialColorThreeOneMoney;
-    }
-
-    public BigDecimal getSpecialColorThreeTwoMoney() {
-        return specialColorThreeTwoMoney;
-    }
-
-    public void setSpecialColorThreeTwoMoney(BigDecimal specialColorThreeTwoMoney) {
-        this.specialColorThreeTwoMoney = specialColorThreeTwoMoney;
-    }
-
     public Byte getStatus() {
         return status;
     }
@@ -391,5 +342,177 @@ public class PrintingCost {
 
     public void setManufactorTitle(String manufactorTitle) {
         this.manufactorTitle = manufactorTitle == null ? null : manufactorTitle.trim();
+    }
+
+    public BigDecimal getSpecialColorOneRate() {
+        return specialColorOneRate;
+    }
+
+    public void setSpecialColorOneRate(BigDecimal specialColorOneRate) {
+        this.specialColorOneRate = specialColorOneRate;
+    }
+
+    public Byte getIsAnColorStatus() {
+        return isAnColorStatus;
+    }
+
+    public void setIsAnColorStatus(Byte isAnColorStatus) {
+        this.isAnColorStatus = isAnColorStatus;
+    }
+
+    public Byte getIsBigSize() {
+        return isBigSize;
+    }
+
+    public void setIsBigSize(Byte isBigSize) {
+        this.isBigSize = isBigSize;
+    }
+
+    public Byte getIsBigColor() {
+        return isBigColor;
+    }
+
+    public void setIsBigColor(Byte isBigColor) {
+        this.isBigColor = isBigColor;
+    }
+
+    public BigDecimal getBigSizeOne() {
+        return bigSizeOne;
+    }
+
+    public void setBigSizeOne(BigDecimal bigSizeOne) {
+        this.bigSizeOne = bigSizeOne;
+    }
+
+    public BigDecimal getBigSizeTwo() {
+        return bigSizeTwo;
+    }
+
+    public void setBigSizeTwo(BigDecimal bigSizeTwo) {
+        this.bigSizeTwo = bigSizeTwo;
+    }
+
+    public BigDecimal getBigSizeThree() {
+        return bigSizeThree;
+    }
+
+    public void setBigSizeThree(BigDecimal bigSizeThree) {
+        this.bigSizeThree = bigSizeThree;
+    }
+
+    public BigDecimal getBigSizeFour() {
+        return bigSizeFour;
+    }
+
+    public void setBigSizeFour(BigDecimal bigSizeFour) {
+        this.bigSizeFour = bigSizeFour;
+    }
+
+    public BigDecimal getBigSizeFive() {
+        return bigSizeFive;
+    }
+
+    public void setBigSizeFive(BigDecimal bigSizeFive) {
+        this.bigSizeFive = bigSizeFive;
+    }
+
+    public BigDecimal getBigColorOne() {
+        return bigColorOne;
+    }
+
+    public void setBigColorOne(BigDecimal bigColorOne) {
+        this.bigColorOne = bigColorOne;
+    }
+
+    public BigDecimal getBigColorTwo() {
+        return bigColorTwo;
+    }
+
+    public void setBigColorTwo(BigDecimal bigColorTwo) {
+        this.bigColorTwo = bigColorTwo;
+    }
+
+    public BigDecimal getBigColorThree() {
+        return bigColorThree;
+    }
+
+    public void setBigColorThree(BigDecimal bigColorThree) {
+        this.bigColorThree = bigColorThree;
+    }
+
+    public BigDecimal getBigColorFour() {
+        return bigColorFour;
+    }
+
+    public void setBigColorFour(BigDecimal bigColorFour) {
+        this.bigColorFour = bigColorFour;
+    }
+
+    public BigDecimal getBigColorFive() {
+        return bigColorFive;
+    }
+
+    public void setBigColorFive(BigDecimal bigColorFive) {
+        this.bigColorFive = bigColorFive;
+    }
+
+    public List<PrintingSpotConfig> getColorConfigs() {
+        return colorConfigs;
+    }
+
+    public void setColorConfigs(List<PrintingSpotConfig> colorConfigs) {
+        this.colorConfigs = colorConfigs;
+    }
+
+    @Override
+    public String toString() {
+        return "PrintingCost{" +
+                "id=" + id +
+                ", robotIdentifier='" + robotIdentifier + '\'' +
+                ", sellerId=" + sellerId +
+                ", robotSizeId=" + robotSizeId +
+                ", robotBrandId=" + robotBrandId +
+                ", robotColorId=" + robotColorId +
+                ", isUv=" + isUv +
+                ", robotManufactorId=" + robotManufactorId +
+                ", bootStrapMoney=" + bootStrapMoney +
+                ", printNums=" + printNums +
+                ", exceedMoney=" + exceedMoney +
+                ", exceedNums=" + exceedNums +
+                ", thicknessRangeStart=" + thicknessRangeStart +
+                ", thicknessRangeEnd=" + thicknessRangeEnd +
+                ", minBite=" + minBite +
+                ", paperFeedingMaxOne=" + paperFeedingMaxOne +
+                ", paperFeedingMaxTwo=" + paperFeedingMaxTwo +
+                ", paperFeedingMinOne=" + paperFeedingMinOne +
+                ", paperFeedingMinTwo=" + paperFeedingMinTwo +
+                ", dischargeNumberIn=" + dischargeNumberIn +
+                ", dischargeNumberInNums=" + dischargeNumberInNums +
+                ", dischargeNumberMax=" + dischargeNumberMax +
+                ", dischargeNumberMaxNums=" + dischargeNumberMaxNums +
+                ", specialColorType=" + specialColorType +
+                ", specialColorOneRate=" + specialColorOneRate +
+                ", isAnColorStatus=" + isAnColorStatus +
+                ", isBigSize=" + isBigSize +
+                ", isBigColor=" + isBigColor +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", robotSizeTitle='" + robotSizeTitle + '\'' +
+                ", robotBrandTitle='" + robotBrandTitle + '\'' +
+                ", robotColorTitle='" + robotColorTitle + '\'' +
+                ", manufactorTitle='" + manufactorTitle + '\'' +
+                ", bigSizeOne=" + bigSizeOne +
+                ", bigSizeTwo=" + bigSizeTwo +
+                ", bigSizeThree=" + bigSizeThree +
+                ", bigSizeFour=" + bigSizeFour +
+                ", bigSizeFive=" + bigSizeFive +
+                ", bigColorOne=" + bigColorOne +
+                ", bigColorTwo=" + bigColorTwo +
+                ", bigColorThree=" + bigColorThree +
+                ", bigColorFour=" + bigColorFour +
+                ", bigColorFive=" + bigColorFive +
+                ", colorConfigs=" + colorConfigs +
+                '}';
     }
 }

@@ -102,4 +102,25 @@ public class InvoiceController {
         }
         return JsonReturn.SetMsg(10011,"获取商家发票设置信息失败!","");
     }
+
+    /**
+     * 根据商家编号与快递编号获取发票配置信息列表的API接口
+     * @param sellerId
+     * @param companyId
+     * @return
+     */
+    @GetMapping(value = "/find/check/{sellerId}/{companyId}")
+    public Object findCheckInvoiceDataApi(@PathVariable("sellerId") Long sellerId,@PathVariable("companyId") Long companyId){
+        if(sellerId == null){
+            return JsonReturn.SetMsg(10010,"商家编号不能为空!","");
+        }
+        if(companyId == null){
+            return JsonReturn.SetMsg(10010,"快递编号不能为空!","");
+        }
+        List<Invoice> invoices = invoiceService.findInvoiceBySellerIdAndCompanyId(sellerId,companyId);
+        if (invoices != null && invoices.size() > 0){
+            return JsonReturn.SetMsg(0,"获取商家快递为准的发票配置信息成功!",invoices);
+        }
+        return JsonReturn.SetMsg(10011,"获取商家快递为准的发票配置信息失败!","");
+    }
 }

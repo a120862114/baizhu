@@ -28,6 +28,7 @@
       <id column="cid" property="id" jdbcType="BIGINT" />
       <result column="title" property="title" jdbcType="VARCHAR" />
       <result column="group_id" property="groupId" jdbcType="BIGINT" />
+      <result column="status" property="status" jdbcType="TINYINT" />
     </collection>
   </resultMap>
   <sql id="Base_Column_List" >
@@ -41,13 +42,18 @@
   <select id="countTextureGroup" resultType="int">
     select count(id) from texture_group where seller_id=#{sellerid} and class_id=#{classid}
   </select>
+  <select id="countTextureGroupByMore" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from texture_group where seller_id=#{sellerid} and class_id=#{classid} and group_name = #{groupName}
+  </select>
   <select id="findJionGroupData" resultMap="JoinMap">
     SELECT
-    id,group_name,seller_id,group_id,title,cid
+    id,group_name,seller_id,group_id,title,cid,status
     FROM
-    (SELECT g.id,g.group_name,g.seller_id,c.group_id,c.title,c.id as cid  FROM texture_group g join texture c on  g.id = c.group_id where (g.seller_id=#{sellerid} or g.seller_id=0) and g.class_id=#{classid}
+    (SELECT g.id,g.group_name,g.seller_id,c.group_id,c.title,c.id as cid, c.status  FROM texture_group g join texture c on  g.id = c.group_id where (g.seller_id=#{sellerid} or g.seller_id=0) and g.class_id=#{classid}
     UNION ALL
-    SELECT g.id,g.group_name,g.seller_id,NULL as group_id,NULL as title,NULL as cid  FROM texture_group g where (SELECT count(id) from texture where group_id=g.id)=0 and g.class_id=#{classid} and (g.seller_id=#{sellerid} or g.seller_id=0)) a
+    SELECT g.id,g.group_name,g.seller_id,NULL as group_id,NULL as title,NULL as cid,NULL as status  FROM texture_group g where (SELECT count(id) from texture where group_id=g.id)=0 and g.class_id=#{classid} and (g.seller_id=#{sellerid} or g.seller_id=0)) a
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 

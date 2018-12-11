@@ -336,4 +336,14 @@ public class BlockService {
         regionBlock.setIsSuspend(isSuspend);
         return regionBlockMapper.updateByPrimaryKeySelective(regionBlock);
     }
+
+    /**
+     * 查询当前商家的快递是否配置了城市数据列表
+     * @param sellerId
+     * @param companyId
+     * @return
+     */
+    public List<BlockGroup> findComanyForCitysData(Long sellerId,Long companyId){
+        return blockGroupMapper.selectBySellerIdAndCompanyId(sellerId,companyId);
+    }
 }

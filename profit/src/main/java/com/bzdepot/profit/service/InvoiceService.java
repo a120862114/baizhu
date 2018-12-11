@@ -91,4 +91,14 @@ public class InvoiceService {
         System.out.println(levelId);
        return invoiceMapper.findInvoiceByLevelIdFuncm(sellerId,comanyId,types,levelId);
     }
+
+    /**
+     * 查询当前商家和快递编号是否有发票配置数据列表
+     * @param sellerId
+     * @param companyId
+     * @return
+     */
+    public List<Invoice> findInvoiceBySellerIdAndCompanyId(Long sellerId,Long companyId){
+        return invoiceMapper.selectBySellerIdAndComanyId(sellerId,companyId);
+    }
 }

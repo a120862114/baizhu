@@ -14,6 +14,12 @@
   <sql id="Base_Column_List" >
     id, level_name, seller_id, describes, create_time, update_time, is_default,nums
   </sql>
+  <select id="selectBySellerIdAndLevelName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from level
+    where seller_id = #{sellerId} and level_name = #{levelName}
+  </select>
   <select id="findDefault" resultMap="BaseResultMap" parameterType="com.bzdepot.client.model.UserLevel" >
     select
     <include refid="Base_Column_List" />

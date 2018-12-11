@@ -20,6 +20,7 @@ public class ProductSizeService {
      */
     public int updateroductSize(ProductSize productSize){
         int Code = 0;
+
         if(productSize.getId() == null){
             Code = productSizeMapper.insertSelective(productSize);
         }else{
@@ -28,6 +29,14 @@ public class ProductSizeService {
         return Code;
     }
 
+    /**
+     * 通过多个条件查询尺寸数据
+     * @param productSize
+     * @return
+     */
+    public ProductSize moreConditionFindSize(ProductSize productSize){
+        return productSizeMapper.findSizeByOutId(productSize);
+    }
     /**
      * 查找单条尺寸数据
      * @param id
@@ -46,5 +55,21 @@ public class ProductSizeService {
         return productSizeMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 查询产品配置的尺寸列表
+     * @param sellerId
+     * @return
+     */
+    public List<ProductSize> findProductSizeList(Long sellerId,Long pconfigId){
+       return productSizeMapper.selectBySellerId(sellerId,pconfigId);
+    }
 
+    /**
+     * 设置尺寸默认
+     * @param productSize
+     * @return
+     */
+    public int setDefaultSize(ProductSize productSize){
+        return productSizeMapper.setIsDefault(productSize);
+    }
 }

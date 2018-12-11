@@ -156,5 +156,13 @@ public class UserLevelService {
         return pageInfo;
     }
 
-
+    /**
+     * 根据等级名称查找当前商家下的会员等级数据
+     * @param sellerId
+     * @param levelName
+     * @return
+     */
+    public UserLevel findUserLevelBySellerIdAndLevelName(Long sellerId,String levelName){
+        return userLeveMapper.selectBySellerIdAndLevelName(sellerId,levelName);
+    }
 }

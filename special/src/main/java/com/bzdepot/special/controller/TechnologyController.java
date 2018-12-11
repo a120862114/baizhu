@@ -2,6 +2,7 @@ package com.bzdepot.special.controller;
 
 import com.bzdepot.common.message.JsonReturn;
 import com.bzdepot.special.bo.TechnologyPost;
+import com.bzdepot.special.model.TechnologyClass;
 import com.bzdepot.special.service.TechnologyService;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/technology")
@@ -77,7 +79,7 @@ public class TechnologyController {
         if(pageNum == 0){
             pageNum = 1;
         }
-        PageInfo technologyClasses = technologyService.pageListData(pageNum,pageSize);
+        PageInfo<List<TechnologyClass>> technologyClasses = technologyService.pageListData(pageNum,pageSize);
         if(technologyClasses != null && technologyClasses.getTotal() > 0L){
             return JsonReturn.SetMsg(0,"获取材质数据列表成功!",technologyClasses);
         }

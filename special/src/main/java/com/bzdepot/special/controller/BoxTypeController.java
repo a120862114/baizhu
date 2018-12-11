@@ -88,4 +88,7 @@ public class BoxTypeController {
         }
         return JsonReturn.SetMsg(10011,"获取盒型数据失败!","");
     }
+
+
+
 }

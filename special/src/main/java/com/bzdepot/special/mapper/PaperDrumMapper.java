@@ -18,4 +18,6 @@ public interface PaperDrumMapper {
     int updateByPrimaryKey(PaperDrum record);
 
     List<PaperDrum> selectBySellerId(Long sellerId);
+
+    List<PaperDrum> selectByInIds(String Ids);
 }

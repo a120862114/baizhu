@@ -6,10 +6,24 @@
     <result column="pt_id" property="ptId" jdbcType="BIGINT" />
     <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
     <result column="gram_id" property="gramId" jdbcType="BIGINT" />
+    <result column="is_default" property="isDefault" jdbcType="TINYINT" />
+    <collection property="gramData" ofType="com.bzdepot.special.model.PaperGram" select="com.bzdepot.special.mapper.PaperGramMapper.selectByPrimaryKey" column="gram_id"  />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, pt_id, seller_id, gram_id
+    id, pt_id, seller_id, gram_id,is_default
   </sql>
+  <select id="selectForList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_gram
+    where seller_id = #{sellerId} and pt_id = #{textureId}
+  </select>
+  <select id="selectByMore" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_gram
+    where seller_id = #{sellerId} and pt_id = #{textureId} and gram_id = #{gramId}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -20,11 +34,15 @@
     delete from product_gram
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteByMore" parameterType="java.lang.Long" >
+    delete from product_gram
+    where seller_id = #{sellerId} and pt_id = #{textureId} and gram_id = #{gramId}
+  </delete>
   <insert id="insert" parameterType="com.bzdepot.special.model.ProductGram" >
     insert into product_gram (id, pt_id, seller_id, 
-      gram_id)
+      gram_id,is_default)
     values (#{id,jdbcType=BIGINT}, #{ptId,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, 
-      #{gramId,jdbcType=BIGINT})
+      #{gramId,jdbcType=BIGINT}, #{isDefault,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.bzdepot.special.model.ProductGram" >
     insert into product_gram
@@ -41,6 +59,9 @@
       <if test="gramId != null" >
         gram_id,
       </if>
+      <if test="isDefault != null" >
+        is_default,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -54,6 +75,9 @@
       </if>
       <if test="gramId != null" >
         #{gramId,jdbcType=BIGINT},
+      </if>
+      <if test="isDefault != null" >
+        #{isDefault,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -69,6 +93,9 @@
       <if test="gramId != null" >
         gram_id = #{gramId,jdbcType=BIGINT},
       </if>
+      <if test="isDefault != null" >
+        is_default = #{isDefault,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -76,7 +103,12 @@
     update product_gram
     set pt_id = #{ptId,jdbcType=BIGINT},
       seller_id = #{sellerId,jdbcType=BIGINT},
-      gram_id = #{gramId,jdbcType=BIGINT}
+      gram_id = #{gramId,jdbcType=BIGINT},
+    is_default = #{isDefault,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="setIsDefault">
+    update product_gram set is_default = 0 where seller_id = #{sellerId} and pt_id = #{textureId};
+    update product_gram set is_default = 1 where seller_id = #{sellerId} and pt_id = #{textureId} and gram_id = #{gramId};
   </update>
 </mapper>

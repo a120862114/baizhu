@@ -39,6 +39,13 @@ public class PaperTextureController {
             }
             return JsonReturn.SetMsg(10010,ErrorMsg,"");
         }
+        if(paperTexture.getSellerId() == null){
+            paperTexture.setSellerId(UserUtil.getId());
+        }
+        PaperTexture resultData = paperTextureService.findPaperTextureByNames(paperTexture.getSellerId(),paperTexture.getNames());
+        if(resultData != null){
+            return JsonReturn.SetMsg(10010,"材质名称已经存在，请勿重复添加!","");
+        }
         if(paperTextureService.updatePaperTexture(paperTexture) > 0){
             return JsonReturn.SetMsg(0,"更新纸张材质成功!","");
         }

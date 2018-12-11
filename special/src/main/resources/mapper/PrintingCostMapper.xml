@@ -26,14 +26,10 @@
     <result column="discharge_number_max" property="dischargeNumberMax" jdbcType="INTEGER" />
     <result column="discharge_number_max_nums" property="dischargeNumberMaxNums" jdbcType="INTEGER" />
     <result column="special_color_type" property="specialColorType" jdbcType="TINYINT" />
-    <result column="special_color_start_money" property="specialColorStartMoney" jdbcType="DECIMAL" />
-    <result column="special_color_start_nums" property="specialColorStartNums" jdbcType="INTEGER" />
-    <result column="special_color_two_nums" property="specialColorTwoNums" jdbcType="INTEGER" />
-    <result column="special_color_two_one_money" property="specialColorTwoOneMoney" jdbcType="DECIMAL" />
-    <result column="special_color_two_two_money" property="specialColorTwoTwoMoney" jdbcType="DECIMAL" />
-    <result column="special_color_three_nums" property="specialColorThreeNums" jdbcType="INTEGER" />
-    <result column="special_color_three_one_money" property="specialColorThreeOneMoney" jdbcType="DECIMAL" />
-    <result column="special_color_three_two_money" property="specialColorThreeTwoMoney" jdbcType="DECIMAL" />
+    <result column="special_color_one_rate" property="specialColorOneRate" jdbcType="DECIMAL" />
+    <result column="is_an_color_status" property="isAnColorStatus" jdbcType="TINYINT" />
+    <result column="is_big_size" property="isBigSize" jdbcType="TINYINT" />
+    <result column="is_big_color" property="isBigColor" jdbcType="TINYINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="create_time" property="createTime" jdbcType="BIGINT" />
     <result column="update_time" property="updateTime" jdbcType="BIGINT" />
@@ -41,17 +37,27 @@
     <result column="robot_brand_title" property="robotBrandTitle" jdbcType="VARCHAR" />
     <result column="robot_color_title" property="robotColorTitle" jdbcType="VARCHAR" />
     <result column="manufactor_title" property="manufactorTitle" jdbcType="VARCHAR" />
+    <result column="big_size_one" property="bigSizeOne" jdbcType="DECIMAL" />
+    <result column="big_size_two" property="bigSizeTwo" jdbcType="DECIMAL" />
+    <result column="big_size_three" property="bigSizeThree" jdbcType="DECIMAL" />
+    <result column="big_size_four" property="bigSizeFour" jdbcType="DECIMAL" />
+    <result column="big_size_five" property="bigSizeFive" jdbcType="DECIMAL" />
+    <result column="big_color_one" property="bigColorOne" jdbcType="DECIMAL" />
+    <result column="big_color_two" property="bigColorTwo" jdbcType="DECIMAL" />
+    <result column="big_color_three" property="bigColorThree" jdbcType="DECIMAL" />
+    <result column="big_color_four" property="bigColorFour" jdbcType="DECIMAL" />
+    <result column="big_color_five" property="bigColorFive" jdbcType="DECIMAL" />
+    <collection property="colorConfigs" ofType="com.bzdepot.special.model.PrintingSpotConfig" select="com.bzdepot.special.mapper.PrintingSpotConfigMapper.selectBySellerIdAndPrintingCostId" column="{sellerId=seller_id,printingCostId=id}"  />
   </resultMap>
   <sql id="Base_Column_List" >
     id, robot_identifier, seller_id, robot_size_id, robot_brand_id, robot_color_id, is_uv, 
     robot_manufactor_id, boot_strap_money, print_nums, exceed_money, exceed_nums, thickness_range_start, 
     thickness_range_end, min_bite, paper_feeding_max_one, paper_feeding_max_two, paper_feeding_min_one, 
     paper_feeding_min_two, discharge_number_in, discharge_number_in_nums, discharge_number_max, 
-    discharge_number_max_nums, special_color_type, special_color_start_money, special_color_start_nums, 
-    special_color_two_nums, special_color_two_one_money, special_color_two_two_money, 
-    special_color_three_nums, special_color_three_one_money, special_color_three_two_money, 
+    discharge_number_max_nums, special_color_type,special_color_one_rate,is_an_color_status,is_big_size,is_big_color,
     status, create_time, update_time, robot_size_title, robot_brand_title, robot_color_title, 
-    manufactor_title
+    manufactor_title,big_size_one,big_size_two,big_size_three,big_size_four,big_size_five,big_color_one,
+    big_color_two,big_color_two,big_color_three,big_color_four,big_color_five
   </sql>
   <select id="selectBySellerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
@@ -70,22 +76,14 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.bzdepot.special.model.PrintingCost" >
-    insert into printing_cost (id, robot_identifier, seller_id, 
-      robot_size_id, robot_brand_id, robot_color_id, 
-      is_uv, robot_manufactor_id, boot_strap_money, 
-      print_nums, exceed_money, exceed_nums, 
-      thickness_range_start, thickness_range_end, 
-      min_bite, paper_feeding_max_one, paper_feeding_max_two, 
-      paper_feeding_min_one, paper_feeding_min_two, 
-      discharge_number_in, discharge_number_in_nums, 
-      discharge_number_max, discharge_number_max_nums, 
-      special_color_type, special_color_start_money, 
-      special_color_start_nums, special_color_two_nums, 
-      special_color_two_one_money, special_color_two_two_money, 
-      special_color_three_nums, special_color_three_one_money, 
-      special_color_three_two_money, status, create_time, 
-      update_time, robot_size_title, robot_brand_title, 
-      robot_color_title, manufactor_title)
+    insert into printing_cost ( id, robot_identifier, seller_id, robot_size_id, robot_brand_id, robot_color_id, is_uv,
+    robot_manufactor_id, boot_strap_money, print_nums, exceed_money, exceed_nums, thickness_range_start,
+    thickness_range_end, min_bite, paper_feeding_max_one, paper_feeding_max_two, paper_feeding_min_one,
+    paper_feeding_min_two, discharge_number_in, discharge_number_in_nums, discharge_number_max,
+    discharge_number_max_nums, special_color_type,special_color_one_rate,is_an_color_status,is_big_size,is_big_color,
+    status, create_time, update_time, robot_size_title, robot_brand_title, robot_color_title,
+    manufactor_title,big_size_one,big_size_two,big_size_three,big_size_four,big_size_five,big_color_one,
+    big_color_two,big_color_two,big_color_three,big_color_four,big_color_five)
     values (#{id,jdbcType=BIGINT}, #{robotIdentifier,jdbcType=VARCHAR}, #{sellerId,jdbcType=BIGINT}, 
       #{robotSizeId,jdbcType=BIGINT}, #{robotBrandId,jdbcType=BIGINT}, #{robotColorId,jdbcType=BIGINT}, 
       #{isUv,jdbcType=TINYINT}, #{robotManufactorId,jdbcType=BIGINT}, #{bootStrapMoney,jdbcType=DECIMAL}, 
@@ -95,15 +93,17 @@
       #{paperFeedingMinOne,jdbcType=DECIMAL}, #{paperFeedingMinTwo,jdbcType=DECIMAL}, 
       #{dischargeNumberIn,jdbcType=INTEGER}, #{dischargeNumberInNums,jdbcType=INTEGER}, 
       #{dischargeNumberMax,jdbcType=INTEGER}, #{dischargeNumberMaxNums,jdbcType=INTEGER}, 
-      #{specialColorType,jdbcType=TINYINT}, #{specialColorStartMoney,jdbcType=DECIMAL}, 
-      #{specialColorStartNums,jdbcType=INTEGER}, #{specialColorTwoNums,jdbcType=INTEGER}, 
-      #{specialColorTwoOneMoney,jdbcType=DECIMAL}, #{specialColorTwoTwoMoney,jdbcType=DECIMAL}, 
-      #{specialColorThreeNums,jdbcType=INTEGER}, #{specialColorThreeOneMoney,jdbcType=DECIMAL}, 
-      #{specialColorThreeTwoMoney,jdbcType=DECIMAL}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, 
+      #{specialColorType,jdbcType=TINYINT}, #{specialColorOneRate,jdbcType=DECIMAL},
+      #{isAnColorStatus,jdbcType=TINYINT}, #{isBigSize,jdbcType=TINYINT},
+      #{isBigColor,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT},
       #{updateTime,jdbcType=BIGINT}, #{robotSizeTitle,jdbcType=VARCHAR}, #{robotBrandTitle,jdbcType=VARCHAR}, 
-      #{robotColorTitle,jdbcType=VARCHAR}, #{manufactorTitle,jdbcType=VARCHAR})
+      #{robotColorTitle,jdbcType=VARCHAR}, #{manufactorTitle,jdbcType=VARCHAR},#{bigSizeOne,jdbcType=DECIMAL},
+    #{bigSizeTwo,jdbcType=DECIMAL},#{bigSizeThree,jdbcType=DECIMAL},#{bigSizeFour,jdbcType=DECIMAL},
+    #{bigSizeFive,jdbcType=DECIMAL},#{bigColorOne,jdbcType=DECIMAL},#{bigColorTwo,jdbcType=DECIMAL},
+    #{bigColorThree,jdbcType=DECIMAL},#{bigColorFour,jdbcType=DECIMAL},#{bigColorFive,jdbcType=DECIMAL})
   </insert>
-  <insert id="insertSelective" parameterType="com.bzdepot.special.model.PrintingCost" >
+
+  <insert id="insertSelective" keyProperty="id"  useGeneratedKeys="true" parameterType="com.bzdepot.special.model.PrintingCost" >
     insert into printing_cost
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -178,30 +178,19 @@
       <if test="specialColorType != null" >
         special_color_type,
       </if>
-      <if test="specialColorStartMoney != null" >
-        special_color_start_money,
+      <if test="specialColorOneRate != null" >
+        special_color_one_rate,
       </if>
-      <if test="specialColorStartNums != null" >
-        special_color_start_nums,
+      <if test="isAnColorStatus != null" >
+        is_an_color_status,
       </if>
-      <if test="specialColorTwoNums != null" >
-        special_color_two_nums,
+      <if test="isBigSize != null" >
+        is_big_size,
       </if>
-      <if test="specialColorTwoOneMoney != null" >
-        special_color_two_one_money,
+      <if test="isBigColor != null" >
+        is_big_color,
       </if>
-      <if test="specialColorTwoTwoMoney != null" >
-        special_color_two_two_money,
-      </if>
-      <if test="specialColorThreeNums != null" >
-        special_color_three_nums,
-      </if>
-      <if test="specialColorThreeOneMoney != null" >
-        special_color_three_one_money,
-      </if>
-      <if test="specialColorThreeTwoMoney != null" >
-        special_color_three_two_money,
-      </if>
+
       <if test="status != null" >
         status,
       </if>
@@ -223,6 +212,37 @@
       <if test="manufactorTitle != null" >
         manufactor_title,
       </if>
+      <if test="bigSizeOne != null" >
+        big_size_one,
+      </if>
+      <if test="bigSizeTwo != null" >
+        big_size_two,
+      </if>
+      <if test="bigSizeThree != null" >
+        big_size_three,
+      </if>
+      <if test="bigSizeFour != null" >
+        big_size_four,
+      </if>
+      <if test="bigSizeFive != null" >
+        big_size_five,
+      </if>
+      <if test="bigColorOne != null" >
+        big_color_one,
+      </if>
+      <if test="bigColorTwo != null" >
+        big_color_two,
+      </if>
+      <if test="bigColorThree != null" >
+        big_color_three,
+      </if>
+      <if test="bigColorFour != null" >
+        big_color_four,
+      </if>
+      <if test="bigColorFive != null" >
+        big_color_five,
+      </if>
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -297,30 +317,19 @@
       <if test="specialColorType != null" >
         #{specialColorType,jdbcType=TINYINT},
       </if>
-      <if test="specialColorStartMoney != null" >
-        #{specialColorStartMoney,jdbcType=DECIMAL},
+      <if test="specialColorOneRate != null" >
+        #{specialColorOneRate,jdbcType=DECIMAL},
       </if>
-      <if test="specialColorStartNums != null" >
-        #{specialColorStartNums,jdbcType=INTEGER},
+      <if test="isAnColorStatus != null" >
+        #{isAnColorStatus,jdbcType=TINYINT},
       </if>
-      <if test="specialColorTwoNums != null" >
-        #{specialColorTwoNums,jdbcType=INTEGER},
+      <if test="isBigSize != null" >
+        #{isBigSize,jdbcType=TINYINT},
       </if>
-      <if test="specialColorTwoOneMoney != null" >
-        #{specialColorTwoOneMoney,jdbcType=DECIMAL},
+      <if test="isBigColor != null" >
+        #{isBigColor,jdbcType=TINYINT},
       </if>
-      <if test="specialColorTwoTwoMoney != null" >
-        #{specialColorTwoTwoMoney,jdbcType=DECIMAL},
-      </if>
-      <if test="specialColorThreeNums != null" >
-        #{specialColorThreeNums,jdbcType=INTEGER},
-      </if>
-      <if test="specialColorThreeOneMoney != null" >
-        #{specialColorThreeOneMoney,jdbcType=DECIMAL},
-      </if>
-      <if test="specialColorThreeTwoMoney != null" >
-        #{specialColorThreeTwoMoney,jdbcType=DECIMAL},
-      </if>
+
       <if test="status != null" >
         #{status,jdbcType=TINYINT},
       </if>
@@ -342,6 +351,37 @@
       <if test="manufactorTitle != null" >
         #{manufactorTitle,jdbcType=VARCHAR},
       </if>
+      <if test="bigSizeOne != null" >
+        #{bigSizeOne,jdbcType=BIGINT},
+      </if>
+      <if test="bigSizeTwo != null" >
+        #{bigSizeTwo,jdbcType=BIGINT},
+      </if>
+      <if test="bigSizeThree != null" >
+        #{bigSizeThree,jdbcType=BIGINT},
+      </if>
+      <if test="bigSizeFour != null" >
+        #{bigSizeFour,jdbcType=BIGINT},
+      </if>
+      <if test="bigSizeFive != null" >
+        #{bigSizeFive,jdbcType=BIGINT},
+      </if>
+      <if test="bigColorOne != null" >
+        #{bigColorOne,jdbcType=BIGINT},
+      </if>
+      <if test="bigColorTwo != null" >
+        #{bigColorTwo,jdbcType=BIGINT},
+      </if>
+      <if test="bigColorThree != null" >
+        #{bigColorThree,jdbcType=BIGINT},
+      </if>
+      <if test="bigColorFour != null" >
+        #{bigColorFour,jdbcType=BIGINT},
+      </if>
+      <if test="bigColorFive != null" >
+        #{bigColorFive,jdbcType=BIGINT},
+      </if>
+
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.PrintingCost" >
@@ -416,30 +456,19 @@
       <if test="specialColorType != null" >
         special_color_type = #{specialColorType,jdbcType=TINYINT},
       </if>
-      <if test="specialColorStartMoney != null" >
-        special_color_start_money = #{specialColorStartMoney,jdbcType=DECIMAL},
+      <if test="specialColorOneRate != null" >
+        special_color_one_rate = #{specialColorOneRate,jdbcType=DECIMAL},
       </if>
-      <if test="specialColorStartNums != null" >
-        special_color_start_nums = #{specialColorStartNums,jdbcType=INTEGER},
+      <if test="isAnColorStatus != null" >
+        is_an_color_status = #{isAnColorStatus,jdbcType=TINYINT},
       </if>
-      <if test="specialColorTwoNums != null" >
-        special_color_two_nums = #{specialColorTwoNums,jdbcType=INTEGER},
+      <if test="isBigSize != null" >
+        is_big_size = #{isBigSize,jdbcType=TINYINT},
       </if>
-      <if test="specialColorTwoOneMoney != null" >
-        special_color_two_one_money = #{specialColorTwoOneMoney,jdbcType=DECIMAL},
+      <if test="isBigColor != null" >
+        is_big_color = #{isBigColor,jdbcType=TINYINT},
       </if>
-      <if test="specialColorTwoTwoMoney != null" >
-        special_color_two_two_money = #{specialColorTwoTwoMoney,jdbcType=DECIMAL},
-      </if>
-      <if test="specialColorThreeNums != null" >
-        special_color_three_nums = #{specialColorThreeNums,jdbcType=INTEGER},
-      </if>
-      <if test="specialColorThreeOneMoney != null" >
-        special_color_three_one_money = #{specialColorThreeOneMoney,jdbcType=DECIMAL},
-      </if>
-      <if test="specialColorThreeTwoMoney != null" >
-        special_color_three_two_money = #{specialColorThreeTwoMoney,jdbcType=DECIMAL},
-      </if>
+
       <if test="status != null" >
         status = #{status,jdbcType=TINYINT},
       </if>
@@ -461,6 +490,37 @@
       <if test="manufactorTitle != null" >
         manufactor_title = #{manufactorTitle,jdbcType=VARCHAR},
       </if>
+      <if test="bigSizeOne != null" >
+        big_size_one = #{bigSizeOne,jdbcType=DECIMAL},
+      </if>
+      <if test="bigSizeTwo != null" >
+        big_size_two = #{bigSizeTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="bigSizeThree != null" >
+        big_size_three = #{bigSizeThree,jdbcType=DECIMAL},
+      </if>
+      <if test="bigSizeFour != null" >
+        big_size_four = #{bigSizeFour,jdbcType=DECIMAL},
+      </if>
+      <if test="bigSizeFive != null" >
+        big_size_five = #{bigSizeFive,jdbcType=DECIMAL},
+      </if>
+      <if test="bigColorOne != null" >
+        big_color_one = #{bigColorOne,jdbcType=DECIMAL},
+      </if>
+      <if test="bigColorTwo != null" >
+        big_color_two = #{bigColorTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="bigColorThree != null" >
+        big_color_three = #{bigColorThree,jdbcType=DECIMAL},
+      </if>
+      <if test="bigColorFour != null" >
+        big_color_four = #{bigColorFour,jdbcType=DECIMAL},
+      </if>
+      <if test="bigColorFive != null" >
+        big_color_five = #{bigColorFive,jdbcType=DECIMAL},
+      </if>
+
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -489,21 +549,27 @@
       discharge_number_max = #{dischargeNumberMax,jdbcType=INTEGER},
       discharge_number_max_nums = #{dischargeNumberMaxNums,jdbcType=INTEGER},
       special_color_type = #{specialColorType,jdbcType=TINYINT},
-      special_color_start_money = #{specialColorStartMoney,jdbcType=DECIMAL},
-      special_color_start_nums = #{specialColorStartNums,jdbcType=INTEGER},
-      special_color_two_nums = #{specialColorTwoNums,jdbcType=INTEGER},
-      special_color_two_one_money = #{specialColorTwoOneMoney,jdbcType=DECIMAL},
-      special_color_two_two_money = #{specialColorTwoTwoMoney,jdbcType=DECIMAL},
-      special_color_three_nums = #{specialColorThreeNums,jdbcType=INTEGER},
-      special_color_three_one_money = #{specialColorThreeOneMoney,jdbcType=DECIMAL},
-      special_color_three_two_money = #{specialColorThreeTwoMoney,jdbcType=DECIMAL},
+      special_color_one_rate = #{specialColorOneRate,jdbcType=DECIMAL},
+      is_an_color_status = #{isAnColorStatus,jdbcType=TINYINT},
+      is_big_size = #{isBigSize,jdbcType=TINYINT},
+      is_big_color = #{isBigColor,jdbcType=TINYINT},
       status = #{status,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT},
       robot_size_title = #{robotSizeTitle,jdbcType=VARCHAR},
       robot_brand_title = #{robotBrandTitle,jdbcType=VARCHAR},
       robot_color_title = #{robotColorTitle,jdbcType=VARCHAR},
-      manufactor_title = #{manufactorTitle,jdbcType=VARCHAR}
+      manufactor_title = #{manufactorTitle,jdbcType=VARCHAR},
+      big_size_one = #{bigSizeOne,jdbcType=DECIMAL},
+      big_size_two = #{bigSizeTwo,jdbcType=DECIMAL},
+      big_size_three = #{bigSizeThree,jdbcType=DECIMAL},
+      big_size_four = #{bigSizeFour,jdbcType=DECIMAL},
+      big_size_five = #{bigSizeFive,jdbcType=DECIMAL},
+      big_color_one = #{bigColorOne,jdbcType=DECIMAL},
+      big_color_two = #{bigColorTwo,jdbcType=DECIMAL},
+      big_color_three = #{bigColorThree,jdbcType=DECIMAL},
+      big_color_four = #{bigColorFour,jdbcType=DECIMAL},
+      big_color_five = #{bigColorFive,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -64,6 +64,35 @@
     and d.nums = #{nums}
     and o.thickness = #{thickness}
     and o.weight = #{weight}
+    and o.status != -1
+  </select>
+  <select id="findOfferAllDataForSumer" resultMap="SelectResultMap">
+    SELECT
+    g.id as group_id,
+    g.offer_id as offer_id,
+    o.seller_id as seller_id,
+    o.class_id as class_id,
+    o.texture_id as texture_id,
+    o.thickness as thickness,
+    o.weight as weight,
+    o.types as types,
+    g.smoney,
+    d.xmoney,
+    a.attr_key,
+    a.attr_value
+    from offer o,offer_group g,offer_attr a,offer_detail d
+    where o.id = g.offer_id
+    and g.id = a.offer_group_id
+    and g.id = d.offer_group_id
+    and g.offer_id = a.offer_id
+    and g.offer_id = d.offer_id
+    and o.seller_id = #{sellerId}
+    and o.class_id = #{classId}
+    and o.texture_id = #{textureId}
+    and o.thickness = #{thickness}
+    and o.weight = #{weight}
+    and o.types = #{typesData}
+    and o.status != -1
   </select>
   <select id="findMoney" resultMap="SelectResultMap">
     SELECT
@@ -83,6 +112,7 @@
     and g.offer_id = d.offer_id
     and g.offer_id = #{offerId}
     and d.nums = #{nums}
+    and o.status != -1
   </select>
   <select id="selectBySidCidTid" resultMap="BaseResultMap">
     select

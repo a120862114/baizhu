@@ -14,6 +14,9 @@ import com.bzdepot.offer.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -22,6 +25,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Service
+@CacheConfig(cacheNames = "OfferServiceData")
 public class OfferService {
     private final static Logger loger = LoggerFactory.getLogger(OfferService.class);
     @Autowired
@@ -70,6 +74,7 @@ public class OfferService {
      * @return
      */
     @Transactional
+    @CacheEvict(allEntries = true)
     public Boolean addOfferData(Offer offer, String imgIds, List<OfferGroupVo> offerGroupVos){
         int GroupStatus = 0;
         try {
@@ -224,6 +229,7 @@ public class OfferService {
      * @param editAttrVo
      * @return
      */
+    @CacheEvict(allEntries = true)
     public int editAttr(EditAttrVo editAttrVo){
         int Status = 0;
         try {
@@ -255,6 +261,7 @@ public class OfferService {
      * @param editDetailVo
      * @return
      */
+    @CacheEvict(allEntries = true)
     public int editDetail(EditDetailVo editDetailVo){
         int Status = 0;
         try {
@@ -287,6 +294,7 @@ public class OfferService {
      * @return
      */
     @Transactional
+    @CacheEvict(allEntries = true)
     public int delGroupAndSonData(Long GroupId){
         int Status = 0;
         try{
@@ -316,6 +324,7 @@ public class OfferService {
      * @return
      */
     @Transactional
+    @CacheEvict(allEntries = true)
     public int delAttr(Long[] AttrIds){
         int Status = 0;
         try {
@@ -342,6 +351,7 @@ public class OfferService {
      * @return
      */
     @Transactional
+    @CacheEvict(allEntries = true)
     public int delDetail(Long[] DetailIds){
         int Status = 0;
         try {
@@ -369,6 +379,7 @@ public class OfferService {
      * @return
      */
     @Transactional
+    @CacheEvict(allEntries = true)
     public int editOfferAndImg(Offer offer,ProductImg productImg,List<OfferGroupVo> offerGroupVos,OfferSon offerSon,List<OfferSonExpress> offerSonExpresses){
         int GroupStatus = 0;
         try {
@@ -538,10 +549,87 @@ public class OfferService {
     }
 
     /**
+     * 需要算法计算的成本费的时候
+     * @param selectOfferMoneyVo
+     * @return
+     */
+    public List<SelectOfferVo> findAllForSummer(SelectOfferMoneyVo selectOfferMoneyVo){
+        List<SelectOfferVo> list = new ArrayList<SelectOfferVo>();
+        if(selectOfferMoneyVo.getPostType().equals(new Byte("0")) || selectOfferMoneyVo.getPostType().equals(new Byte("2"))){
+            SelectOfferVo selectOfferVoOne = this.sumDataCountFunc(selectOfferMoneyVo,new Byte("0"));
+            if(selectOfferVoOne != null){
+                list.add(selectOfferVoOne);
+            }
+        }
+        if(selectOfferMoneyVo.getPostType().equals(new Byte("1")) || selectOfferMoneyVo.getPostType().equals(new Byte("2"))){
+            SelectOfferVo selectOfferVoTwo = this.sumDataCountFunc(selectOfferMoneyVo,new Byte("1"));
+            if(selectOfferVoTwo != null){
+                list.add(selectOfferVoTwo);
+            }
+        }
+        return this.screeningData(list,selectOfferMoneyVo);
+    }
+    //计算返回方法
+    @Cacheable()
+    public SelectOfferVo sumDataCountFunc(SelectOfferMoneyVo selectOfferMoneyVo,Byte types){
+        List<SelectOfferVo> selectOfferVos = offerMapper.findOfferAllDataForSumer(selectOfferMoneyVo.getSellerId(),selectOfferMoneyVo.getClassId(),selectOfferMoneyVo.getTextureId(),selectOfferMoneyVo.getThickness(),selectOfferMoneyVo.getWeight(),types);
+        if(selectOfferVos == null || selectOfferVos.size() == 0){
+            return null;
+        }
+        //开始计算面积最相思的数据
+        BigDecimal UserAreaData = selectOfferMoneyVo.getLongsData().multiply(selectOfferMoneyVo.getWidthData()); //获取的用户的面积,也是求接近的数字
+
+        // 差值实始化
+        BigDecimal ListOneArea = this.sumDataArea(selectOfferVos.get(0).getAttrs()); //列表数据的第一个计算的面积值
+        if(ListOneArea == null){
+            //如果第一个数据的尺寸数据为空的话那么终止计算
+            return null;
+        }
+        BigDecimal tmpNums = ListOneArea.subtract(UserAreaData);
+        BigDecimal diffNum = tmpNums.abs();
+        // 最终结果
+        BigDecimal result = ListOneArea;
+        int index = 0;
+        for(int i = 0; i < selectOfferVos.size(); i++){
+            BigDecimal bigDecimalNums = this.sumDataArea(selectOfferVos.get(i).getAttrs());
+            if(bigDecimalNums == null){
+                continue;
+            }
+            BigDecimal forTmpNums = bigDecimalNums.subtract(UserAreaData);
+            BigDecimal diffNumTemp = forTmpNums.abs();
+            if(diffNumTemp.compareTo(diffNum) == -1 && types.equals(selectOfferVos.get(i).getTypes()))
+            {
+                diffNum = diffNumTemp;
+                result = bigDecimalNums;
+                index = i;
+            }
+        }
+
+        return selectOfferVos.get(index);
+    }
+    //计算面积
+    public BigDecimal sumDataArea(List<SelectAttrVo> selectAttrVos){
+        BigDecimal TmpLongs = null;
+        BigDecimal TmpWidth = null;
+        for(int s = 0; s < selectAttrVos.size(); s++){
+            if(selectAttrVos.get(s).getAttr_key().equals("长")){
+                TmpLongs  = selectAttrVos.get(s).getAttr_value();
+            }
+            if(selectAttrVos.get(s).getAttr_key().equals("宽")){
+                TmpWidth = selectAttrVos.get(s).getAttr_value();
+            }
+        }
+        if(TmpLongs == null || TmpWidth == null){
+            return null;
+        }
+        return TmpLongs.multiply(TmpWidth);
+    }
+    /**
      * 获取常规与固定报价的配置数据
      * @param selectOfferMoneyVo
      * @return
      */
+    @Cacheable()
     public List<SelectOfferVo> findAllOfferAndSonDatas(SelectOfferMoneyVo selectOfferMoneyVo){
         List<SelectOfferVo> selectOfferVos =  offerMapper.findOfferAllData(selectOfferMoneyVo.getSellerId(),selectOfferMoneyVo.getClassId(),selectOfferMoneyVo.getTextureId(),selectOfferMoneyVo.getNums(),selectOfferMoneyVo.getThickness(),selectOfferMoneyVo.getWeight());
 
@@ -569,33 +657,43 @@ public class OfferService {
             if(selectAttrVos == null){
                 continue;
             }
-            for(int s = 0; s < selectAttrVos.size(); s++){
-                if(selectAttrVos.get(s).getAttr_key().equals("长")){
-                    TmpLongs  = selectAttrVos.get(s).getAttr_value();
+            //判定是否需要过滤或计算
+            if(selectOfferMoneyVo.getIsSumer().equals(new Byte("0"))) {
+                for (int s = 0; s < selectAttrVos.size(); s++) {
+                    if (selectAttrVos.get(s).getAttr_key().equals("长")) {
+                        TmpLongs = selectAttrVos.get(s).getAttr_value();
+                    }
+                    if (selectAttrVos.get(s).getAttr_key().equals("宽")) {
+                        TmpWidth = selectAttrVos.get(s).getAttr_value();
+                    }
+                    if (selectAttrVos.get(s).getAttr_key().equals("高")) {
+                        TmpHeight = selectAttrVos.get(s).getAttr_value();
+                    }
                 }
-                if(selectAttrVos.get(s).getAttr_key().equals("宽")){
-                    TmpWidth = selectAttrVos.get(s).getAttr_value();
-                }
-                if(selectAttrVos.get(s).getAttr_key().equals("高")){
-                    TmpHeight = selectAttrVos.get(s).getAttr_value();
-                }
-            }
-            //检测数据属性的完整性
-            if(TmpLongs == null || TmpWidth == null){
-                continue;  //跳出本次循环
-            }
-            //开始验证数据是否符合然后进行运算
-            if(selectOfferMoneyVo.getHeightData() == null){
-                if(TmpLongs.compareTo(selectOfferMoneyVo.getLongsData()) == 0 && TmpWidth.compareTo(selectOfferMoneyVo.getWidthData()) == 0){
-                    IsTrue = true;
-                }
-            }else {
-                if(TmpHeight == null){
+                //检测数据属性的完整性
+                if (TmpLongs == null || TmpWidth == null) {
                     continue;  //跳出本次循环
                 }
-                if(TmpLongs.compareTo(selectOfferMoneyVo.getLongsData()) == 0 && TmpWidth.compareTo(selectOfferMoneyVo.getWidthData()) == 0 && TmpHeight.compareTo(selectOfferMoneyVo.getHeightData()) == 0){
-                    IsTrue = true;
+                //开始验证数据是否符合然后进行运算
+                if (selectOfferMoneyVo.getHeightData() == null) {
+                    if (TmpLongs.compareTo(selectOfferMoneyVo.getLongsData()) == 0 && TmpWidth.compareTo(selectOfferMoneyVo.getWidthData()) == 0) {
+                        IsTrue = true;
+                    }
+                } else {
+                    if (TmpHeight == null) {
+                        continue;  //跳出本次循环
+                    }
+                    if (TmpLongs.compareTo(selectOfferMoneyVo.getLongsData()) == 0 && TmpWidth.compareTo(selectOfferMoneyVo.getWidthData()) == 0 && TmpHeight.compareTo(selectOfferMoneyVo.getHeightData()) == 0) {
+                        IsTrue = true;
+                    }
                 }
+            }else{
+                if(selectOfferVos.get(i).getTypes().equals(new Byte("0"))) {
+                    selectOfferVos.get(i).setXmoney(selectOfferMoneyVo.getCxmoney()); //设置成本价为算法计算的成本价
+                }else{
+                    selectOfferVos.get(i).setXmoney(selectOfferMoneyVo.getGxmoney()); //设置成本价为算法计算的成本价
+                }
+                IsTrue = true;
             }
             System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
             System.out.println(IsTrue);
@@ -627,7 +725,7 @@ public class OfferService {
                 }
                 //常规报价
                 if(selectOfferVos.get(i).getTypes().equals(new Byte("0"))){
-                    BigDecimal rate = this.getProfitServer(selectOfferVos.get(i).getOffer_id(),selectOfferVos.get(i).getXmoney());
+                    BigDecimal rate = this.getProfitServer(selectOfferVos.get(i).getOffer_id(),selectOfferVos.get(i).getXmoney(),selectOfferMoneyVo.getLevelId());
 
                     if(rate != null){
                         selectOfferVos.get(i).setProfitRate(rate);
@@ -705,7 +803,12 @@ public class OfferService {
                         }
                     }
                 }
+
                 selectOfferVos.get(i).setTotalPrice(selectOfferVos.get(i).getXmoney()); //成本价
+                //判定是否需要加利润
+                if(selectOfferVos.get(i).getProfitMoney() != null){
+                   selectOfferVos.get(i).setTotalPrice(selectOfferVos.get(i).getTotalPrice().add(selectOfferVos.get(i).getProfitMoney()));
+                }
                 //加上设计费
                 if(selectOfferMoneyVo.getIsS().equals(new Byte("1"))){
                     if(selectOfferVos.get(i).getSmoney() != null){
@@ -748,7 +851,8 @@ public class OfferService {
      * @param OfferMoney
      * @return
      */
-    public BigDecimal getProfitServer(Long offerId,BigDecimal OfferMoney){
+    @Cacheable()
+    public BigDecimal getProfitServer(Long offerId,BigDecimal OfferMoney,Long UserLevelId){
         Object ProfitDataObj = profitConfigService.callFunc(offerId);
         Map<String,Object> ProfitData = JsonReturn.Parse(ProfitDataObj);
         Integer Status = (Integer) ProfitData.get("error_code");
@@ -777,7 +881,7 @@ public class OfferService {
                 BigDecimal ProfitMoneyEnd = BigDecimal.valueOf((Double) ProfitOne.get("end_value"));
                 BigDecimal ProfitRate = BigDecimal.valueOf((Double) ProfitOne.get("profit_rate"));
 
-                if(LevelId == UserUtil.getLevelId()){
+                if(LevelId == UserLevelId){
                     if(ProfitMoneyStart.compareTo(OfferMoney) == -1 && ProfitMoneyEnd.compareTo(OfferMoney) >= 0){
                         SelfIndex = i;
                         SelfRate = ProfitRate;
@@ -805,6 +909,7 @@ public class OfferService {
      * @param OfferMoney
      * @return
      */
+    @Cacheable()
     public BigDecimal getProfitConfig(Long offerId,BigDecimal OfferMoney,SelectOfferVo selectOfferVo,Integer nums,Long comanyId ,Long cityId,Byte FpTypes){
 
         Object ProfitDataObj = profitConfigService.callFunc(offerId);
@@ -978,6 +1083,7 @@ public class OfferService {
      * @param levelId
      * @return
      */
+    @Cacheable()
     public Invoice getInvoice(Long sellerId,Long comanyId,Byte types,Long levelId){
         Object Datas = profitConfigService.findDataByLevel(sellerId,comanyId,types,levelId);
         System.out.println(Datas);
@@ -999,6 +1105,7 @@ public class OfferService {
      * @param cityId
      * @return
      */
+    @Cacheable()
     public Map<String,BigDecimal> getExpressMoney(Long sellerId,Long companyId,Long cityId,Integer nums,BigDecimal Longs,BigDecimal Wight,BigDecimal SjWeight){
         BigDecimal commodityNums = BigDecimal.valueOf(nums);
         BigDecimal MianJi = Longs.multiply(Wight);
@@ -1038,6 +1145,7 @@ public class OfferService {
      * @param id
      * @return
      */
+    @CacheEvict(allEntries = true)
     public int deleteOfferSonExpress(Long id){
         return offerSonExpressMapper.deleteByPrimaryKey(id);
     }
@@ -1047,6 +1155,7 @@ public class OfferService {
      * @param id
      * @return
      */
+    @CacheEvict(allEntries = true)
     @Transactional
     public int deleteOfferDataById(Long id){
         Offer offer = offerMapper.selectByPrimaryKey(id);

@@ -6,11 +6,26 @@
     <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
     <result column="pconfig_id" property="pconfigId" jdbcType="BIGINT" />
     <result column="technology_id" property="technologyId" jdbcType="BIGINT" />
-    <result column="echnology_attr_id" property="echnologyAttrId" jdbcType="BIGINT" />
+    <result column="technology_attr_id" property="technologyAttrId" jdbcType="BIGINT" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <collection property="technologyClassName" ofType="com.bzdepot.special.model.TechnologyClass" select="com.bzdepot.special.mapper.TechnologyClassMapper.selectByPrimaryKeyForNames" column="technology_id"  />
+    <collection property="technologyAttrName" ofType="com.bzdepot.special.model.TechnologyAttr" select="com.bzdepot.special.mapper.TechnologyAttrMapper.selectByPrimaryKeyForNames" column="technology_attr_id"  />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, seller_id, pconfig_id, technology_id, echnology_attr_id
+    id, seller_id, pconfig_id, technology_id, technology_attr_id,sort
   </sql>
+  <select id="selectBySellerIdAndPconfigIdForList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_technology
+    where seller_id = #{sellerId} and pconfig_id = #{pconfigId}
+  </select>
+  <select id="selectOneBySellerIdPconfigIdAndTechnologyId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_technology
+    where seller_id = #{sellerId} and pconfig_id = #{pconfigId} and technology_id = #{technologyId} limit 1
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -21,11 +36,15 @@
     delete from product_technology
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteBySellerIdAndPconfigIdAndTechnologyId">
+    delete from product_technology
+    where seller_id = #{sellerId} and pconfig_id = #{pconfigId} and technology_id = #{technologyId}
+  </delete>
   <insert id="insert" parameterType="com.bzdepot.special.model.ProductTechnology" >
     insert into product_technology (id, seller_id, pconfig_id, 
-      technology_id, echnology_attr_id)
+      technology_id, technology_attr_id,sort)
     values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{pconfigId,jdbcType=BIGINT}, 
-      #{technologyId,jdbcType=BIGINT}, #{echnologyAttrId,jdbcType=BIGINT})
+      #{technologyId,jdbcType=BIGINT}, #{technologyAttrId,jdbcType=BIGINT},#{sort,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.bzdepot.special.model.ProductTechnology" >
     insert into product_technology
@@ -42,8 +61,11 @@
       <if test="technologyId != null" >
         technology_id,
       </if>
-      <if test="echnologyAttrId != null" >
-        echnology_attr_id,
+      <if test="technologyAttrId != null" >
+        technology_attr_id,
+      </if>
+      <if test="sort != null" >
+        sort,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -59,8 +81,11 @@
       <if test="technologyId != null" >
         #{technologyId,jdbcType=BIGINT},
       </if>
-      <if test="echnologyAttrId != null" >
-        #{echnologyAttrId,jdbcType=BIGINT},
+      <if test="technologyAttrId != null" >
+        #{technologyAttrId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -76,18 +101,34 @@
       <if test="technologyId != null" >
         technology_id = #{technologyId,jdbcType=BIGINT},
       </if>
-      <if test="echnologyAttrId != null" >
-        echnology_attr_id = #{echnologyAttrId,jdbcType=BIGINT},
+      <if test="technologyAttrId != null" >
+        technology_attr_id = #{technologyAttrId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeySelectiveForDefaul" parameterType="com.bzdepot.special.model.ProductTechnology" >
+    update product_technology
+    <set >
+      <if test="technologyAttrId != null" >
+        technology_attr_id = #{technologyAttrId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where seller_id = #{sellerId,jdbcType=BIGINT} and pconfig_id = #{pconfigId,jdbcType=BIGINT} and technology_id = #{technologyId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.bzdepot.special.model.ProductTechnology" >
     update product_technology
     set seller_id = #{sellerId,jdbcType=BIGINT},
       pconfig_id = #{pconfigId,jdbcType=BIGINT},
       technology_id = #{technologyId,jdbcType=BIGINT},
-      echnology_attr_id = #{echnologyAttrId,jdbcType=BIGINT}
+      technology_attr_id = #{technologyAttrId,jdbcType=BIGINT},
+    sort = #{sort,jdbcType=INTEGER},
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

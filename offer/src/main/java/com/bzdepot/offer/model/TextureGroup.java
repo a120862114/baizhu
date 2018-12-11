@@ -1,6 +1,7 @@
 package com.bzdepot.offer.model;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class TextureGroup {
     private Long id;
@@ -19,6 +20,16 @@ public class TextureGroup {
 
     @NotNull(message = "材质所属分类编号不能为空!")
     private Long classId;
+
+    private List<Texture> texture;
+
+    public List<Texture> getTexture() {
+        return texture;
+    }
+
+    public void setTexture(List<Texture> texture) {
+        this.texture = texture;
+    }
 
     public Long getId() {
         return id;
@@ -74,5 +85,19 @@ public class TextureGroup {
 
     public void setClassId(Long classId) {
         this.classId = classId;
+    }
+
+    @Override
+    public String toString() {
+        return "TextureGroup{" +
+                "id=" + id +
+                ", groupName='" + groupName + '\'' +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", sellerId=" + sellerId +
+                ", classId=" + classId +
+                ", texture=" + texture +
+                '}';
     }
 }

@@ -8,6 +8,8 @@ public class ClassfiyVo {
 
     private Long groupId;
 
+    private Byte status;
+
     public Long getId() {
         return id;
     }
@@ -30,5 +32,13 @@ public class ClassfiyVo {
 
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 }

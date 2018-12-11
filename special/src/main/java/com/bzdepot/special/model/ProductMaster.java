@@ -1,16 +1,19 @@
 package com.bzdepot.special.model;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class ProductMaster {
     private Long id;
 
+    @NotNull(message = "产品分类编号不能为空!")
     private Long classId;
 
     private Long boxId;
 
     private BigDecimal smoney;
 
+    @NotNull(message = "商家编号不能为空!")
     private Long sellerId;
 
     private Long createTime;

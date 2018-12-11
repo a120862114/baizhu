@@ -9,6 +9,12 @@
   <sql id="Base_Column_List" >
     id, seller_id, gram_nums
   </sql>
+  <select id="selectBySellerIdAndGramNums" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from paper_gram
+    where seller_id = #{sellerId} and gram_nums = #{gramNums}
+  </select>
   <select id="selectBySellerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List" />

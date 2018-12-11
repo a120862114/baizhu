@@ -39,6 +39,13 @@ public class PaperGramController {
             }
             return JsonReturn.SetMsg(10010,ErrorMsg,"");
         }
+        if(paperGram.getSellerId() == null){
+            paperGram.setSellerId(UserUtil.getId());
+        }
+        PaperGram resultData = paperGramService.findPaperGramByGramNums(paperGram.getSellerId(),paperGram.getGramNums());
+        if(resultData != null){
+            return JsonReturn.SetMsg(10010,"克重已经存在，请勿重复添加!","");
+        }
         if(paperGramService.updatePaperGram(paperGram) > 0){
             return JsonReturn.SetMsg(0,"更新纸张克重成功!","");
         }

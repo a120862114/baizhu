@@ -25,6 +25,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -164,7 +165,7 @@ public class ImagesController {
         if(vo.getPagenum() == 0){
             vo.setPagenum(1);
         }
-        PageInfo ReData = imagesService.searchImagesForUserPage(vo.getUser_id(),vo.getImg_name(),vo.getStarttime(),vo.getEndtime(),vo.getPagenum(),vo.getPagesize());
+        PageInfo<List<Images>> ReData = imagesService.searchImagesForUserPage(vo.getUser_id(),vo.getImg_name(),vo.getStarttime(),vo.getEndtime(),vo.getPagenum(),vo.getPagesize());
         Map<String,Object> Datas = new HashMap<String, Object>();
         Datas.put("data",ReData);
         Datas.put("host",imgConf.getServer_host());

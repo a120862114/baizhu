@@ -29,7 +29,9 @@ public class TextureGroupController {
             }
             return JsonReturn.SetMsg(10010,ErrorMsg,"");
         }
-        TextureGroup textureGroupData = textureGroupService.findTextureGroupByGroupName(textureGroup.getSellerId(),textureGroup.getGroupName());
+
+        TextureGroup textureGroupData = textureGroupService.findTextureGroupByGroupNameMore(textureGroup.getSellerId(),textureGroup.getClassId(),textureGroup.getGroupName());
+
         if(textureGroupData != null){
             return JsonReturn.SetMsg(10010,"材质分组名称已经存在!","");
         }
@@ -53,7 +55,7 @@ public class TextureGroupController {
         if(textureGroup.getId() == null){
             return JsonReturn.SetMsg(10010,"材质分组编号不能为空!","");
         }
-        TextureGroup textureGroupData = textureGroupService.findTextureGroupByGroupName(textureGroup.getSellerId(),textureGroup.getGroupName());
+        TextureGroup textureGroupData = textureGroupService.findTextureGroupByGroupNameMore(textureGroup.getSellerId(),textureGroup.getClassId(),textureGroup.getGroupName());
         if(textureGroupData != null && textureGroupData.getId() != textureGroup.getId()){
             return JsonReturn.SetMsg(10010,"材质分组名称已经存在!","");
         }

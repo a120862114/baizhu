@@ -7,14 +7,29 @@
     <result column="names" property="names" jdbcType="VARCHAR" />
     <result column="t_bs" property="tBs" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="GetNamesResultMap" type="com.bzdepot.special.bo.GetNamesBo" >
+    <result column="names" property="Names" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, seller_id, names, t_bs
   </sql>
+  <select id="selectBySellerIdAndNames" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from paper_texture
+    where seller_id = #{sellerId} and names = #{names}
+  </select>
   <select id="selectBySellerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List" />
     from paper_texture
     where seller_id = #{sellerId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKeyForNames" resultMap="GetNamesResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from paper_texture
+    where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 

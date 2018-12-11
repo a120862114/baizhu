@@ -18,4 +18,6 @@ public interface PaperOtherSizeMapper {
     int updateByPrimaryKey(PaperOtherSize record);
 
     List<PaperOtherSize> selectBySellerId(Long sellerId);
+
+    List<PaperOtherSize> selectByInIds(String Ids);
 }

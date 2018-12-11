@@ -1,6 +1,7 @@
 package com.bzdepot.special.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class TechnologyAttr {
     private Long id;
@@ -23,24 +24,6 @@ public class TechnologyAttr {
 
     private Integer machiningNums;
 
-    private Byte calculationType;
-
-    private BigDecimal calculationNumsMoney;
-
-    private BigDecimal calculationMjMoney;
-
-    private Byte setLimitType;
-
-    private BigDecimal limitSizeMaxLong;
-
-    private BigDecimal limitSizeMaxWight;
-
-    private BigDecimal limitSizeMinLong;
-
-    private BigDecimal limitSizeMinWight;
-
-    private Long limitAreaId;
-
     private Byte status;
 
     private Long createTime;
@@ -48,6 +31,22 @@ public class TechnologyAttr {
     private Long updateTime;
 
     private Long sellerId;
+
+    private Byte selectUitType;
+
+    private BigDecimal robotSizeMaxLongs;
+
+    private BigDecimal robotSizeMaxWidth;
+
+    private BigDecimal robotSizeMinLongs;
+
+    private BigDecimal robotSizeMinWidth;
+
+    private Byte limitType;
+
+    private BigDecimal limitNumber;
+
+    private List<TechnologyLimit> limitList;
 
     public Long getId() {
         return id;
@@ -129,78 +128,6 @@ public class TechnologyAttr {
         this.machiningNums = machiningNums;
     }
 
-    public Byte getCalculationType() {
-        return calculationType;
-    }
-
-    public void setCalculationType(Byte calculationType) {
-        this.calculationType = calculationType;
-    }
-
-    public BigDecimal getCalculationNumsMoney() {
-        return calculationNumsMoney;
-    }
-
-    public void setCalculationNumsMoney(BigDecimal calculationNumsMoney) {
-        this.calculationNumsMoney = calculationNumsMoney;
-    }
-
-    public BigDecimal getCalculationMjMoney() {
-        return calculationMjMoney;
-    }
-
-    public void setCalculationMjMoney(BigDecimal calculationMjMoney) {
-        this.calculationMjMoney = calculationMjMoney;
-    }
-
-    public Byte getSetLimitType() {
-        return setLimitType;
-    }
-
-    public void setSetLimitType(Byte setLimitType) {
-        this.setLimitType = setLimitType;
-    }
-
-    public BigDecimal getLimitSizeMaxLong() {
-        return limitSizeMaxLong;
-    }
-
-    public void setLimitSizeMaxLong(BigDecimal limitSizeMaxLong) {
-        this.limitSizeMaxLong = limitSizeMaxLong;
-    }
-
-    public BigDecimal getLimitSizeMaxWight() {
-        return limitSizeMaxWight;
-    }
-
-    public void setLimitSizeMaxWight(BigDecimal limitSizeMaxWight) {
-        this.limitSizeMaxWight = limitSizeMaxWight;
-    }
-
-    public BigDecimal getLimitSizeMinLong() {
-        return limitSizeMinLong;
-    }
-
-    public void setLimitSizeMinLong(BigDecimal limitSizeMinLong) {
-        this.limitSizeMinLong = limitSizeMinLong;
-    }
-
-    public BigDecimal getLimitSizeMinWight() {
-        return limitSizeMinWight;
-    }
-
-    public void setLimitSizeMinWight(BigDecimal limitSizeMinWight) {
-        this.limitSizeMinWight = limitSizeMinWight;
-    }
-
-    public Long getLimitAreaId() {
-        return limitAreaId;
-    }
-
-    public void setLimitAreaId(Long limitAreaId) {
-        this.limitAreaId = limitAreaId;
-    }
-
     public Byte getStatus() {
         return status;
     }
@@ -233,6 +160,70 @@ public class TechnologyAttr {
         this.sellerId = sellerId;
     }
 
+    public Byte getSelectUitType() {
+        return selectUitType;
+    }
+
+    public void setSelectUitType(Byte selectUitType) {
+        this.selectUitType = selectUitType;
+    }
+
+    public BigDecimal getRobotSizeMaxLongs() {
+        return robotSizeMaxLongs;
+    }
+
+    public void setRobotSizeMaxLongs(BigDecimal robotSizeMaxLongs) {
+        this.robotSizeMaxLongs = robotSizeMaxLongs;
+    }
+
+    public BigDecimal getRobotSizeMaxWidth() {
+        return robotSizeMaxWidth;
+    }
+
+    public void setRobotSizeMaxWidth(BigDecimal robotSizeMaxWidth) {
+        this.robotSizeMaxWidth = robotSizeMaxWidth;
+    }
+
+    public BigDecimal getRobotSizeMinLongs() {
+        return robotSizeMinLongs;
+    }
+
+    public void setRobotSizeMinLongs(BigDecimal robotSizeMinLongs) {
+        this.robotSizeMinLongs = robotSizeMinLongs;
+    }
+
+    public BigDecimal getRobotSizeMinWidth() {
+        return robotSizeMinWidth;
+    }
+
+    public void setRobotSizeMinWidth(BigDecimal robotSizeMinWidth) {
+        this.robotSizeMinWidth = robotSizeMinWidth;
+    }
+
+    public Byte getLimitType() {
+        return limitType;
+    }
+
+    public void setLimitType(Byte limitType) {
+        this.limitType = limitType;
+    }
+
+    public BigDecimal getLimitNumber() {
+        return limitNumber;
+    }
+
+    public void setLimitNumber(BigDecimal limitNumber) {
+        this.limitNumber = limitNumber;
+    }
+
+    public List<TechnologyLimit> getLimitList() {
+        return limitList;
+    }
+
+    public void setLimitList(List<TechnologyLimit> limitList) {
+        this.limitList = limitList;
+    }
+
     @Override
     public String toString() {
         return "TechnologyAttr{" +
@@ -246,19 +237,18 @@ public class TechnologyAttr {
                 ", isEdition=" + isEdition +
                 ", onMoney=" + onMoney +
                 ", machiningNums=" + machiningNums +
-                ", calculationType=" + calculationType +
-                ", calculationNumsMoney=" + calculationNumsMoney +
-                ", calculationMjMoney=" + calculationMjMoney +
-                ", setLimitType=" + setLimitType +
-                ", limitSizeMaxLong=" + limitSizeMaxLong +
-                ", limitSizeMaxWight=" + limitSizeMaxWight +
-                ", limitSizeMinLong=" + limitSizeMinLong +
-                ", limitSizeMinWight=" + limitSizeMinWight +
-                ", limitAreaId=" + limitAreaId +
                 ", status=" + status +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", sellerId=" + sellerId +
+                ", selectUitType=" + selectUitType +
+                ", robotSizeMaxLongs=" + robotSizeMaxLongs +
+                ", robotSizeMaxWidth=" + robotSizeMaxWidth +
+                ", robotSizeMinLongs=" + robotSizeMinLongs +
+                ", robotSizeMinWidth=" + robotSizeMinWidth +
+                ", limitType=" + limitType +
+                ", limitNumber=" + limitNumber +
+                ", limitList=" + limitList +
                 '}';
     }
 }

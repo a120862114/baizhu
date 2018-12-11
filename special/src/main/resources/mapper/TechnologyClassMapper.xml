@@ -16,6 +16,9 @@
     <result column="enable_attr_ids" property="enableAttrIds" jdbcType="LONGVARCHAR" />
     <collection property="listDetail" ofType="com.bzdepot.special.model.TechnologyAttr" select="com.bzdepot.special.mapper.TechnologyAttrMapper.listAttrDataByTid" column="id"  />
   </resultMap>
+  <resultMap id="GetNamesResultMap" type="com.bzdepot.special.bo.GetNamesBo" >
+    <result column="technology_name" property="Names" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, technology_name, seller_id, sort, status, default_attr_id, is_commonly_used, 
     create_time, update_time
@@ -30,6 +33,10 @@
       <include refid="Blob_Column_List" />
     from technology_class
     where seller_id = #{sellerId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKeyForNames" resultMap="GetNamesResultMap" parameterType="java.lang.Long" >
+    select technology_name from technology_class
+    where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
   select

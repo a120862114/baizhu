@@ -19,6 +19,14 @@
   <sql id="Blob_Column_List" >
     content
   </sql>
+  <select id="selectBySellerIdAndClassId" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product_master
+    where seller_id = #{sellerId} and class_id = #{classId}
+  </select>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -97,17 +105,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.ProductMaster" >
     update product_master
     <set >
-      <if test="classId != null" >
-        class_id = #{classId,jdbcType=BIGINT},
-      </if>
       <if test="boxId != null" >
         box_id = #{boxId,jdbcType=BIGINT},
       </if>
       <if test="smoney != null" >
         smoney = #{smoney,jdbcType=DECIMAL},
-      </if>
-      <if test="sellerId != null" >
-        seller_id = #{sellerId,jdbcType=BIGINT},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=BIGINT},
@@ -119,7 +121,7 @@
         content = #{content,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where seller_id = #{sellerId,jdbcType=BIGINT} and class_id = #{classId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bzdepot.special.model.ProductMaster" >
     update product_master

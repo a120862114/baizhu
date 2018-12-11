@@ -1,7 +1,9 @@
 package com.bzdepot.special.controller;
 
 import com.bzdepot.common.message.JsonReturn;
+import com.bzdepot.special.model.PaperCost;
 import com.bzdepot.special.model.PaperOtherSize;
+import com.bzdepot.special.service.PaperCostService;
 import com.bzdepot.special.service.PaperOtherSizeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,9 @@ public class PaperOtherSizeController {
 
     @Autowired
     private PaperOtherSizeService paperOtherSizeService;
+
+    @Autowired
+    private PaperCostService paperCostService;
 
     /**
      * 更新纸张其他尺寸API接口
@@ -66,6 +71,10 @@ public class PaperOtherSizeController {
     public Object deleteOther(@PathVariable("otherId") Long otherId){
         if(otherId == null){
             return JsonReturn.SetMsg(10010,"纸张其他尺寸编号不能为空!","");
+        }
+        List<PaperCost> paperCosts = paperCostService.findInSetOtherSizeIdsInPaperCost(otherId);
+        if(paperCosts != null && paperCosts.size() > 0){
+            return JsonReturn.SetMsg(10010,"此尺寸规格存在于其他纸张费配置中，暂不能删除!","");
         }
         if(paperOtherSizeService.deletePaperOtherSize(otherId) > 0){
             return JsonReturn.SetMsg(0,"删除纸张其他尺寸数据成功!","");

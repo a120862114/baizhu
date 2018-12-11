@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.profit.mapper.ProfitUltimateMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.profit.model.ProfitUltimate" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="texture_id" property="textureId" jdbcType="BIGINT" />
+    <result column="gram_id" property="gramId" jdbcType="BIGINT" />
+    <result column="types" property="types" jdbcType="TINYINT" />
+    <result column="start_value" property="startValue" jdbcType="DECIMAL" />
+    <result column="end_value" property="endValue" jdbcType="DECIMAL" />
+    <result column="level_id" property="levelId" jdbcType="BIGINT" />
+    <result column="profit_rate" property="profitRate" jdbcType="DECIMAL" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, class_id, texture_id, gram_id, types, start_value, end_value, level_id, profit_rate,
+    seller_id
+  </sql>
+  <select id="selectListData" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from profit_ultimate
+    where seller_id = #{sellerId}
+    and class_id = #{classId}
+    and texture_id = #{textureId}
+    and gram_id = #{gramId}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from profit_ultimate
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from profit_ultimate
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.profit.model.ProfitUltimate" >
+    insert into profit_ultimate (id, class_id, texture_id,
+    gram_id, types, start_value,
+      end_value, level_id, profit_rate, 
+      seller_id)
+    values (#{id,jdbcType=BIGINT}, #{classId,jdbcType=BIGINT}, #{textureId,jdbcType=BIGINT}, 
+      #{gramId,jdbcType=BIGINT}, #{types,jdbcType=TINYINT}, #{startValue,jdbcType=DECIMAL},
+      #{endValue,jdbcType=DECIMAL}, #{levelId,jdbcType=BIGINT}, #{profitRate,jdbcType=DECIMAL}, 
+      #{sellerId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.profit.model.ProfitUltimate" >
+    insert into profit_ultimate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="textureId != null" >
+        texture_id,
+      </if>
+      <if test="gramId != null" >
+        gram_id,
+      </if>
+      <if test="types != null" >
+        types,
+      </if>
+      <if test="startValue != null" >
+        start_value,
+      </if>
+      <if test="endValue != null" >
+        end_value,
+      </if>
+      <if test="levelId != null" >
+        level_id,
+      </if>
+      <if test="profitRate != null" >
+        profit_rate,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="textureId != null" >
+        #{textureId,jdbcType=BIGINT},
+      </if>
+      <if test="gramId != null" >
+        #{gramId,jdbcType=BIGINT},
+      </if>
+      <if test="types != null" >
+        #{types,jdbcType=TINYINT},
+      </if>
+      <if test="startValue != null" >
+        #{startValue,jdbcType=DECIMAL},
+      </if>
+      <if test="endValue != null" >
+        #{endValue,jdbcType=DECIMAL},
+      </if>
+      <if test="levelId != null" >
+        #{levelId,jdbcType=BIGINT},
+      </if>
+      <if test="profitRate != null" >
+        #{profitRate,jdbcType=DECIMAL},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.profit.model.ProfitUltimate" >
+    update profit_ultimate
+    <set >
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="textureId != null" >
+        texture_id = #{textureId,jdbcType=BIGINT},
+      </if>
+      <if test="gram != null" >
+        gram_id = #{gramId,jdbcType=BIGINT},
+      </if>
+      <if test="types != null" >
+        types = #{types,jdbcType=TINYINT},
+      </if>
+      <if test="startValue != null" >
+        start_value = #{startValue,jdbcType=DECIMAL},
+      </if>
+      <if test="endValue != null" >
+        end_value = #{endValue,jdbcType=DECIMAL},
+      </if>
+      <if test="levelId != null" >
+        level_id = #{levelId,jdbcType=BIGINT},
+      </if>
+      <if test="profitRate != null" >
+        profit_rate = #{profitRate,jdbcType=DECIMAL},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.profit.model.ProfitUltimate" >
+    update profit_ultimate
+    set class_id = #{classId,jdbcType=BIGINT},
+      texture_id = #{textureId,jdbcType=BIGINT},
+      gram_id = #{gramId,jdbcType=BIGINT},
+      types = #{types,jdbcType=TINYINT},
+      start_value = #{startValue,jdbcType=DECIMAL},
+      end_value = #{endValue,jdbcType=DECIMAL},
+      level_id = #{levelId,jdbcType=BIGINT},
+      profit_rate = #{profitRate,jdbcType=DECIMAL},
+      seller_id = #{sellerId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

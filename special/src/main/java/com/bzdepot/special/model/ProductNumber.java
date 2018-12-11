@@ -9,6 +9,8 @@ public class ProductNumber {
 
     private Long pconfigId;
 
+    private Byte isDefault;
+
     public Long getId() {
         return id;
     }
@@ -39,5 +41,24 @@ public class ProductNumber {
 
     public void setPconfigId(Long pconfigId) {
         this.pconfigId = pconfigId;
+    }
+
+    public Byte getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Byte isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductNumber{" +
+                "id=" + id +
+                ", sellerId=" + sellerId +
+                ", nums=" + nums +
+                ", pconfigId=" + pconfigId +
+                ", isDefault=" + isDefault +
+                '}';
     }
 }

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bzdepot.special.mapper.PrintingSpotConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.bzdepot.special.model.PrintingSpotConfig" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+    <result column="printing_cost_id" property="printingCostId" jdbcType="BIGINT" />
+    <result column="spot_color_id" property="spotColorId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="in_nums" property="inNums" jdbcType="INTEGER" />
+    <result column="in_money" property="inMoney" jdbcType="DECIMAL" />
+    <result column="more_nums" property="moreNums" jdbcType="INTEGER" />
+    <result column="more_money" property="moreMoney" jdbcType="DECIMAL" />
+    <collection property="colorDetail" ofType="com.bzdepot.special.model.SpotColor" select="com.bzdepot.special.mapper.SpotColorMapper.selectByPrimaryKey" column="spot_color_id"  />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, seller_id, printing_cost_id, spot_color_id, status, in_nums, in_money, more_nums, 
+    more_money
+  </sql>
+  <select id="selectBySellerIdAndPrintingCostId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from printing_spot_config
+    where seller_id = #{sellerId} and printing_cost_id = #{printingCostId}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from printing_spot_config
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from printing_spot_config
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bzdepot.special.model.PrintingSpotConfig" >
+    insert into printing_spot_config (id, seller_id, printing_cost_id, 
+      spot_color_id, status, in_nums, 
+      in_money, more_nums, more_money
+      )
+    values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{printingCostId,jdbcType=BIGINT}, 
+      #{spotColorId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{inNums,jdbcType=INTEGER}, 
+      #{inMoney,jdbcType=DECIMAL}, #{moreNums,jdbcType=INTEGER}, #{moreMoney,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bzdepot.special.model.PrintingSpotConfig" >
+    insert into printing_spot_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="printingCostId != null" >
+        printing_cost_id,
+      </if>
+      <if test="spotColorId != null" >
+        spot_color_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="inNums != null" >
+        in_nums,
+      </if>
+      <if test="inMoney != null" >
+        in_money,
+      </if>
+      <if test="moreNums != null" >
+        more_nums,
+      </if>
+      <if test="moreMoney != null" >
+        more_money,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="printingCostId != null" >
+        #{printingCostId,jdbcType=BIGINT},
+      </if>
+      <if test="spotColorId != null" >
+        #{spotColorId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="inNums != null" >
+        #{inNums,jdbcType=INTEGER},
+      </if>
+      <if test="inMoney != null" >
+        #{inMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="moreNums != null" >
+        #{moreNums,jdbcType=INTEGER},
+      </if>
+      <if test="moreMoney != null" >
+        #{moreMoney,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.PrintingSpotConfig" >
+    update printing_spot_config
+    <set >
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="printingCostId != null" >
+        printing_cost_id = #{printingCostId,jdbcType=BIGINT},
+      </if>
+      <if test="spotColorId != null" >
+        spot_color_id = #{spotColorId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="inNums != null" >
+        in_nums = #{inNums,jdbcType=INTEGER},
+      </if>
+      <if test="inMoney != null" >
+        in_money = #{inMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="moreNums != null" >
+        more_nums = #{moreNums,jdbcType=INTEGER},
+      </if>
+      <if test="moreMoney != null" >
+        more_money = #{moreMoney,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bzdepot.special.model.PrintingSpotConfig" >
+    update printing_spot_config
+    set seller_id = #{sellerId,jdbcType=BIGINT},
+      printing_cost_id = #{printingCostId,jdbcType=BIGINT},
+      spot_color_id = #{spotColorId,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      in_nums = #{inNums,jdbcType=INTEGER},
+      in_money = #{inMoney,jdbcType=DECIMAL},
+      more_nums = #{moreNums,jdbcType=INTEGER},
+      more_money = #{moreMoney,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

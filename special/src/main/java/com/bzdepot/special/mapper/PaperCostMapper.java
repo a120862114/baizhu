@@ -6,6 +6,7 @@ import com.bzdepot.special.model.PaperCost;
 import com.bzdepot.special.model.PaperCostWithBLOBs;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface PaperCostMapper {
@@ -28,4 +29,10 @@ public interface PaperCostMapper {
     List<ProductWantTextureBo> findPaperTextureNoRepeat(@Param("sellerId") Long sellerId,@Param("status") Byte status);
 
     List<ProductWantGramBo> findPaperGramNoRepeat(@Param("sellerId") Long sellerId,@Param("paperTid") Long paperTid);
+
+    List<PaperCost> findInSetDrumIdsData(Long drumId);
+
+    List<PaperCost> findInSetOtherSizeIdsData(Long otherId);
+
+    List<PaperCostWithBLOBs> joinFindPaperAndPrintingData(@Param("sellerId") Long sellerId, @Param("textureId") Long textureId, @Param("gramNums")BigDecimal gramNums,@Param("printingColorId") Long printingColorId,@Param("Longs") BigDecimal Longs,@Param("Width") BigDecimal Width);
 }

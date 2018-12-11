@@ -23,4 +23,6 @@ public interface TextureGroupMapper {
     int countTextureGroup(@Param("sellerid") Long sellerid,@Param("classid") Long classid);
 
     TextureGroup selectBySellerIdAndGroupName(@Param("sellerId") Long sellerId,@Param("groupName") String groupName);
+
+    TextureGroup countTextureGroupByMore(@Param("sellerid") Long sellerid,@Param("classid") Long classid,@Param("groupName") String groupName);
 }

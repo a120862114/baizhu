@@ -1,9 +1,11 @@
 package com.bzdepot.special.controller;
 
 import com.bzdepot.common.message.JsonReturn;
+import com.bzdepot.special.bo.JoinSelectBo;
 import com.bzdepot.special.bo.PaperCostBo;
 import com.bzdepot.special.bo.ProductWantGramBo;
 import com.bzdepot.special.bo.ProductWantTextureBo;
+import com.bzdepot.special.model.PaperCostWithBLOBs;
 import com.bzdepot.special.service.PaperCostService;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -125,5 +127,29 @@ public class PaperCostController {
             return JsonReturn.SetMsg(0,"获取材质的厚度数据成功!",productWantGramBos);
         }
         return JsonReturn.SetMsg(10011,"此材质暂无配置的厚度数据!","");
+    }
+
+    /**
+     * 联合查询符合条件的纸张与印刷机API接口
+     * @param joinSelectBo
+     * @param result
+     * @return
+     */
+    @PostMapping(value = "/join/paper/printing")
+    public Object joinPaperPrintingApi(@Valid @ModelAttribute JoinSelectBo joinSelectBo,BindingResult result){
+        if(result.hasErrors()){
+            String ErrorMsg = result.getFieldError().getDefaultMessage();
+            String ErrorCode = result.getFieldError().getCode();
+            loger.error(ErrorCode+":"+ErrorMsg);
+            if(ErrorCode.equals("typeMismatch")){
+                return JsonReturn.SetMsg(10010,result.getFieldError().getField()+"参数传递的类型错误!","");
+            }
+            return JsonReturn.SetMsg(10010,ErrorMsg,"");
+        }
+        List<PaperCostWithBLOBs> paperCosts = paperCostService.findPaperAndPrintingJoinData(joinSelectBo.getSellerId(),joinSelectBo.getTextureId(),joinSelectBo.getGramNums(),joinSelectBo.getPrintingColorId(),joinSelectBo.getLongs(),joinSelectBo.getWidth());
+        if(paperCosts != null && paperCosts.size() > 0){
+            return JsonReturn.SetMsg(0,"获取纸张配置与印刷机配置成功!",paperCosts);
+        }
+        return JsonReturn.SetMsg(10011,"暂无符合的纸张配置与印刷机配置数据!","");
     }
 }

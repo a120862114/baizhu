@@ -1,6 +1,7 @@
 package com.bzdepot.special.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class PaperCost {
     private Long id;
@@ -46,6 +47,10 @@ public class PaperCost {
     private BigDecimal lastDun;
 
     private BigDecimal lastMoney;
+
+    private Byte lastUnitType;
+
+    private List<PrintingCost> printingData;
 
     public BigDecimal getLastDun() {
         return lastDun;
@@ -221,5 +226,21 @@ public class PaperCost {
 
     public void setIsRoutine(Byte isRoutine) {
         this.isRoutine = isRoutine;
+    }
+
+    public Byte getLastUnitType() {
+        return lastUnitType;
+    }
+
+    public void setLastUnitType(Byte lastUnitType) {
+        this.lastUnitType = lastUnitType;
+    }
+
+    public List<PrintingCost> getPrintingData() {
+        return printingData;
+    }
+
+    public void setPrintingData(List<PrintingCost> printingData) {
+        this.printingData = printingData;
     }
 }

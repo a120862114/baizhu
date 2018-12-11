@@ -3,6 +3,8 @@ package com.bzdepot.offer.mapper;
 import com.bzdepot.offer.model.Texture;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface TextureMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -21,4 +23,6 @@ public interface TextureMapper {
     Texture selectByTitleAndSellerId(@Param("sellerId") Long sellerId,@Param("title") String title);
 
     Texture selectByTitleAndSellerIdAndClassId(@Param("sellerId") Long sellerId,@Param("classId") Long classId,@Param("title") String title);
+
+    List<Texture> selectBySellerId(Long sellerId);
 }

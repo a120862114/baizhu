@@ -21,4 +21,6 @@ public interface InvoiceMapper {
     List<Invoice> selectBySellerId(Long sellerId);
 
     Invoice findInvoiceByLevelIdFuncm(@Param("sellerId") Long sellerId,@Param("comanyId") Long comanyId,@Param("types") Byte types,@Param("levelId") Long levelId);
+
+    List<Invoice> selectBySellerIdAndComanyId(@Param("sellerId") Long sellerId,@Param("comanyId") Long comanyId);
 }

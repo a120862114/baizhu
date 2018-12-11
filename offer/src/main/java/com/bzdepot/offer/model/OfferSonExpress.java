@@ -42,4 +42,14 @@ public class OfferSonExpress {
     public void setRate(BigDecimal rate) {
         this.rate = rate;
     }
+
+    @Override
+    public String toString() {
+        return "OfferSonExpress{" +
+                "id=" + id +
+                ", offerSonId=" + offerSonId +
+                ", cityId=" + cityId +
+                ", rate=" + rate +
+                '}';
+    }
 }

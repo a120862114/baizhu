@@ -56,10 +56,13 @@ public class ImagesServiceImpl implements ImagesService {
     /*
     * 分页查询当前用户所有图片
     * */
-   public PageInfo searchImagesForUserPage(Long UserId,String ImgName,Long StatTime, Long EndTime,int pageNum,int pageSize){
+   public PageInfo<List<Images>> searchImagesForUserPage(Long UserId,String ImgName,Long StatTime, Long EndTime,int pageNum,int pageSize){
        PageHelper.startPage(pageNum,pageSize);
        List<Images> PageData = imgMaper.selectUserImgPage(UserId,ImgName,StatTime,EndTime);
-       PageInfo pageInfo = new PageInfo(PageData);
+       PageInfo<List<Images>> pageInfo = null;
+       if(PageData != null){
+           pageInfo = new PageInfo(PageData);
+       }
        return pageInfo;
    }
 }

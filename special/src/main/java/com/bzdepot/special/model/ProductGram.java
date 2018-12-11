@@ -9,6 +9,10 @@ public class ProductGram {
 
     private Long gramId;
 
+    private Byte isDefault;
+
+    private PaperGram gramData;
+
     public Long getId() {
         return id;
     }
@@ -39,5 +43,33 @@ public class ProductGram {
 
     public void setGramId(Long gramId) {
         this.gramId = gramId;
+    }
+
+    public Byte getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Byte isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    public PaperGram getGramData() {
+        return gramData;
+    }
+
+    public void setGramData(PaperGram gramData) {
+        this.gramData = gramData;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductGram{" +
+                "id=" + id +
+                ", ptId=" + ptId +
+                ", sellerId=" + sellerId +
+                ", gramId=" + gramId +
+                ", isDefault=" + isDefault +
+                ", gramData=" + gramData +
+                '}';
     }
 }

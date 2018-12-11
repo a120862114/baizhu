@@ -6,16 +6,33 @@
     <result column="pconfig_id" property="pconfigId" jdbcType="BIGINT" />
     <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
     <result column="texture_id" property="textureId" jdbcType="BIGINT" />
+    <result column="is_default" property="isDefault" jdbcType="TINYINT" />
+    <collection property="textureName" ofType="com.bzdepot.special.model.PaperTexture" select="com.bzdepot.special.mapper.PaperTextureMapper.selectByPrimaryKeyForNames" column="texture_id"  />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, pconfig_id, seller_id, texture_id
+    id, pconfig_id, seller_id, texture_id,is_default
   </sql>
+  <select id="selectByPconfigIdAndSellerIdAndTextureId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_texture
+    where seller_id = #{sellerId} and pconfig_id = #{pconfigId} and texture_id = #{textureId}
+  </select>
+  <select id="selectByPconfigIdAndSellerId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_texture
+    where seller_id = #{sellerId} and pconfig_id = #{pconfigId}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from product_texture
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <delete id="deleteByMore">
+    delete from product_texture where seller_id = #{sellerId} and pconfig_id = #{pconfigId} and texture_id = #{textureId}
+  </delete>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from product_texture
     where id = #{id,jdbcType=BIGINT}
@@ -78,5 +95,9 @@
       seller_id = #{sellerId,jdbcType=BIGINT},
       texture_id = #{textureId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="setIsDefault" parameterType="com.bzdepot.special.model.ProductTexture" >
+    update product_texture set is_default = 0 where seller_id = #{sellerId,jdbcType=BIGINT} and pconfig_id = #{pconfigId,jdbcType=BIGINT};
+    update product_texture set is_default = 1 where seller_id = #{sellerId,jdbcType=BIGINT} and pconfig_id = #{pconfigId,jdbcType=BIGINT} and texture_id = #{textureId,jdbcType=BIGINT};
   </update>
 </mapper>

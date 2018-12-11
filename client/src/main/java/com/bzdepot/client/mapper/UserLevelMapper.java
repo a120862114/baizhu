@@ -1,6 +1,7 @@
 package com.bzdepot.client.mapper;
 
 import com.bzdepot.client.model.UserLevel;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface UserLevelMapper {
     List<UserLevel> getList(Long seller_id);
 
     UserLevel findDefault(UserLevel record);
+
+    UserLevel selectBySellerIdAndLevelName(@Param("sellerId") Long sellerId,@Param("levelName") String levelName);
 }

@@ -15,6 +15,8 @@ public class ProductSize {
 
     private Long sellerId;
 
+    private Byte isDefault;
+
     public Long getId() {
         return id;
     }
@@ -61,5 +63,26 @@ public class ProductSize {
 
     public void setSellerId(Long sellerId) {
         this.sellerId = sellerId;
+    }
+
+    public Byte getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Byte isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductSize{" +
+                "id=" + id +
+                ", pconfigId=" + pconfigId +
+                ", longs=" + longs +
+                ", width=" + width +
+                ", height=" + height +
+                ", sellerId=" + sellerId +
+                ", isDefault=" + isDefault +
+                '}';
     }
 }

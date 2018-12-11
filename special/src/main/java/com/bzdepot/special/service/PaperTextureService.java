@@ -25,8 +25,9 @@ public class PaperTextureService {
      */
     @CacheEvict(allEntries = true)
     public int updatePaperTexture(PaperTexture paperTexture){
-        paperTexture.setSellerId(UserUtil.getId());
+
         paperTexture.settBs(paperTexture.getNames());
+
         if(paperTexture.getId() == null){
             return paperTextureMapper.insertSelective(paperTexture);
         }else {
@@ -34,6 +35,15 @@ public class PaperTextureService {
         }
     }
 
+    /**
+     * 根据材质名称查找当前商家是否存在这个名称的材质
+     * @param sellerId
+     * @param names
+     * @return
+     */
+    public PaperTexture findPaperTextureByNames(Long sellerId,String names){
+        return paperTextureMapper.selectBySellerIdAndNames(sellerId,names);
+    }
     /**
      * 查询单条的纸张材质
      * @param id

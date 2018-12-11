@@ -107,7 +107,7 @@ public class TransportCompanyService {
         transportRegions.setCompanyId(comanyId);
         transportRegions.setSellerId(sellerId);
         try {
-            for(int i = 1; i < 8; i++){
+            for(int i = 1; i < 16; i++){
                 transportRegions.setDescribe("全国划分为"+String.valueOf(i)+"个区域");
                 transportRegions.setBlockNums(Integer.valueOf(i));
                 Ok = transportRegionMapper.insertSelective(transportRegions);
@@ -131,5 +131,23 @@ public class TransportCompanyService {
      */
     public List<TransportCompany> findSelfComany(){
         return transportCompanyMapper.findSelfComany(UserUtil.getId());
+    }
+
+    /**
+     * 删除快递数据
+     * @param id
+     * @return
+     */
+    public int deleteCompanyData(Long id){
+        return transportCompanyMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 查询单条的快递数据
+     * @param id
+     * @return
+     */
+    public TransportCompany findOneComanyById(Long id){
+        return transportCompanyMapper.selectByPrimaryKey(id);
     }
 }

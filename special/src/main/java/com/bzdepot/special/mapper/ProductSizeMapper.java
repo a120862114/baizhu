@@ -1,6 +1,7 @@
 package com.bzdepot.special.mapper;
 
 import com.bzdepot.special.model.ProductSize;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,4 +18,9 @@ public interface ProductSizeMapper {
 
     int updateByPrimaryKey(ProductSize record);
 
+    List<ProductSize> selectBySellerId(@Param("sellerId") Long sellerId,@Param("pconfigId") Long pconfigId);
+
+    ProductSize findSizeByOutId(ProductSize record);
+
+    int setIsDefault(ProductSize record);
 }

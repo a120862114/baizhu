@@ -24,12 +24,63 @@
     <result column="is_routine" property="isRoutine" jdbcType="TINYINT" />
     <result column="last_dun" property="lastDun" jdbcType="DECIMAL" />
     <result column="last_money" property="lastMoney" jdbcType="DECIMAL" />
+    <result column="last_unit_type" property="lastUnitType" jdbcType="TINYINT" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.bzdepot.special.model.PaperCostWithBLOBs" extends="BaseResultMap" >
     <result column="drum_ids" property="drumIds" jdbcType="LONGVARCHAR" />
     <result column="drum_values" property="drumValues" jdbcType="LONGVARCHAR" />
     <result column="other_size_ids" property="otherSizeIds" jdbcType="LONGVARCHAR" />
     <result column="other_size_values" property="otherSizeValues" jdbcType="LONGVARCHAR" />
+    <collection property="drumList" ofType="com.bzdepot.special.model.PaperDrum" select="com.bzdepot.special.mapper.PaperDrumMapper.selectByInIds" column="drum_ids"  />
+    <collection property="otherSizeList" ofType="com.bzdepot.special.model.PaperOtherSize" select="com.bzdepot.special.mapper.PaperOtherSizeMapper.selectByInIds" column="other_size_ids"  />
+    <collection property="printingData" ofType="com.bzdepot.special.model.PrintingCost">
+      <id column="cid" property="id" jdbcType="BIGINT" />
+      <result column="robot_identifier" property="robotIdentifier" jdbcType="VARCHAR" />
+      <result column="cseller_id" property="sellerId" jdbcType="BIGINT" />
+      <result column="robot_size_id" property="robotSizeId" jdbcType="BIGINT" />
+      <result column="robot_brand_id" property="robotBrandId" jdbcType="BIGINT" />
+      <result column="robot_color_id" property="robotColorId" jdbcType="BIGINT" />
+      <result column="is_uv" property="isUv" jdbcType="TINYINT" />
+      <result column="robot_manufactor_id" property="robotManufactorId" jdbcType="BIGINT" />
+      <result column="boot_strap_money" property="bootStrapMoney" jdbcType="DECIMAL" />
+      <result column="print_nums" property="printNums" jdbcType="INTEGER" />
+      <result column="exceed_money" property="exceedMoney" jdbcType="DECIMAL" />
+      <result column="exceed_nums" property="exceedNums" jdbcType="INTEGER" />
+      <result column="thickness_range_start" property="thicknessRangeStart" jdbcType="DECIMAL" />
+      <result column="thickness_range_end" property="thicknessRangeEnd" jdbcType="DECIMAL" />
+      <result column="min_bite" property="minBite" jdbcType="DECIMAL" />
+      <result column="paper_feeding_max_one" property="paperFeedingMaxOne" jdbcType="DECIMAL" />
+      <result column="paper_feeding_max_two" property="paperFeedingMaxTwo" jdbcType="DECIMAL" />
+      <result column="paper_feeding_min_one" property="paperFeedingMinOne" jdbcType="DECIMAL" />
+      <result column="paper_feeding_min_two" property="paperFeedingMinTwo" jdbcType="DECIMAL" />
+      <result column="discharge_number_in" property="dischargeNumberIn" jdbcType="INTEGER" />
+      <result column="discharge_number_in_nums" property="dischargeNumberInNums" jdbcType="INTEGER" />
+      <result column="discharge_number_max" property="dischargeNumberMax" jdbcType="INTEGER" />
+      <result column="discharge_number_max_nums" property="dischargeNumberMaxNums" jdbcType="INTEGER" />
+      <result column="special_color_type" property="specialColorType" jdbcType="TINYINT" />
+      <result column="special_color_one_rate" property="specialColorOneRate" jdbcType="DECIMAL" />
+      <result column="is_an_color_status" property="isAnColorStatus" jdbcType="TINYINT" />
+      <result column="is_big_size" property="isBigSize" jdbcType="TINYINT" />
+      <result column="is_big_color" property="isBigColor" jdbcType="TINYINT" />
+      <result column="status" property="status" jdbcType="TINYINT" />
+      <result column="create_time" property="createTime" jdbcType="BIGINT" />
+      <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+      <result column="robot_size_title" property="robotSizeTitle" jdbcType="VARCHAR" />
+      <result column="robot_brand_title" property="robotBrandTitle" jdbcType="VARCHAR" />
+      <result column="robot_color_title" property="robotColorTitle" jdbcType="VARCHAR" />
+      <result column="manufactor_title" property="manufactorTitle" jdbcType="VARCHAR" />
+      <result column="big_size_one" property="bigSizeOne" jdbcType="DECIMAL" />
+      <result column="big_size_two" property="bigSizeTwo" jdbcType="DECIMAL" />
+      <result column="big_size_three" property="bigSizeThree" jdbcType="DECIMAL" />
+      <result column="big_size_four" property="bigSizeFour" jdbcType="DECIMAL" />
+      <result column="big_size_five" property="bigSizeFive" jdbcType="DECIMAL" />
+      <result column="big_color_one" property="bigColorOne" jdbcType="DECIMAL" />
+      <result column="big_color_two" property="bigColorTwo" jdbcType="DECIMAL" />
+      <result column="big_color_three" property="bigColorThree" jdbcType="DECIMAL" />
+      <result column="big_color_four" property="bigColorFour" jdbcType="DECIMAL" />
+      <result column="big_color_five" property="bigColorFive" jdbcType="DECIMAL" />
+      <collection property="colorConfigs" ofType="com.bzdepot.special.model.PrintingSpotConfig" select="com.bzdepot.special.mapper.PrintingSpotConfigMapper.selectBySellerIdAndPrintingCostId" column="{sellerId=cseller_id,printingCostId=cid}"  />
+    </collection>
   </resultMap>
 
   <resultMap id="ProductSetWantDataMap" type="com.bzdepot.special.bo.ProductWantTextureBo">
@@ -41,11 +92,48 @@
   <sql id="Base_Column_List" >
     id, seller_id, paper_tid, paper_tname, brand_id, brand_name, packing_id, packing_name, 
     gram_id, gram_name, thickness_start, thickness_end, supplier_id, supplier_name, status, 
-    create_time, update_time, is_magnanimity, is_positive_degree, is_routine,last_dun,last_money
+    create_time, update_time, is_magnanimity, is_positive_degree, is_routine,last_dun,last_money,last_unit_type
   </sql>
   <sql id="Blob_Column_List" >
     drum_ids, drum_values, other_size_ids, other_size_values
   </sql>
+  <select id="joinFindPaperAndPrintingData" resultMap="ResultMapWithBLOBs">
+    SELECT
+      p.id,p.seller_id,p.paper_tid,p.brand_id, p.packing_id,
+      p.gram_id, p.thickness_start,p.thickness_end,p.supplier_id, p.status,
+      p.is_magnanimity,  p.is_positive_degree,  p.is_routine,last_dun, p.last_money, p.last_unit_type,
+      p.drum_ids, p.other_size_ids,
+      t.id as cid,
+      t.seller_id as cseller_id,
+    t.robot_identifier,t.robot_size_id, t.robot_brand_id, t.robot_color_id, t.is_uv,
+    t.robot_manufactor_id, t.boot_strap_money, t.print_nums, t.exceed_money, t.exceed_nums, t.thickness_range_start,
+    t.thickness_range_end, t.min_bite, t.paper_feeding_max_one, t.paper_feeding_max_two, t.paper_feeding_min_one,
+    t.paper_feeding_min_two, t.discharge_number_in, t.discharge_number_in_nums, t.discharge_number_max,
+    t.discharge_number_max_nums, t.special_color_type,t.special_color_one_rate,t.is_an_color_status,t.is_big_size,t.is_big_color,
+    t.status, t.create_time, t.update_time, t.robot_size_title, t.robot_brand_title, t.robot_color_title,
+    t.manufactor_title,t.big_size_one,t.big_size_two,t.big_size_three,t.big_size_four,t.big_size_five,t.big_color_one,
+    t.big_color_two,t.big_color_two,t.big_color_three,t.big_color_four,t.big_color_five
+    from paper_cost p LEFT JOIN printing_cost t on p.seller_id = t.seller_id and p.thickness_start &gt;= t.thickness_range_start and p.thickness_start &lt;= t.thickness_range_end
+    where p.seller_id = #{sellerId} and  p.paper_tid = #{textureId}
+    and p.gram_id = (SELECT id FROM paper_gram g where g.seller_id = #{sellerId} and g.gram_nums = #{gramNums})
+    and t.robot_color_id = #{printingColorId}
+    and t.paper_feeding_max_one &gt;= #{Longs}
+    and t.paper_feeding_max_two &gt;= #{Width};
+  </select>
+  <select id="findInSetOtherSizeIdsData" resultMap="BaseResultMap" resultType="java.lang.Long">
+    SELECT
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from paper_cost where FIND_IN_SET(#{otherId},other_size_ids)
+  </select>
+  <select id="findInSetDrumIdsData" resultMap="BaseResultMap" resultType="java.lang.Long">
+    SELECT
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from paper_cost where FIND_IN_SET(#{drumId},drum_ids)
+  </select>
   <select id="findPaperGramNoRepeat" resultType="com.bzdepot.special.bo.ProductWantGramBo">
     SELECT
     pc.gram_id as id,pg.gram_nums as gram
@@ -86,7 +174,7 @@
       gram_name, thickness_start, thickness_end, 
       supplier_id, supplier_name, status, 
       create_time, update_time, is_magnanimity, 
-      is_positive_degree, is_routine,last_dun,last_money, drum_ids,
+      is_positive_degree, is_routine,last_dun,last_money,last_unit_type,drum_ids,
       drum_values, other_size_ids, other_size_values
       )
     values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{paperTid,jdbcType=BIGINT}, 
@@ -95,7 +183,7 @@
       #{gramName,jdbcType=VARCHAR}, #{thicknessStart,jdbcType=DECIMAL}, #{thicknessEnd,jdbcType=DECIMAL}, 
       #{supplierId,jdbcType=BIGINT}, #{supplierName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
       #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{isMagnanimity,jdbcType=TINYINT}, 
-      #{isPositiveDegree,jdbcType=TINYINT}, #{isRoutine,jdbcType=TINYINT}, #{lastDun,jdbcType=DECIMAL},#{lastMoney,jdbcType=DECIMAL},#{drumIds,jdbcType=LONGVARCHAR},
+      #{isPositiveDegree,jdbcType=TINYINT}, #{isRoutine,jdbcType=TINYINT}, #{lastDun,jdbcType=DECIMAL},#{lastMoney,jdbcType=DECIMAL},#{lastUnitType,jdbcType=TINYINT},#{drumIds,jdbcType=LONGVARCHAR},
       #{drumValues,jdbcType=LONGVARCHAR}, #{otherSizeIds,jdbcType=LONGVARCHAR}, #{otherSizeValues,jdbcType=LONGVARCHAR}
       )
   </insert>
@@ -167,6 +255,9 @@
       </if>
       <if test="lastMoney != null" >
         last_money,
+      </if>
+      <if test="lastUnitType != null" >
+        last_unit_type,
       </if>
       <if test="drumIds != null" >
         drum_ids,
@@ -248,6 +339,9 @@
       <if test="lastMoney != null" >
         #{lastMoney,jdbcType=DECIMAL},
       </if>
+      <if test="lastUnitType != null" >
+        #{lastUnitType,jdbcType=TINYINT},
+      </if>
       <if test="drumIds != null" >
         #{drumIds,jdbcType=LONGVARCHAR},
       </if>
@@ -328,6 +422,9 @@
       <if test="lastMoney != null" >
         last_money = #{lastMoney,jdbcType=DECIMAL},
       </if>
+      <if test="lastUnitType != null" >
+        last_unit_type = #{lastUnitType,jdbcType=TINYINT},
+      </if>
       <if test="drumIds != null" >
         drum_ids = #{drumIds,jdbcType=LONGVARCHAR},
       </if>
@@ -366,6 +463,7 @@
       is_routine = #{isRoutine,jdbcType=TINYINT},
       last_dun = #{lastDun,jdbcType=DECIMAL},
       last_money = #{lastMoney,jdbcType=DECIMAL},
+      last_unit_type = #{lastUnitType,jdbcType=TINYINT},
       drum_ids = #{drumIds,jdbcType=LONGVARCHAR},
       drum_values = #{drumValues,jdbcType=LONGVARCHAR},
       other_size_ids = #{otherSizeIds,jdbcType=LONGVARCHAR},

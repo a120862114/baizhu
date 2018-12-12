@@ -52,9 +52,11 @@ public class TextureController {
         if(texture.getId() == null){
             return JsonReturn.SetMsg(10010,"材质数据编号不能为空!","");
         }
-        Texture textureData = textureService.findTextureByClassIdAndSellerIdAndTitleForOne(texture.getSellerId(),texture.getClassId(),texture.getTitle());
-        if(textureData != null && textureData.getId() != texture.getId()){
-            return JsonReturn.SetMsg(10010,"材质名称已经存在，请更换名称后在试!","");
+        if(texture.getTitle() != null) {
+            Texture textureData = textureService.findTextureByClassIdAndSellerIdAndTitleForOne(texture.getSellerId(), texture.getClassId(), texture.getTitle());
+            if (textureData != null && textureData.getId() != texture.getId()) {
+                return JsonReturn.SetMsg(10010, "材质名称已经存在，请更换名称后在试!", "");
+            }
         }
         int Ok = textureService.editTexture(texture);
         if(Ok == 1){

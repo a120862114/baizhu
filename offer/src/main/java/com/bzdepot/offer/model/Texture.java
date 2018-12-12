@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 public class Texture {
     private Long id;
 
-    @NotNull(message = "材质名称不能为空!")
     private String title;
 
     @NotNull(message = "所属分类编号不能为空!")

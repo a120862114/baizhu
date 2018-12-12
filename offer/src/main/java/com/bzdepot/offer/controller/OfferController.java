@@ -53,6 +53,9 @@ public class OfferController {
             }
             return JsonReturn.SetMsg(10010,ErrorMsg,"");
         }
+        System.out.println("传递的参数开始");
+        System.out.println(selectOfferMoneyVo);
+        System.out.println("传递的参数结束");
         List<SelectOfferVo> selectOfferVos = null;
         if(selectOfferMoneyVo.getIsSumer().equals(new Byte("0"))){
             selectOfferVos = offerService.findAllOfferAndSonDatas(selectOfferMoneyVo);
@@ -102,7 +105,7 @@ public class OfferController {
             }
             return JsonReturn.SetMsg(10010,ErrorMsg,"");
         }
-
+        System.out.println(selectOfferMoneyVo.toString());
         List<SelectOfferVo> selectOfferVos = offerService.findAllForSummer(selectOfferMoneyVo);
         return JsonReturn.SetMsg(0,"获取接口测试",selectOfferVos);
     }

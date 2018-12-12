@@ -772,12 +772,14 @@ public class OfferService {
                            }catch (NumberFormatException e){
                                 loger.error("城市ID转码失败");
                            }
+
                            //除外的城市计算邮费
-                           if(CityId != null && CityId == selectOfferMoneyVo.getCityId()){
-                               if(expressMoney != null){
+                           if(CityId != null && CityId.equals(selectOfferMoneyVo.getCityId())){
+
+                               //if(expressMoney != null){
                                    selectOfferVos.get(i).setExpressMoney(expressMoney.get("money")); //设置最终邮费，邮费成本加邮费利润
 
-                               }
+                              // }
                            }
                         }
                     }else{

@@ -6,16 +6,18 @@
     <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
     <result column="technology_id" property="technologyId" jdbcType="BIGINT" />
     <result column="attr_id" property="attrId" jdbcType="BIGINT" />
+    <result column="is_lock" property="isLock" jdbcType="TINYINT" />
+    <result column="is_input" property="isInput" jdbcType="TINYINT" />
     <collection property="technologyAttrName" ofType="com.bzdepot.special.model.TechnologyAttr" select="com.bzdepot.special.mapper.TechnologyAttrMapper.selectByPrimaryKeyForNames" column="attr_id"  />
   </resultMap>
   <select id="selectAttrData" resultMap="BaseResultMap">
-    select class_id,seller_id,technology_id,attr_id from product_technology_son where seller_id = #{sellerId} and class_id = #{classId} and technology_id = #{technologyId}
+    select class_id,seller_id,technology_id,attr_id,is_lock,is_input from product_technology_son where seller_id = #{sellerId} and class_id = #{classId} and technology_id = #{technologyId}
   </select>
   <insert id="insert" parameterType="com.bzdepot.special.model.productTechnologySon" >
     insert into product_technology_son (class_id, seller_id, technology_id, 
-      attr_id)
+      attr_id,is_lock,is_input)
     values (#{classId,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{technologyId,jdbcType=BIGINT}, 
-      #{attrId,jdbcType=BIGINT})
+      #{attrId,jdbcType=BIGINT},#{isLock,jdbcType=TINYINT},#{isInput,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.bzdepot.special.model.productTechnologySon" >
     insert into product_technology_son
@@ -32,6 +34,12 @@
       <if test="attrId != null" >
         attr_id,
       </if>
+      <if test="isLock != null" >
+        is_lock,
+      </if>
+      <if test="isInput != null" >
+        is_input,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="classId != null" >
@@ -46,6 +54,24 @@
       <if test="attrId != null" >
         #{attrId,jdbcType=BIGINT},
       </if>
+      <if test="isLock != null" >
+        #{isLock,jdbcType=BIGINT},
+      </if>
+      <if test="isInput != null" >
+        #{isInput,jdbcType=BIGINT},
+      </if>
     </trim>
   </insert>
+  <update id="updateBySelective" parameterType="com.bzdepot.special.model.productTechnologySon" >
+    update product_technology_son
+    <set >
+      <if test="isLock != null" >
+        is_lock = #{isLock,jdbcType=BIGINT},
+      </if>
+      <if test="isInput != null" >
+        is_input = #{isInput,jdbcType=BIGINT},
+      </if>
+    </set>
+    where class_id = #{classId,jdbcType=BIGINT} and seller_id = #{sellerId,jdbcType=BIGINT} and technology_id = #{technologyId,jdbcType=BIGINT} and attr_id = #{attrId,jdbcType=BIGINT}
+  </update>
 </mapper>

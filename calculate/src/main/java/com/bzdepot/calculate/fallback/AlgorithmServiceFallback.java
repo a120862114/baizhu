@@ -1,5 +1,6 @@
 package com.bzdepot.calculate.fallback;
 
+import com.bzdepot.calculate.bo.MinLengthBo;
 import com.bzdepot.calculate.bo.PapercutNumber;
 import com.bzdepot.calculate.bo.PrintSizeBo;
 import com.bzdepot.calculate.feign.AlgorithmService;
@@ -24,5 +25,11 @@ public class AlgorithmServiceFallback implements AlgorithmService {
     public Object getPrintSize(@RequestBody PrintSizeBo printSizeBo){
         loger.error("调用计算指定最小尺寸与最大尺寸间所有自定义尺寸的拼版尺寸异常!");
         return JsonReturn.SetMsg(-1,"调用计算指定最小尺寸与最大尺寸间所有自定义尺寸的拼版尺寸异常!","");
+    }
+
+    @Override
+    public Object getMinLength(@RequestBody MinLengthBo minLengthBo){
+        loger.error("调用无限长纸张计算最小长度异常!");
+        return JsonReturn.SetMsg(-1,"调用无限长纸张计算最小长度异常!","");
     }
 }

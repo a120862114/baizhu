@@ -56,6 +56,16 @@ public class SelectOfferMoneyVo {
 
     private BigDecimal gxmoney; //固定成本价
 
+    private int isSfExpress;
+
+    public int getIsSfExpress() {
+        return isSfExpress;
+    }
+
+    public void setIsSfExpress(int isSfExpress) {
+        this.isSfExpress = isSfExpress;
+    }
+
     public Long getSellerId() {
         return sellerId;
     }
@@ -248,6 +258,7 @@ public class SelectOfferMoneyVo {
                 ", xmoney=" + xmoney +
                 ", cxmoney=" + cxmoney +
                 ", gxmoney=" + gxmoney +
+                ", isSfExpress=" + isSfExpress +
                 '}';
     }
 }

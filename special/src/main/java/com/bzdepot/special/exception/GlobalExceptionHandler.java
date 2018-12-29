@@ -14,14 +14,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public Object handleError3(Exception e) {
-        logger.error(e.getCause().getMessage());
+        logger.error(e.toString());
         return JsonReturn.SetMsg(10010,e.getCause().getMessage(),"");
     }
 
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
     public Object handleError4(RuntimeException e) {
-        logger.error(e.getCause().getMessage());
+        logger.error(e.toString());
         return JsonReturn.SetMsg(10010,e.getCause().getMessage(),"");
     }
 }

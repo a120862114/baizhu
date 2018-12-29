@@ -31,6 +31,12 @@
     <result column="drum_values" property="drumValues" jdbcType="LONGVARCHAR" />
     <result column="other_size_ids" property="otherSizeIds" jdbcType="LONGVARCHAR" />
     <result column="other_size_values" property="otherSizeValues" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBsForZhuanBan" type="com.bzdepot.special.model.PaperCostWithBLOBs" extends="BaseResultMap" >
+    <result column="drum_ids" property="drumIds" jdbcType="LONGVARCHAR" />
+    <result column="drum_values" property="drumValues" jdbcType="LONGVARCHAR" />
+    <result column="other_size_ids" property="otherSizeIds" jdbcType="LONGVARCHAR" />
+    <result column="other_size_values" property="otherSizeValues" jdbcType="LONGVARCHAR" />
     <collection property="drumList" ofType="com.bzdepot.special.model.PaperDrum" select="com.bzdepot.special.mapper.PaperDrumMapper.selectByInIds" column="drum_ids"  />
     <collection property="otherSizeList" ofType="com.bzdepot.special.model.PaperOtherSize" select="com.bzdepot.special.mapper.PaperOtherSizeMapper.selectByInIds" column="other_size_ids"  />
     <collection property="printingData" ofType="com.bzdepot.special.model.PrintingCost">
@@ -79,6 +85,16 @@
       <result column="big_color_three" property="bigColorThree" jdbcType="DECIMAL" />
       <result column="big_color_four" property="bigColorFour" jdbcType="DECIMAL" />
       <result column="big_color_five" property="bigColorFive" jdbcType="DECIMAL" />
+      <result column="cmyk_boot_strap_money" property="cmykBootStrapMoney" jdbcType="DECIMAL" />
+      <result column="cmyk_print_nums" property="cmykPrintNums" jdbcType="INTEGER" />
+      <result column="cmyk_exceed_money" property="cmykExceedMoney" jdbcType="DECIMAL" />
+      <result column="cmyk_exceed_nums" property="cmykExceedNums" jdbcType="INTEGER" />
+      <result column="is_print_four_color" property="isPrintFourColor" jdbcType="TINYINT" />
+      <result column="color_num_one_in" property="colorNumOneIn" jdbcType="INTEGER" />
+      <result column="color_num_one_money" property="colorNumOneMoney" jdbcType="DECIMAL" />
+      <result column="color_num_two_more" property="colorNumTwoMore" jdbcType="INTEGER" />
+      <result column="color_num_two_more_money" property="colorNumTwoMoreMoney" jdbcType="DECIMAL" />
+      <collection property="robotColor" ofType="com.bzdepot.special.model.CommonColor" select="com.bzdepot.special.mapper.CommonColorMapper.selectByPrimaryKey" column="robot_color_id"  />
       <collection property="colorConfigs" ofType="com.bzdepot.special.model.PrintingSpotConfig" select="com.bzdepot.special.mapper.PrintingSpotConfigMapper.selectBySellerIdAndPrintingCostId" column="{sellerId=cseller_id,printingCostId=cid}"  />
     </collection>
   </resultMap>
@@ -97,14 +113,14 @@
   <sql id="Blob_Column_List" >
     drum_ids, drum_values, other_size_ids, other_size_values
   </sql>
-  <select id="joinFindPaperAndPrintingData" resultMap="ResultMapWithBLOBs">
+  <select id="joinFindPaperAndPrintingData" resultMap="ResultMapWithBLOBsForZhuanBan">
     SELECT
-      p.id,p.seller_id,p.paper_tid,p.brand_id, p.packing_id,
-      p.gram_id, p.thickness_start,p.thickness_end,p.supplier_id, p.status,
-      p.is_magnanimity,  p.is_positive_degree,  p.is_routine,last_dun, p.last_money, p.last_unit_type,
-      p.drum_ids, p.other_size_ids,
-      t.id as cid,
-      t.seller_id as cseller_id,
+    p.id,p.seller_id,p.paper_tid,p.brand_id, p.packing_id,
+    p.gram_id, p.thickness_start,p.thickness_end,p.supplier_id, p.status,
+    p.is_magnanimity,  p.is_positive_degree,  p.is_routine,last_dun, p.last_money, p.last_unit_type,
+    p.drum_ids, p.other_size_ids,
+    t.id as cid,
+    t.seller_id as cseller_id,
     t.robot_identifier,t.robot_size_id, t.robot_brand_id, t.robot_color_id, t.is_uv,
     t.robot_manufactor_id, t.boot_strap_money, t.print_nums, t.exceed_money, t.exceed_nums, t.thickness_range_start,
     t.thickness_range_end, t.min_bite, t.paper_feeding_max_one, t.paper_feeding_max_two, t.paper_feeding_min_one,
@@ -112,7 +128,8 @@
     t.discharge_number_max_nums, t.special_color_type,t.special_color_one_rate,t.is_an_color_status,t.is_big_size,t.is_big_color,
     t.status, t.create_time, t.update_time, t.robot_size_title, t.robot_brand_title, t.robot_color_title,
     t.manufactor_title,t.big_size_one,t.big_size_two,t.big_size_three,t.big_size_four,t.big_size_five,t.big_color_one,
-    t.big_color_two,t.big_color_two,t.big_color_three,t.big_color_four,t.big_color_five
+    t.big_color_two,t.big_color_two,t.big_color_three,t.big_color_four,t.big_color_five,t.cmyk_boot_strap_money,
+    t.cmyk_print_nums,t.cmyk_exceed_money,t.cmyk_exceed_nums,t.is_print_four_color,t.color_num_one_in,t.color_num_one_money,t.color_num_two_more,t.color_num_two_more_money
     from paper_cost p LEFT JOIN printing_cost t on p.seller_id = t.seller_id and p.thickness_start &gt;= t.thickness_range_start and p.thickness_start &lt;= t.thickness_range_end
     where p.seller_id = #{sellerId} and  p.paper_tid = #{textureId}
     and p.gram_id = (SELECT id FROM paper_gram g where g.seller_id = #{sellerId} and g.gram_nums = #{gramNums})

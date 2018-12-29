@@ -6,6 +6,7 @@ import com.bzdepot.special.mapper.TechnologyAttrMapper;
 import com.bzdepot.special.mapper.TechnologyClassMapper;
 import com.bzdepot.special.model.TechnologyAttr;
 import com.bzdepot.special.model.TechnologyClass;
+import com.bzdepot.special.model.TechnologyEditLimit;
 import com.bzdepot.special.model.TechnologyLimit;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -36,6 +37,9 @@ public class TechnologyService {
 
     @Autowired
     private TechnologyLimitService technologyLimitService; //限制的服务
+
+    @Autowired
+    private TechnologyEditLimitService technologyEditLimitService; //版费限制服务
 
     /**
      * 更新工艺分类与工艺属性
@@ -89,20 +93,37 @@ public class TechnologyService {
                                 break;
                             }
                             //开始添加限制相关的数据
-                            List<TechnologyLimit> technologyLimits = technologyLimitService.selectAllData(technologyAttr.getSellerId(),technologyAttr.gettId(),technologyAttr.getId());
-                            if(technologyLimits != null && technologyLimits.size() > 0){
-                                Ok = technologyLimitService.deleteAllData(technologyAttr.getSellerId(),technologyAttr.gettId(),technologyAttr.getId());
+                            if(technologyAttr.getLimitType().equals(new Byte("1"))){
+                                List<TechnologyLimit> technologyLimits = technologyLimitService.selectAllData(technologyAttr.getSellerId(),technologyAttr.gettId(),technologyAttr.getId());
+                                if(technologyLimits != null && technologyLimits.size() > 0){
+                                    Ok = technologyLimitService.deleteAllData(technologyAttr.getSellerId(),technologyAttr.gettId(),technologyAttr.getId());
+                                    if(Ok == 0){
+                                        loger.error("清楚限制数据失败："+technologyAttr.toString());
+                                        break;
+                                    }
+                                }
+                                Ok = technologyLimitService.insertAllData(technologyAttr.getLimitList(),technologyAttr.getSellerId(),technologyAttr.gettId(),technologyAttr.getId());
                                 if(Ok == 0){
-                                    loger.error("清楚限制数据失败："+technologyAttr.toString());
+                                    loger.error("批量添加限制数据失败："+technologyAttr.getLimitList().toString());
                                     break;
                                 }
                             }
-                            Ok = technologyLimitService.insertAllData(technologyAttr.getLimitList(),technologyAttr.getSellerId(),technologyAttr.gettId(),technologyAttr.getId());
-                            if(Ok == 0){
-                                loger.error("批量添加限制数据失败："+technologyAttr.getLimitList().toString());
-                                break;
+                            //开始添加版费限制相关的数据
+                            if(technologyAttr.getIsEdition().equals(new Byte("1"))){
+                                List<TechnologyEditLimit> technologyEditLimits = technologyEditLimitService.selectAllData(technologyAttr.getSellerId(),technologyAttr.gettId(),technologyAttr.getId());
+                                if(technologyEditLimits != null && technologyEditLimits.size() > 0){
+                                    Ok = technologyEditLimitService.deleteAllData(technologyAttr.getSellerId(),technologyAttr.gettId(),technologyAttr.getId());
+                                    if(Ok == 0){
+                                        loger.error("清楚版本限制数据失败："+technologyAttr.toString());
+                                        break;
+                                    }
+                                }
+                                Ok = technologyEditLimitService.insertAllData(technologyAttr.getLimitEditList(),technologyAttr.getSellerId(),technologyAttr.gettId(),technologyAttr.getId());
+                                if(Ok == 0){
+                                    loger.error("批量添加版本限制数据失败："+technologyAttr.getLimitList().toString());
+                                    break;
+                                }
                             }
-
                         }
                 }
             }

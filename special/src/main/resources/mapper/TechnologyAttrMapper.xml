@@ -24,6 +24,7 @@
     <result column="limit_type" property="limitType" jdbcType="TINYINT" />
     <result column="limit_number" property="limitNumber" jdbcType="DECIMAL" />
     <collection property="limitList" ofType="com.bzdepot.special.model.TechnologyLimit" select="com.bzdepot.special.mapper.TechnologyLimitMapper.selectData" column="{sellerId=seller_id,tClassId=t_id,tAttrId=id}"  />
+    <collection property="limitEditList" ofType="com.bzdepot.special.model.TechnologyEditLimit" select="com.bzdepot.special.mapper.TechnologyEditLimitMapper.selectData" column="{sellerId=seller_id,tClassId=t_id,tAttrId=id}"  />
   </resultMap>
   <resultMap id="GetNamesResultMap" type="com.bzdepot.special.bo.GetNamesBo" >
     <result column="category" property="Names" jdbcType="VARCHAR" />

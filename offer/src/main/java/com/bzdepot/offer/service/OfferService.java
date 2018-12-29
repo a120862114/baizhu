@@ -762,7 +762,7 @@ public class OfferService {
                         selectOfferVos.get(i).setSmoney(null);
                     }
                     //检测是否包邮
-                    if(selectOfferVos.get(i).getOfferSonData() != null && selectOfferVos.get(i).getOfferSonData().getIsFreeShipping() != null &&selectOfferVos.get(i).getOfferSonData().getIsFreeShipping().equals(new Byte("1"))){
+                    if(selectOfferVos.get(i).getOfferSonData() != null && selectOfferVos.get(i).getOfferSonData().getIsFreeShipping() != null &&selectOfferVos.get(i).getOfferSonData().getIsFreeShipping().equals(new Byte("1")) && selectOfferMoneyVo.getIsSfExpress() == 0){
                         //包邮
                         String[] CityIdsStrArr = selectOfferVos.get(i).getOfferSonData().getExceptCityIds().split(",");
                         for(int b = 0; b < CityIdsStrArr.length; b++){

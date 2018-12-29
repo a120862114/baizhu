@@ -47,6 +47,15 @@
     <result column="big_color_three" property="bigColorThree" jdbcType="DECIMAL" />
     <result column="big_color_four" property="bigColorFour" jdbcType="DECIMAL" />
     <result column="big_color_five" property="bigColorFive" jdbcType="DECIMAL" />
+    <result column="cmyk_boot_strap_money" property="cmykBootStrapMoney" jdbcType="DECIMAL" />
+    <result column="cmyk_print_nums" property="cmykPrintNums" jdbcType="INTEGER" />
+    <result column="cmyk_exceed_money" property="cmykExceedMoney" jdbcType="DECIMAL" />
+    <result column="cmyk_exceed_nums" property="cmykExceedNums" jdbcType="INTEGER" />
+    <result column="is_print_four_color" property="isPrintFourColor" jdbcType="TINYINT" />
+    <result column="color_num_one_in" property="colorNumOneIn" jdbcType="INTEGER" />
+    <result column="color_num_one_money" property="colorNumOneMoney" jdbcType="DECIMAL" />
+    <result column="color_num_two_more" property="colorNumTwoMore" jdbcType="INTEGER" />
+    <result column="color_num_two_more_money" property="colorNumTwoMoreMoney" jdbcType="DECIMAL" />
     <collection property="colorConfigs" ofType="com.bzdepot.special.model.PrintingSpotConfig" select="com.bzdepot.special.mapper.PrintingSpotConfigMapper.selectBySellerIdAndPrintingCostId" column="{sellerId=seller_id,printingCostId=id}"  />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -57,7 +66,8 @@
     discharge_number_max_nums, special_color_type,special_color_one_rate,is_an_color_status,is_big_size,is_big_color,
     status, create_time, update_time, robot_size_title, robot_brand_title, robot_color_title, 
     manufactor_title,big_size_one,big_size_two,big_size_three,big_size_four,big_size_five,big_color_one,
-    big_color_two,big_color_two,big_color_three,big_color_four,big_color_five
+    big_color_two,big_color_two,big_color_three,big_color_four,big_color_five,cmyk_boot_strap_money,cmyk_print_nums,cmyk_exceed_money,cmyk_exceed_nums,
+    is_print_four_color,color_num_one_in,color_num_one_money,color_num_two_more,color_num_two_more_money
   </sql>
   <select id="selectBySellerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
@@ -83,7 +93,9 @@
     discharge_number_max_nums, special_color_type,special_color_one_rate,is_an_color_status,is_big_size,is_big_color,
     status, create_time, update_time, robot_size_title, robot_brand_title, robot_color_title,
     manufactor_title,big_size_one,big_size_two,big_size_three,big_size_four,big_size_five,big_color_one,
-    big_color_two,big_color_two,big_color_three,big_color_four,big_color_five)
+    big_color_two,big_color_two,big_color_three,big_color_four,big_color_five,cmyk_boot_strap_money, cmyk_print_nums, cmyk_exceed_money, cmyk_exceed_nums,
+    is_print_four_color,color_num_one_in,color_num_one_money,color_num_two_more,color_num_two_more_money
+    )
     values (#{id,jdbcType=BIGINT}, #{robotIdentifier,jdbcType=VARCHAR}, #{sellerId,jdbcType=BIGINT}, 
       #{robotSizeId,jdbcType=BIGINT}, #{robotBrandId,jdbcType=BIGINT}, #{robotColorId,jdbcType=BIGINT}, 
       #{isUv,jdbcType=TINYINT}, #{robotManufactorId,jdbcType=BIGINT}, #{bootStrapMoney,jdbcType=DECIMAL}, 
@@ -100,7 +112,10 @@
       #{robotColorTitle,jdbcType=VARCHAR}, #{manufactorTitle,jdbcType=VARCHAR},#{bigSizeOne,jdbcType=DECIMAL},
     #{bigSizeTwo,jdbcType=DECIMAL},#{bigSizeThree,jdbcType=DECIMAL},#{bigSizeFour,jdbcType=DECIMAL},
     #{bigSizeFive,jdbcType=DECIMAL},#{bigColorOne,jdbcType=DECIMAL},#{bigColorTwo,jdbcType=DECIMAL},
-    #{bigColorThree,jdbcType=DECIMAL},#{bigColorFour,jdbcType=DECIMAL},#{bigColorFive,jdbcType=DECIMAL})
+    #{bigColorThree,jdbcType=DECIMAL},#{bigColorFour,jdbcType=DECIMAL},#{bigColorFive,jdbcType=DECIMAL}, #{cmykBootStrapMoney,jdbcType=DECIMAL},
+    #{cmykPrintNums,jdbcType=INTEGER}, #{cmykExceedMoney,jdbcType=DECIMAL}, #{cmykExceedNums,jdbcType=INTEGER},
+    #{isPrintFourColor,jdbcType=TINYINT}, #{colorNumOneIn,jdbcType=INTEGER},#{colorNumOneMoney,jdbcType=DECIMAL},#{colorNumTwoMore,jdbcType=INTEGER},#{colorNumTwoMoreMoney,jdbcType=DECIMAL}
+    )
   </insert>
 
   <insert id="insertSelective" keyProperty="id"  useGeneratedKeys="true" parameterType="com.bzdepot.special.model.PrintingCost" >
@@ -242,7 +257,33 @@
       <if test="bigColorFive != null" >
         big_color_five,
       </if>
-
+      <if test="cmykBootStrapMoney != null" >
+        cmyk_boot_strap_money,
+      </if>
+      <if test="cmykPrintNums != null" >
+        cmyk_print_nums,
+      </if>
+      <if test="cmykExceedMoney != null" >
+        cmyk_exceed_money,
+      </if>
+      <if test="cmykExceedNums != null" >
+        cmyk_exceed_nums,
+      </if>
+      <if test="isPrintFourColor != null" >
+        is_print_four_color,
+      </if>
+      <if test="colorNumOneIn != null" >
+        color_num_one_in,
+      </if>
+      <if test="colorNumOneMoney != null" >
+        color_num_one_money,
+      </if>
+      <if test="colorNumTwoMore != null" >
+        color_num_two_more,
+      </if>
+      <if test="colorNumTwoMoreMoney != null" >
+        color_num_two_more_money,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -381,7 +422,33 @@
       <if test="bigColorFive != null" >
         #{bigColorFive,jdbcType=BIGINT},
       </if>
-
+      <if test="cmykBootStrapMoney != null" >
+        #{cmykBootStrapMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="cmykPrintNums != null" >
+        #{cmykPrintNums,jdbcType=INTEGER},
+      </if>
+      <if test="cmykExceedMoney != null" >
+        #{cmykExceedMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="cmykExceedNums != null" >
+        #{cmykExceedNums,jdbcType=INTEGER},
+      </if>
+      <if test="isPrintFourColor != null" >
+        #{isPrintFourColor,jdbcType=TINYINT},
+      </if>
+      <if test="colorNumOneIn != null" >
+        #{colorNumOneIn,jdbcType=INTEGER},
+      </if>
+      <if test="colorNumOneMoney != null" >
+        #{colorNumOneMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="colorNumTwoMore != null" >
+        #{colorNumTwoMore,jdbcType=INTEGER},
+      </if>
+      <if test="colorNumTwoMoreMoney != null" >
+        #{colorNumTwoMoreMoney,jdbcType=DECIMAL},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.PrintingCost" >
@@ -520,7 +587,33 @@
       <if test="bigColorFive != null" >
         big_color_five = #{bigColorFive,jdbcType=DECIMAL},
       </if>
-
+      <if test="cmykBootStrapMoney != null" >
+        cmyk_boot_strap_money = #{cmykBootStrapMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="cmykPrintNums != null" >
+        cmyk_print_nums = #{cmykPrintNums,jdbcType=INTEGER},
+      </if>
+      <if test="cmykExceedMoney != null" >
+        cmyk_exceed_money = #{cmykExceedMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="cmykExceedNums != null" >
+        cmyk_exceed_nums = #{cmykExceedNums,jdbcType=INTEGER},
+      </if>
+      <if test="isPrintFourColor != null" >
+        is_print_four_color = #{isPrintFourColor,jdbcType=TINYINT},
+      </if>
+      <if test="colorNumOneIn != null" >
+        color_num_one_in = #{colorNumOneIn,jdbcType=INTEGER},
+      </if>
+      <if test="colorNumOneMoney != null" >
+        color_num_one_money = #{colorNumOneMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="colorNumTwoMore != null" >
+        color_num_two_more = #{colorNumTwoMore,jdbcType=INTEGER},
+      </if>
+      <if test="colorNumTwoMoreMoney != null" >
+        color_num_two_more_money = #{colorNumTwoMoreMoney,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -569,7 +662,16 @@
       big_color_two = #{bigColorTwo,jdbcType=DECIMAL},
       big_color_three = #{bigColorThree,jdbcType=DECIMAL},
       big_color_four = #{bigColorFour,jdbcType=DECIMAL},
-      big_color_five = #{bigColorFive,jdbcType=DECIMAL}
+      big_color_five = #{bigColorFive,jdbcType=DECIMAL},
+      cmyk_boot_strap_money = #{cmykBootStrapMoney,jdbcType=DECIMAL},
+      cmyk_print_nums = #{cmykPrintNums,jdbcType=INTEGER},
+      cmyk_exceed_money = #{cmykExceedMoney,jdbcType=DECIMAL},
+      cmyk_exceed_nums = #{cmykExceedNums,jdbcType=INTEGER},
+      is_print_four_color = #{isPrintFourColor,jdbcType=TINYINT},
+      color_num_one_in = #{colorNumOneIn,jdbcType=INTEGER},
+      color_num_one_money = #{colorNumOneMoney,jdbcType=DECIMAL},
+      color_num_two_more = #{colorNumTwoMore,jdbcType=INTEGER},
+      color_num_two_more_money = #{colorNumTwoMoreMoney,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

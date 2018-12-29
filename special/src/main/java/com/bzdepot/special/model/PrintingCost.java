@@ -94,6 +94,106 @@ public class PrintingCost {
 
     private BigDecimal bigColorFive;
 
+    private BigDecimal cmykBootStrapMoney;
+
+    private Integer cmykPrintNums;
+
+    private BigDecimal cmykExceedMoney;
+
+    private Integer cmykExceedNums;
+
+    private Byte isPrintFourColor;
+
+    private Integer colorNumOneIn;
+
+    private BigDecimal colorNumOneMoney;
+
+    private Integer colorNumTwoMore;
+
+    private BigDecimal colorNumTwoMoreMoney;
+
+    private CommonColor robotColor;
+
+    public Byte getIsPrintFourColor() {
+        return isPrintFourColor;
+    }
+
+    public void setIsPrintFourColor(Byte isPrintFourColor) {
+        this.isPrintFourColor = isPrintFourColor;
+    }
+
+    public Integer getColorNumOneIn() {
+        return colorNumOneIn;
+    }
+
+    public void setColorNumOneIn(Integer colorNumOneIn) {
+        this.colorNumOneIn = colorNumOneIn;
+    }
+
+    public BigDecimal getColorNumOneMoney() {
+        return colorNumOneMoney;
+    }
+
+    public void setColorNumOneMoney(BigDecimal colorNumOneMoney) {
+        this.colorNumOneMoney = colorNumOneMoney;
+    }
+
+    public Integer getColorNumTwoMore() {
+        return colorNumTwoMore;
+    }
+
+    public void setColorNumTwoMore(Integer colorNumTwoMore) {
+        this.colorNumTwoMore = colorNumTwoMore;
+    }
+
+    public BigDecimal getColorNumTwoMoreMoney() {
+        return colorNumTwoMoreMoney;
+    }
+
+    public void setColorNumTwoMoreMoney(BigDecimal colorNumTwoMoreMoney) {
+        this.colorNumTwoMoreMoney = colorNumTwoMoreMoney;
+    }
+
+    public CommonColor getRobotColor() {
+        return robotColor;
+    }
+
+    public void setRobotColor(CommonColor robotColor) {
+        this.robotColor = robotColor;
+    }
+
+    public BigDecimal getCmykBootStrapMoney() {
+        return cmykBootStrapMoney;
+    }
+
+    public void setCmykBootStrapMoney(BigDecimal cmykBootStrapMoney) {
+        this.cmykBootStrapMoney = cmykBootStrapMoney;
+    }
+
+    public Integer getCmykPrintNums() {
+        return cmykPrintNums;
+    }
+
+    public void setCmykPrintNums(Integer cmykPrintNums) {
+        this.cmykPrintNums = cmykPrintNums;
+    }
+
+    public BigDecimal getCmykExceedMoney() {
+        return cmykExceedMoney;
+    }
+
+    public void setCmykExceedMoney(BigDecimal cmykExceedMoney) {
+        this.cmykExceedMoney = cmykExceedMoney;
+    }
+
+    public Integer getCmykExceedNums() {
+        return cmykExceedNums;
+    }
+
+    public void setCmykExceedNums(Integer cmykExceedNums) {
+        this.cmykExceedNums = cmykExceedNums;
+    }
+
     private List<PrintingSpotConfig> colorConfigs;
 
     public Long getId() {
@@ -512,6 +612,16 @@ public class PrintingCost {
                 ", bigColorThree=" + bigColorThree +
                 ", bigColorFour=" + bigColorFour +
                 ", bigColorFive=" + bigColorFive +
+                ", cmykBootStrapMoney=" + cmykBootStrapMoney +
+                ", cmykPrintNums=" + cmykPrintNums +
+                ", cmykExceedMoney=" + cmykExceedMoney +
+                ", cmykExceedNums=" + cmykExceedNums +
+                ", isPrintFourColor=" + isPrintFourColor +
+                ", colorNumOneIn=" + colorNumOneIn +
+                ", colorNumOneMoney=" + colorNumOneMoney +
+                ", colorNumTwoMore=" + colorNumTwoMore +
+                ", colorNumTwoMoreMoney=" + colorNumTwoMoreMoney +
+                ", robotColor=" + robotColor +
                 ", colorConfigs=" + colorConfigs +
                 '}';
     }

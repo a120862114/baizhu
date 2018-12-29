@@ -11,9 +11,11 @@
     id, size_one, size_two,seller_id
   </sql>
   <select id="selectByInIds" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <if test="_parameter != null" >
     SELECT
     <include refid="Base_Column_List" />
     FROM paper_other_size where id IN(${_parameter})
+    </if>
   </select>
   <select id="selectBySellerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select

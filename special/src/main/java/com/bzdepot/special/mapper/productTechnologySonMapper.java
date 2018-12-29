@@ -10,5 +10,7 @@ public interface productTechnologySonMapper {
 
     int insertSelective(productTechnologySon record);
 
+    int updateBySelective(productTechnologySon record);
+
     List<productTechnologySon> selectAttrData(@Param("sellerId") Long sellerId,@Param("classId") Long classId,@Param("technologyId") Long technologyId);
 }

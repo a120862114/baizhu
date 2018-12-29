@@ -1,6 +1,7 @@
 package com.bzdepot.special.controller;
 
 import com.bzdepot.common.message.JsonReturn;
+import com.bzdepot.common.util.UserUtil;
 import com.bzdepot.special.bo.ProductTechnologyBo;
 import com.bzdepot.special.model.ProductTechnology;
 import com.bzdepot.special.model.productTechnologySon;
@@ -163,5 +164,43 @@ public class ProductTechnologyController {
             return JsonReturn.SetMsg(0,"获取工艺选择列表成功!",productTechnologySons);
         }
         return JsonReturn.SetMsg(10011,"暂无工艺选择数据!","");
+    }
+
+    /**
+     * 设置工艺子属性的相关状态的API接口
+     * @param productTechnologySonPostData
+     * @param result
+     * @return
+     */
+    @PostMapping(value = "/set/attr/lock/input")
+    public Object setAttrLockOrInputApi(@Valid @ModelAttribute productTechnologySon productTechnologySonPostData,BindingResult result){
+        if(result.hasErrors()){
+            String ErrorMsg = result.getFieldError().getDefaultMessage();
+            String ErrorCode = result.getFieldError().getCode();
+            loger.error(ErrorCode+":"+ErrorMsg);
+            if(ErrorCode.equals("typeMismatch")){
+                return JsonReturn.SetMsg(10010,result.getFieldError().getField()+"参数传递的类型错误!","");
+            }
+            return JsonReturn.SetMsg(10010,ErrorMsg,"");
+        }
+        if(productTechnologySonPostData.getClassId() == null){
+            return JsonReturn.SetMsg(10010,"产品分类编号不能为空!","");
+        }
+        if(productTechnologySonPostData.getSellerId() == null){
+            productTechnologySonPostData.setSellerId(UserUtil.getId());
+        }
+        if(productTechnologySonPostData.getTechnologyId() == null){
+            return JsonReturn.SetMsg(10010,"工艺分类编号不能为空!","");
+        }
+        if(productTechnologySonPostData.getAttrId() == null){
+            return JsonReturn.SetMsg(10010,"工艺选择属性编号不能为空!","");
+        }
+        if(productTechnologySonPostData.getIsLock() == null && productTechnologySonPostData.getIsInput() == null){
+            return JsonReturn.SetMsg(10010,"请至少设置一种状态，锁 或 输入框 状态!","");
+        }
+        if(productTechnologyService.setLockOrInputStatus(productTechnologySonPostData) > 0){
+            return JsonReturn.SetMsg(0,"设置状态成功!","");
+        }
+        return JsonReturn.SetMsg(10011,"设置状态失败!","");
     }
 }

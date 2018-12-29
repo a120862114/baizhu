@@ -10,9 +10,11 @@
     id, drum, seller_id
   </sql>
   <select id="selectByInIds" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <if test="_parameter != null" >
     SELECT
     <include refid="Base_Column_List" />
     FROM paper_drum where id IN(${_parameter})
+    </if>
   </select>
   <select id="selectBySellerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select

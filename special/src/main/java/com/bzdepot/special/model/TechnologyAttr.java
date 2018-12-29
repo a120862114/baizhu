@@ -48,6 +48,16 @@ public class TechnologyAttr {
 
     private List<TechnologyLimit> limitList;
 
+    private List<TechnologyEditLimit> limitEditList;
+
+    public List<TechnologyEditLimit> getLimitEditList() {
+        return limitEditList;
+    }
+
+    public void setLimitEditList(List<TechnologyEditLimit> limitEditList) {
+        this.limitEditList = limitEditList;
+    }
+
     public Long getId() {
         return id;
     }
@@ -249,6 +259,7 @@ public class TechnologyAttr {
                 ", limitType=" + limitType +
                 ", limitNumber=" + limitNumber +
                 ", limitList=" + limitList +
+                ", limitEditList=" + limitEditList +
                 '}';
     }
 }

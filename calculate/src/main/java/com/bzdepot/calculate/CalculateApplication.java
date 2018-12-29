@@ -38,7 +38,7 @@ public class CalculateApplication {
 			ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 			executor.setCorePoolSize(10);
 			executor.setMaxPoolSize(20);
-			executor.setQueueCapacity(200);
+			executor.setQueueCapacity(400);
 			executor.setKeepAliveSeconds(60);
 			executor.setThreadNamePrefix("calculateExecutor-");
 			executor.setWaitForTasksToCompleteOnShutdown(true);

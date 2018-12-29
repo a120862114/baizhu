@@ -1,6 +1,6 @@
-package com.bzdepot.special.model;
+package com.bzdepot.calculate.model;
 
-public class CommonColor {
+public class CommonColorModel {
     private Long id;
 
     private String colorName;

@@ -2,6 +2,7 @@ package com.bzdepot.calculate.bo;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 
 public class JoinSelectBo {
 
@@ -22,6 +23,67 @@ public class JoinSelectBo {
 
     @NotNull(message = "自定义尺寸宽不能为空!")
     private BigDecimal Width;
+
+    @NotNull(message = "制作数量不能为空!")
+    private Integer makeNumber;
+
+    private BigDecimal hemorrhageNums; //出血的值
+
+    private BigDecimal gaugeNums; //规线的值
+
+    private BigDecimal biteNums; //可借咬口数量
+
+    private List<AttrBo> attrList; //需要附加的工艺的请求参数列表
+
+    private ColorBo colorData; //颜色相关的参数
+
+    public ColorBo getColorData() {
+        return colorData;
+    }
+
+    public void setColorData(ColorBo colorData) {
+        this.colorData = colorData;
+    }
+
+    public List<AttrBo> getAttrList() {
+        return attrList;
+    }
+
+    public void setAttrList(List<AttrBo> attrList) {
+        this.attrList = attrList;
+    }
+
+    public BigDecimal getBiteNums() {
+        return biteNums;
+    }
+
+    public void setBiteNums(BigDecimal biteNums) {
+        this.biteNums = biteNums;
+    }
+
+    public BigDecimal getGaugeNums() {
+        return gaugeNums;
+    }
+
+    public void setGaugeNums(BigDecimal gaugeNums) {
+        this.gaugeNums = gaugeNums;
+    }
+
+    public BigDecimal getHemorrhageNums() {
+        return hemorrhageNums;
+    }
+
+    public void setHemorrhageNums(BigDecimal hemorrhageNums) {
+        this.hemorrhageNums = hemorrhageNums;
+    }
+
+    public Integer getMakeNumber() {
+        return makeNumber;
+    }
+
+    public void setMakeNumber(Integer makeNumber) {
+        this.makeNumber = makeNumber;
+    }
 
     public Long getSellerId() {
         return sellerId;
@@ -69,5 +131,23 @@ public class JoinSelectBo {
 
     public void setWidth(BigDecimal width) {
         Width = width;
+    }
+
+    @Override
+    public String toString() {
+        return "JoinSelectBo{" +
+                "sellerId=" + sellerId +
+                ", textureId=" + textureId +
+                ", gramNums=" + gramNums +
+                ", printingColorId=" + printingColorId +
+                ", Longs=" + Longs +
+                ", Width=" + Width +
+                ", makeNumber=" + makeNumber +
+                ", hemorrhageNums=" + hemorrhageNums +
+                ", gaugeNums=" + gaugeNums +
+                ", biteNums=" + biteNums +
+                ", attrList=" + attrList +
+                ", colorData=" + colorData +
+                '}';
     }
 }

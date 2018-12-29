@@ -50,6 +50,9 @@ public class PaperCostModel {
 
     private Byte lastUnitType;
 
+
+
+
     private List<PrintingCostModel> printingData;
 
     public BigDecimal getLastDun() {
@@ -243,4 +246,6 @@ public class PaperCostModel {
     public void setPrintingData(List<PrintingCostModel> printingData) {
         this.printingData = printingData;
     }
+
+
 }

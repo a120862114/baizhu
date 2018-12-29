@@ -3,6 +3,7 @@ package com.bzdepot.special.model;
 import com.bzdepot.special.bo.GetNamesBo;
 
 public class productTechnologySon {
+
     private Long classId;
 
     private Long sellerId;
@@ -10,6 +11,26 @@ public class productTechnologySon {
     private Long technologyId;
 
     private Long attrId;
+
+    private Byte isLock;
+
+    private Byte isInput;
+
+    public Byte getIsLock() {
+        return isLock;
+    }
+
+    public void setIsLock(Byte isLock) {
+        this.isLock = isLock;
+    }
+
+    public Byte getIsInput() {
+        return isInput;
+    }
+
+    public void setIsInput(Byte isInput) {
+        this.isInput = isInput;
+    }
 
     private GetNamesBo technologyAttrName;
 
@@ -60,6 +81,8 @@ public class productTechnologySon {
                 ", sellerId=" + sellerId +
                 ", technologyId=" + technologyId +
                 ", attrId=" + attrId +
+                ", isLock=" + isLock +
+                ", isInput=" + isInput +
                 ", technologyAttrName=" + technologyAttrName +
                 '}';
     }

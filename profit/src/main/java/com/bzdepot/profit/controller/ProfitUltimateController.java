@@ -38,7 +38,8 @@ public class ProfitUltimateController {
                 return JsonReturn.SetMsg(10010,result.getFieldError().getField()+"参数传递的类型错误!","");
             }
             return JsonReturn.SetMsg(10010,ErrorMsg,"");
-        }
+        }        System.out.println(profitUltimateBo.toString());
+
         if(profitUltimateService.updateProfitUltimate(profitUltimateBo) > 0){
             return JsonReturn.SetMsg(0,"更新利润配置成功!","");
         }

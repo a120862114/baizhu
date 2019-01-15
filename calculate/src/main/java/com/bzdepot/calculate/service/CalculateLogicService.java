@@ -2,8 +2,10 @@ package com.bzdepot.calculate.service;
 
 import com.bzdepot.calculate.bo.MinLengthBo;
 import com.bzdepot.calculate.bo.PapercutNumber;
+import com.bzdepot.calculate.bo.ValuesPrintSizeBo;
 import com.bzdepot.calculate.model.BestPrintSizeModel;
 import com.bzdepot.calculate.model.PrintSizeModel;
+import com.bzdepot.calculate.model.ValuesPrintSizeModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,6 +116,46 @@ public class CalculateLogicService {
         }
         return null;
      }
+
+    /**
+     * 计算最省纸的长度
+     * @param width
+     * @param length
+     * @param pinlength
+     * @param pinWidth
+     * @return
+     */
+    public ValuesPrintSizeModel getJuanTongLengthAndPinNum(BigDecimal width, BigDecimal length, Integer pinlength, Integer pinWidth){
+        if(width == null || pinlength == null || pinWidth == null || pinlength == 0 || pinWidth == 0){
+            return null;
+        }
+        Integer JuanWidth = 0;
+        Integer JuanLength = 0;
+        try {
+            JuanWidth = (Integer) width.intValue();
+            if(length != null){
+                JuanLength = (Integer) length.intValue();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            loger.error(e.toString());
+        }
+        if(JuanWidth == 0){
+            return null;
+        }
+        ValuesPrintSizeBo valuesPrintSizeBo = new ValuesPrintSizeBo();
+        valuesPrintSizeBo.setMaxwidth(JuanWidth);
+        if(JuanLength != 0){
+            valuesPrintSizeBo.setMaxlength(JuanLength);
+        }else {
+            valuesPrintSizeBo.setMaxlength(1250);
+        }
+        valuesPrintSizeBo.setPbwidth(pinWidth);
+        valuesPrintSizeBo.setPblength(pinlength);
+        ValuesPrintSizeModel valuesPrintSizeModel = algorithmLogicService.getValuesPrintSizeLogic(valuesPrintSizeBo);
+        return valuesPrintSizeModel;
+    }
+
     /**
      * 解析拼版的尺寸并转换为Intger数组
      * @param sizeStr

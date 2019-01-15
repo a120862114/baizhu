@@ -9,6 +9,8 @@ public class BestPrintSizeModel {
 
     private Integer wastageNums; //纸张耗损数量
 
+    private Integer printWastageNums; //印刷耗损
+
     private List<String> sizeList; //尺寸列表
 
     private List<String> lastSizeList; //计算后的尺寸列表
@@ -125,11 +127,20 @@ public class BestPrintSizeModel {
         this.lastSizeList = lastSizeList;
     }
 
+    public Integer getPrintWastageNums() {
+        return printWastageNums;
+    }
+
+    public void setPrintWastageNums(Integer printWastageNums) {
+        this.printWastageNums = printWastageNums;
+    }
+
     @Override
     public String toString() {
         return "BestPrintSizeModel{" +
                 "nums=" + nums +
                 ", wastageNums=" + wastageNums +
+                ", printWastageNums=" + printWastageNums +
                 ", sizeList=" + sizeList +
                 ", lastSizeList=" + lastSizeList +
                 ", moneyList=" + moneyList +

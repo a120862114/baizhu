@@ -58,3 +58,17 @@ pagehelper:
     params: count=countSql
     returnPageInfo: check
 
+#请求和响应GZIP压缩支持
+feign:
+  hystrix:
+    enabled: true
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+
+management:
+  endpoint:
+    health:
+      show-details: always

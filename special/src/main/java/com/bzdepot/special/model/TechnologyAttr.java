@@ -46,6 +46,82 @@ public class TechnologyAttr {
 
     private BigDecimal limitNumber;
 
+    private BigDecimal foldingMaxLength;
+
+    private BigDecimal foldingMaxWidth;
+
+    private BigDecimal foldingMinLength;
+
+    private BigDecimal foldingMinWidth;
+
+    private Integer foldingFrequency;
+
+    private BigDecimal foldingClipWidth;
+
+    private BigDecimal foldingClipGram;
+
+    private Byte foldingIsClose;
+
+    private Byte foldingStatus;
+
+    public BigDecimal getFoldingMaxLength() {
+        return foldingMaxLength;
+    }
+
+    public void setFoldingMaxLength(BigDecimal foldingMaxLength) {
+        this.foldingMaxLength = foldingMaxLength;
+    }
+
+    public BigDecimal getFoldingMaxWidth() {
+        return foldingMaxWidth;
+    }
+
+    public void setFoldingMaxWidth(BigDecimal foldingMaxWidth) {
+        this.foldingMaxWidth = foldingMaxWidth;
+    }
+
+    public BigDecimal getFoldingMinLength() {
+        return foldingMinLength;
+    }
+
+    public void setFoldingMinLength(BigDecimal foldingMinLength) {
+        this.foldingMinLength = foldingMinLength;
+    }
+
+    public BigDecimal getFoldingMinWidth() {
+        return foldingMinWidth;
+    }
+
+    public void setFoldingMinWidth(BigDecimal foldingMinWidth) {
+        this.foldingMinWidth = foldingMinWidth;
+    }
+
+
+
+    public BigDecimal getFoldingClipWidth() {
+        return foldingClipWidth;
+    }
+
+    public void setFoldingClipWidth(BigDecimal foldingClipWidth) {
+        this.foldingClipWidth = foldingClipWidth;
+    }
+
+    public BigDecimal getFoldingClipGram() {
+        return foldingClipGram;
+    }
+
+    public void setFoldingClipGram(BigDecimal foldingClipGram) {
+        this.foldingClipGram = foldingClipGram;
+    }
+
+    public Byte getFoldingIsClose() {
+        return foldingIsClose;
+    }
+
+    public void setFoldingIsClose(Byte foldingIsClose) {
+        this.foldingIsClose = foldingIsClose;
+    }
+
     private List<TechnologyLimit> limitList;
 
     private List<TechnologyEditLimit> limitEditList;
@@ -234,6 +310,22 @@ public class TechnologyAttr {
         this.limitList = limitList;
     }
 
+    public Integer getFoldingFrequency() {
+        return foldingFrequency;
+    }
+
+    public void setFoldingFrequency(Integer foldingFrequency) {
+        this.foldingFrequency = foldingFrequency;
+    }
+
+    public Byte getFoldingStatus() {
+        return foldingStatus;
+    }
+
+    public void setFoldingStatus(Byte foldingStatus) {
+        this.foldingStatus = foldingStatus;
+    }
+
     @Override
     public String toString() {
         return "TechnologyAttr{" +
@@ -258,6 +350,15 @@ public class TechnologyAttr {
                 ", robotSizeMinWidth=" + robotSizeMinWidth +
                 ", limitType=" + limitType +
                 ", limitNumber=" + limitNumber +
+                ", foldingMaxLength=" + foldingMaxLength +
+                ", foldingMaxWidth=" + foldingMaxWidth +
+                ", foldingMinLength=" + foldingMinLength +
+                ", foldingMinWidth=" + foldingMinWidth +
+                ", foldingFrequency=" + foldingFrequency +
+                ", foldingClipWidth=" + foldingClipWidth +
+                ", foldingClipGram=" + foldingClipGram +
+                ", foldingIsClose=" + foldingIsClose +
+                ", foldingStatus=" + foldingStatus +
                 ", limitList=" + limitList +
                 ", limitEditList=" + limitEditList +
                 '}';

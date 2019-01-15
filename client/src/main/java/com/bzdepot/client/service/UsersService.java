@@ -132,4 +132,12 @@ public class UsersService {
        return clientUser;
     }
 
+    /**
+     * 修改ClientUser数据
+     * @param clientUser
+     * @return
+     */
+    public int updateClientUserFunc(ClientUser clientUser){
+       return clientUserMapper.updateByUserIdSelective(clientUser);
+    }
 }

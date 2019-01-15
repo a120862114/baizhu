@@ -3,6 +3,7 @@ package com.bzdepot.calculate.feign;
 import com.bzdepot.calculate.bo.MinLengthBo;
 import com.bzdepot.calculate.bo.PapercutNumber;
 import com.bzdepot.calculate.bo.PrintSizeBo;
+import com.bzdepot.calculate.bo.ValuesPrintSizeBo;
 import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,4 +24,12 @@ public interface AlgorithmService {
     @RequestMapping(value = "/papercut/getMinLength", method = RequestMethod.POST)
     @Headers("Content-Type: application/json")
     public Object getMinLength(@RequestBody MinLengthBo minLengthBo);
+
+    @RequestMapping(value = "/papercut/getValuesPrintSize", method = RequestMethod.POST)
+    @Headers("Content-Type: application/json")
+    public Object getValuesPrintSize(@RequestBody ValuesPrintSizeBo valuesPrintSizeBo);
+
+    @RequestMapping(value = "/papercut/calcSymmetry", method = RequestMethod.POST)
+    @Headers("Content-Type: application/json")
+    public Object getCalcSymmetry(@RequestBody PapercutNumber papercutNumber);
 }

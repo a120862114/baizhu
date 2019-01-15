@@ -162,6 +162,6 @@ public class PaperCostService {
      * @return
      */
     public List<PaperCostWithBLOBs> findPaperAndPrintingJoinData(Long sellerId, Long textureId, BigDecimal gramNums,Long printingColorId,BigDecimal Longs,BigDecimal Width){
-        return paperCostMapper.joinFindPaperAndPrintingData(sellerId,textureId,gramNums,printingColorId,Longs,Width);
+        return paperCostMapper.joinFindPaperAndPrintingData(sellerId,textureId,gramNums,Longs,Width);
     }
 }

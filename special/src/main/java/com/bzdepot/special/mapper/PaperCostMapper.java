@@ -34,5 +34,5 @@ public interface PaperCostMapper {
 
     List<PaperCost> findInSetOtherSizeIdsData(Long otherId);
 
-    List<PaperCostWithBLOBs> joinFindPaperAndPrintingData(@Param("sellerId") Long sellerId, @Param("textureId") Long textureId, @Param("gramNums")BigDecimal gramNums,@Param("printingColorId") Long printingColorId,@Param("Longs") BigDecimal Longs,@Param("Width") BigDecimal Width);
+    List<PaperCostWithBLOBs> joinFindPaperAndPrintingData(@Param("sellerId") Long sellerId, @Param("textureId") Long textureId, @Param("gramNums")BigDecimal gramNums,@Param("Longs") BigDecimal Longs,@Param("Width") BigDecimal Width);
 }

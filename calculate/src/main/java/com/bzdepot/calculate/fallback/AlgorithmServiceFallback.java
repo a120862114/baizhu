@@ -3,6 +3,7 @@ package com.bzdepot.calculate.fallback;
 import com.bzdepot.calculate.bo.MinLengthBo;
 import com.bzdepot.calculate.bo.PapercutNumber;
 import com.bzdepot.calculate.bo.PrintSizeBo;
+import com.bzdepot.calculate.bo.ValuesPrintSizeBo;
 import com.bzdepot.calculate.feign.AlgorithmService;
 import com.bzdepot.common.message.JsonReturn;
 import org.slf4j.Logger;
@@ -31,5 +32,17 @@ public class AlgorithmServiceFallback implements AlgorithmService {
     public Object getMinLength(@RequestBody MinLengthBo minLengthBo){
         loger.error("调用无限长纸张计算最小长度异常!");
         return JsonReturn.SetMsg(-1,"调用无限长纸张计算最小长度异常!","");
+    }
+
+    @Override
+    public Object getValuesPrintSize(@RequestBody ValuesPrintSizeBo valuesPrintSizeBo){
+        loger.error("调用计算性价比最高尺寸异常!");
+        return JsonReturn.SetMsg(-1,"调用计算性价比最高尺寸异常","");
+    }
+
+    @Override
+    public Object getCalcSymmetry(@RequestBody PapercutNumber papercutNumber){
+        loger.error("调用计算对称性异常!");
+        return JsonReturn.SetMsg(-1,"调用计算对称性异常","");
     }
 }

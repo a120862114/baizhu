@@ -192,7 +192,10 @@ public class TechnologyService {
     public int deleteAttr(Long id,Long tId){
         if(technologyAttrMapper.deleteByPrimaryKey(id) > 0){
             if(technologyAttrMapper.countAttrDataByTid(UserUtil.getId(),tId) == 0){
-                return technologyClassMapper.deleteByPrimaryKey(tId);
+                TechnologyClass technologyClass = this.findTechnologyClass(tId);
+                if(technologyClass != null && technologyClass.getDefaultAttrId().equals(Long.valueOf("0"))){
+                    return technologyClassMapper.deleteByPrimaryKey(tId);
+                }
             }
             return 1;
         }else {

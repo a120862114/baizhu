@@ -27,6 +27,8 @@ public class TaskPaperSizeModel {
 
     private Integer bestWastageNums; //纸张耗损数量
 
+    private Integer bestPrintWastageNums; //纸张印刷耗损数量
+
     private Integer bestYuanCaiLiaoNums; //原材料数量
 
     private BigDecimal bestMoney; //原料费用
@@ -165,6 +167,14 @@ public class TaskPaperSizeModel {
         this.lastBestWidth = lastBestWidth;
     }
 
+    public Integer getBestPrintWastageNums() {
+        return bestPrintWastageNums;
+    }
+
+    public void setBestPrintWastageNums(Integer bestPrintWastageNums) {
+        this.bestPrintWastageNums = bestPrintWastageNums;
+    }
+
     @Override
     public String toString() {
         return "TaskPaperSizeModel{" +
@@ -179,6 +189,7 @@ public class TaskPaperSizeModel {
                 ", lastBestWidth=" + lastBestWidth +
                 ", bestPinNum=" + bestPinNum +
                 ", bestWastageNums=" + bestWastageNums +
+                ", bestPrintWastageNums=" + bestPrintWastageNums +
                 ", bestYuanCaiLiaoNums=" + bestYuanCaiLiaoNums +
                 ", bestMoney=" + bestMoney +
                 ", lastMoney=" + lastMoney +

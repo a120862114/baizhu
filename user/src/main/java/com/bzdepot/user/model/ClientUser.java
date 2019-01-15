@@ -1,4 +1,4 @@
-package com.bzdepot.client.model;
+package com.bzdepot.user.model;
 
 import java.math.BigDecimal;
 

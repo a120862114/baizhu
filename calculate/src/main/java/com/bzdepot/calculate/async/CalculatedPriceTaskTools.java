@@ -3,14 +3,12 @@ package com.bzdepot.calculate.async;
 import com.bzdepot.calculate.bo.JoinSelectBo;
 import com.bzdepot.calculate.bo.MinLengthBo;
 import com.bzdepot.calculate.bo.PapercutNumber;
-import com.bzdepot.calculate.model.BestPrintSizeModel;
-import com.bzdepot.calculate.model.PrintSizeModel;
-import com.bzdepot.calculate.model.TaskPaperSizeModel;
+import com.bzdepot.calculate.bo.ValuesPrintSizeBo;
+import com.bzdepot.calculate.model.*;
 import com.bzdepot.calculate.service.AlgorithmLogicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
@@ -41,10 +39,12 @@ public class CalculatedPriceTaskTools {
      * @param joinSelectBo 用户传递的请求参数
      * @param unitPriceType 价格单位 0 吨 1 张
      * @param unitPrice 单价
+     * @param printingCostModel 印刷机
+     * @param paperLastMoney  单价额外需加的费用
      * @return
      */
-    @Async("calculateExecutor")
-    public Future<TaskPaperSizeModel> getBestPinPrice(TaskPaperSizeModel taskPaperSizeModel, List<PrintSizeModel> printSizeModels, JoinSelectBo joinSelectBo, Byte unitPriceType, BigDecimal unitPrice,BigDecimal minBiteNums,Integer UserHemorrhage){
+   // @Async("calculateExecutor")
+    public Future<TaskPaperSizeModel> getBestPinPrice(TaskPaperSizeModel taskPaperSizeModel, List<PrintSizeModel> printSizeModels, JoinSelectBo joinSelectBo, Byte unitPriceType, BigDecimal unitPrice,BigDecimal minBiteNums,Integer UserHemorrhage, PrintingCostModel printingCostModel,BigDecimal paperLastMoney){
 
         Integer UsergetGaugeNums = 0;
         if(joinSelectBo.getGaugeNums() != null){
@@ -117,15 +117,29 @@ public class CalculatedPriceTaskTools {
                 }
 
                 //计算原材料尺寸与拼版之间能拼的最大数量
+                Integer YanPinMaxNumber = 0;
                 if(taskPaperSizeModel.getSizeType().equals(new Byte("2"))){
-                    taskPaperSizeModel.setLength(new BigDecimal("1250"));
+                    ValuesPrintSizeModel valuesPrintSizeModel = this.getJuanTongLengthAndPinNum(taskPaperSizeModel.getWidth(),null,pinSizeArr[0],pinSizeArr[1]);
+                    if(valuesPrintSizeModel != null){
+                        YanPinMaxNumber = valuesPrintSizeModel.getNum();
+                        Integer[] JuanTongSizeArr = this.getPinSize(valuesPrintSizeModel.getSize());
+                        if(taskPaperSizeModel.getWidth().compareTo(new BigDecimal(JuanTongSizeArr[0].toString())) != 0){
+                            taskPaperSizeModel.setLength(new BigDecimal(JuanTongSizeArr[0].toString()));
+                        }
+                        if(taskPaperSizeModel.getWidth().compareTo(new BigDecimal(JuanTongSizeArr[1].toString())) != 0){
+                            taskPaperSizeModel.setLength(new BigDecimal(JuanTongSizeArr[1].toString()));
+                        }
+                    }else {
+                        loger.error("卷筒计算原材料失败!");
+                    }
+                }else {
+                    YanPinMaxNumber = this.getYuanCaiLiaoNumber(taskPaperSizeModel.getLength(),taskPaperSizeModel.getWidth(),pinSizeArr[0],pinSizeArr[1]);
                 }
-                Integer YanPinMaxNumber = this.getYuanCaiLiaoNumber(taskPaperSizeModel.getLength(),taskPaperSizeModel.getWidth(),pinSizeArr[0],pinSizeArr[1]);
                 if(YanPinMaxNumber == 0){
                     loger.error("获取原材料尺寸与拼版尺寸之间能拼的最大数量失败或只能拼0个!");
                     continue;
                 }
-                yuanCaiLiaoNumsList.add(YanPinMaxNumber);//添加到原材料列表
+
 
                 BigDecimal LastUnitPrice = null; //初始化一个最终单价变量
                 //开始获取单价
@@ -133,7 +147,7 @@ public class CalculatedPriceTaskTools {
                     LastUnitPrice = unitPrice; //直接等于数据库中的单位,在单位为张的情况下
                 }else{
                     //验证尺寸是否是卷筒，如果是卷筒纸那么开始计算卷筒纸的长度
-                    if(taskPaperSizeModel.getSizeType().equals(new Byte("2"))){
+                   /* if(taskPaperSizeModel.getSizeType().equals(new Byte("2"))){
                         BigDecimal length = this.getJuanTongLength(taskPaperSizeModel.getWidth(),pinSizeArr[0],pinSizeArr[1],YanPinMaxNumber);
                         if(length != null){
                             taskPaperSizeModel.setLength(length);
@@ -141,7 +155,7 @@ public class CalculatedPriceTaskTools {
                             loger.error("获取卷筒纸长度失败!");
                             continue; //跳出此次循环
                         }
-                    }
+                    }*/
                     //开始将吨单价转换成张单机
                     LastUnitPrice = this.getUnitPrice(taskPaperSizeModel.getLength(),taskPaperSizeModel.getWidth(),joinSelectBo.getGramNums(),unitPrice);
                     if(LastUnitPrice == null){
@@ -152,7 +166,28 @@ public class CalculatedPriceTaskTools {
 
                 //计算原材料数量
                 BigDecimal YuanCaiLiaoNumber = new BigDecimal(joinSelectBo.getMakeNumber().toString()).divide(new BigDecimal(YanPinMaxNumber.toString()),2).divide(new BigDecimal(printSizeModel.getNum().toString()),2);
-                BigDecimal LastMoney = LastUnitPrice.multiply(YuanCaiLiaoNumber); //最终价格
+                //计算印刷机放数
+                BigDecimal YsSunHao = new BigDecimal("0"); //印刷损耗
+                if(printingCostModel.getDischargeNumberInNums() != null && printingCostModel.getDischargeNumberIn() != null){
+                    BigDecimal tmpPinNumss = null;
+                    if(printingCostModel.getDischargeNumberMax() != null && printingCostModel.getDischargeNumberMaxNums() != null){
+                        BigDecimal tmpFnumOne = YuanCaiLiaoNumber.subtract(new BigDecimal(printingCostModel.getDischargeNumberIn().toString()));
+                        if(tmpFnumOne.compareTo(new BigDecimal(printingCostModel.getDischargeNumberIn().toString())) >= 0){
+                            BigDecimal tmpFnumTwo = tmpFnumOne.divide(new BigDecimal(printingCostModel.getDischargeNumberMax().toString()),0,BigDecimal.ROUND_UP);
+                            BigDecimal tmpFnumThree = tmpFnumTwo.multiply(new BigDecimal(printingCostModel.getDischargeNumberMaxNums().toString()));
+                            tmpPinNumss = tmpFnumThree.add(new BigDecimal(printingCostModel.getDischargeNumberInNums().toString()));
+                        }else{
+                            tmpPinNumss = new BigDecimal(printingCostModel.getDischargeNumberInNums().toString());
+                        }
+                    }
+                    if(tmpPinNumss != null){
+                        YsSunHao = tmpPinNumss;
+                        YuanCaiLiaoNumber = YuanCaiLiaoNumber.add(YsSunHao.divide(new BigDecimal(YanPinMaxNumber.toString()),0,BigDecimal.ROUND_UP)); //加上耗损
+                    }
+                }
+
+                yuanCaiLiaoNumsList.add(YanPinMaxNumber);//添加到原材料列表
+                BigDecimal LastMoney = LastUnitPrice.multiply(YuanCaiLiaoNumber).add(paperLastMoney); //最终价格
                 MoneyList.add(LastMoney);
                 //System.out.println("原材料数量："+YuanCaiLiaoNumber.toString()+" 等于 用户所属数量："+joinSelectBo.getMakeNumber().toString()+" 除以 原尺寸与拼版尺寸的最大拼值："+YanPinMaxNumber.toString()+" 除以 拼版尺寸的最大拼版数量："+printSizeModel.getNum().toString());
                 //System.out.println("最终价："+LastMoney.toString()+" 等于 张的单价："+LastUnitPrice.toString()+" 乘以 原材料数量："+YuanCaiLiaoNumber.toString());
@@ -271,6 +306,47 @@ public class CalculatedPriceTaskTools {
         }
         return null;
     }
+
+
+    /**
+     * 计算最省纸的长度
+     * @param width
+     * @param length
+     * @param pinlength
+     * @param pinWidth
+     * @return
+     */
+    public ValuesPrintSizeModel getJuanTongLengthAndPinNum(BigDecimal width, BigDecimal length, Integer pinlength, Integer pinWidth){
+        if(width == null || pinlength == null || pinWidth == null || pinlength == 0 || pinWidth == 0){
+            return null;
+        }
+        Integer JuanWidth = 0;
+        Integer JuanLength = 0;
+        try {
+            JuanWidth = (Integer) width.intValue();
+            if(length != null){
+                JuanLength = (Integer) length.intValue();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            loger.error(e.toString());
+        }
+        if(JuanWidth == 0){
+            return null;
+        }
+        ValuesPrintSizeBo valuesPrintSizeBo = new ValuesPrintSizeBo();
+        valuesPrintSizeBo.setMaxwidth(JuanWidth);
+        if(JuanLength != 0){
+            valuesPrintSizeBo.setMaxlength(JuanLength);
+        }else {
+            valuesPrintSizeBo.setMaxlength(1250);
+        }
+        valuesPrintSizeBo.setPbwidth(pinWidth);
+        valuesPrintSizeBo.setPblength(pinlength);
+        ValuesPrintSizeModel valuesPrintSizeModel = algorithmLogicService.getValuesPrintSizeLogic(valuesPrintSizeBo);
+        return valuesPrintSizeModel;
+    }
+
     /**
      * 解析拼版的尺寸并转换为Intger数组
      * @param sizeStr

@@ -23,6 +23,15 @@
     <result column="robot_size_min_width" property="robotSizeMinWidth" jdbcType="DECIMAL" />
     <result column="limit_type" property="limitType" jdbcType="TINYINT" />
     <result column="limit_number" property="limitNumber" jdbcType="DECIMAL" />
+    <result column="folding_max_length" property="foldingMaxLength" jdbcType="DECIMAL" />
+    <result column="folding_max_width" property="foldingMaxWidth" jdbcType="DECIMAL" />
+    <result column="folding_min_length" property="foldingMinLength" jdbcType="DECIMAL" />
+    <result column="folding_min_width" property="foldingMinWidth" jdbcType="DECIMAL" />
+    <result column="folding_frequency" property="foldingFrequency" jdbcType="INTEGER" />
+    <result column="folding_clip_width" property="foldingClipWidth" jdbcType="DECIMAL" />
+    <result column="folding_clip_gram" property="foldingClipGram" jdbcType="DECIMAL" />
+    <result column="folding_is_close" property="foldingIsClose" jdbcType="TINYINT" />
+    <result column="folding_status" property="foldingStatus" jdbcType="TINYINT" />
     <collection property="limitList" ofType="com.bzdepot.special.model.TechnologyLimit" select="com.bzdepot.special.mapper.TechnologyLimitMapper.selectData" column="{sellerId=seller_id,tClassId=t_id,tAttrId=id}"  />
     <collection property="limitEditList" ofType="com.bzdepot.special.model.TechnologyEditLimit" select="com.bzdepot.special.mapper.TechnologyEditLimitMapper.selectData" column="{sellerId=seller_id,tClassId=t_id,tAttrId=id}"  />
   </resultMap>
@@ -32,7 +41,9 @@
   <sql id="Base_Column_List" >
     id, t_id, category, hs_in_num, hs_hs_num, hs_md_num, hs_md_hs_num, is_edition, on_money, 
     machining_nums,status, create_time, update_time, seller_id,select_uit_type,robot_size_max_longs,
-    robot_size_max_width,robot_size_min_longs,robot_size_min_width,limit_type,limit_number
+    robot_size_max_width,robot_size_min_longs,robot_size_min_width,limit_type,limit_number,
+    folding_max_length,folding_max_width,folding_min_length,folding_min_width,folding_frequency,folding_clip_width,
+    folding_clip_gram,folding_is_close,folding_status
   </sql>
   <select id="selectByPrimaryKeyForNames" resultMap="GetNamesResultMap" parameterType="java.lang.Long" >
 
@@ -43,10 +54,10 @@
   <select id="countAttrDataByTid" resultType="java.lang.Integer">
     select count(id) from technology_attr where seller_id = #{sellerId,jdbcType=BIGINT} and t_id = #{tId,jdbcType=BIGINT}
   </select>
-  <select id="listAttrDataByTid" resultMap="BaseResultMap" parameterType="java.lang.Long">
+  <select id="listAttrDataByTid" resultMap="BaseResultMap" >
     select
       <include refid="Base_Column_List" />
-    from technology_attr where t_id = #{tId,jdbcType=BIGINT}
+    from technology_attr where t_id = #{tId,jdbcType=BIGINT} and seller_id = #{sellerId,jdbcType=BIGINT}
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -68,14 +79,19 @@
       hs_md_hs_num, is_edition, on_money, 
       machining_nums,status, create_time,
       update_time, seller_id,select_uit_type,robot_size_max_longs,
-    robot_size_max_width,robot_size_min_longs,robot_size_min_width,limit_type,limit_number)
+    robot_size_max_width,robot_size_min_longs,robot_size_min_width,limit_type,limit_number,
+    folding_max_length,folding_max_width,folding_min_length,folding_min_width,folding_frequency,folding_clip_width,
+    folding_clip_gram,folding_is_close,folding_status)
     values (#{id,jdbcType=BIGINT}, #{tId,jdbcType=BIGINT}, #{category,jdbcType=VARCHAR}, 
       #{hsInNum,jdbcType=INTEGER}, #{hsHsNum,jdbcType=INTEGER}, #{hsMdNum,jdbcType=INTEGER}, 
       #{hsMdHsNum,jdbcType=INTEGER}, #{isEdition,jdbcType=TINYINT}, #{onMoney,jdbcType=DECIMAL}, 
       #{machiningNums,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT},
       #{updateTime,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT},#{selectUitType,jdbcType=TINYINT},
     #{robotSizeMaxLongs,jdbcType=DECIMAL}, #{robotSizeMaxWidth,jdbcType=DECIMAL}, #{robotSizeMinLongs,jdbcType=DECIMAL},
-    #{robotSizeMinWidth,jdbcType=DECIMAL},#{limitType,jdbcType=TINYINT},#{limitNumber,jdbcType=DECIMAL})
+    #{robotSizeMinWidth,jdbcType=DECIMAL},#{limitType,jdbcType=TINYINT},#{limitNumber,jdbcType=DECIMAL},
+    #{foldingMaxLength,jdbcType=DECIMAL},#{foldingMaxWidth,jdbcType=DECIMAL},#{foldingMinLength,jdbcType=DECIMAL},
+    #{foldingMinWidth,jdbcType=DECIMAL},#{foldingFrequency,jdbcType=INTEGER},#{foldingClipWidth,jdbcType=DECIMAL},
+    #{foldingClipGram,jdbcType=DECIMAL}, #{foldingIsClose,jdbcType=TINYINT},#{foldingStatus,jdbcType=TINYINT})
 
   </insert>
   <insert id="insertSelective" keyProperty="id" useGeneratedKeys="true" parameterType="com.bzdepot.special.model.TechnologyAttr" >
@@ -144,6 +160,33 @@
       <if test="limitNumber != null" >
         limit_number,
       </if>
+      <if test="foldingMaxLength != null" >
+        folding_max_length,
+      </if>
+      <if test="foldingMaxWidth != null" >
+        folding_max_width,
+      </if>
+      <if test="foldingMinLength != null" >
+        folding_min_length,
+      </if>
+      <if test="foldingMinWidth != null" >
+        folding_min_width,
+      </if>
+      <if test="foldingFrequency != null" >
+        folding_frequency,
+      </if>
+      <if test="foldingClipWidth != null" >
+        folding_clip_width,
+      </if>
+      <if test="foldingClipGram != null" >
+        folding_clip_gram,
+      </if>
+      <if test="foldingIsClose != null" >
+        folding_is_close,
+      </if>
+      <if test="foldingStatus != null" >
+        folding_status,
+      </if>
     </trim>
 
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -210,7 +253,33 @@
       <if test="limitNumber != null" >
         #{limitNumber,jdbcType=DECIMAL},
       </if>
-
+      <if test="foldingMaxLength != null" >
+        #{foldingMaxLength,jdbcType=DECIMAL},
+      </if>
+      <if test="foldingMaxWidth != null" >
+        #{foldingMaxWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="foldingMinLength != null" >
+        #{foldingMinLength,jdbcType=DECIMAL},
+      </if>
+      <if test="foldingMinWidth != null" >
+        #{foldingMinWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="foldingFrequency != null" >
+        #{foldingFrequency,jdbcType=INTEGER},
+      </if>
+      <if test="foldingClipWidth != null" >
+        #{foldingClipWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="foldingClipGram != null" >
+        #{foldingClipGram,jdbcType=DECIMAL},
+      </if>
+      <if test="foldingIsClose != null" >
+        #{foldingIsClose,jdbcType=TINYINT},
+      </if>
+      <if test="foldingStatus != null" >
+        #{foldingStatus,jdbcType=TINYINT},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.bzdepot.special.model.TechnologyAttr" >
@@ -276,7 +345,33 @@
       <if test="limitNumber != null" >
         limit_number = #{limitNumber,jdbcType=DECIMAL},
       </if>
-
+      <if test="foldingMaxLength != null" >
+        folding_max_length = #{foldingMaxLength,jdbcType=DECIMAL},
+      </if>
+      <if test="foldingMaxWidth != null" >
+        folding_max_width = #{foldingMaxWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="foldingMinLength != null" >
+        folding_min_length = #{foldingMinLength,jdbcType=DECIMAL},
+      </if>
+      <if test="foldingMinWidth != null" >
+        folding_min_width = #{foldingMinWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="foldingFrequency != null" >
+        folding_frequency = #{foldingFrequency,jdbcType=INTEGER},
+      </if>
+      <if test="foldingClipWidth != null" >
+        folding_clip_width = #{foldingClipWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="foldingClipGram != null" >
+        folding_clip_gram = #{foldingClipGram,jdbcType=DECIMAL},
+      </if>
+      <if test="foldingIsClose != null" >
+        folding_is_close = #{foldingIsClose,jdbcType=TINYINT},
+      </if>
+      <if test="foldingStatus != null" >
+        folding_status = #{foldingStatus,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -301,7 +396,16 @@
       robot_size_min_longs = #{robotSizeMinLongs,jdbcType=DECIMAL},
       robot_size_min_width = #{robotSizeMinWidth,jdbcType=DECIMAL},
       limit_type = #{limitType,jdbcType=TINYINT},
-      limit_number = #{limitNumber,jdbcType=DECIMAL}
+      limit_number = #{limitNumber,jdbcType=DECIMAL},
+      folding_max_length = #{foldingMaxLength,jdbcType=DECIMAL},
+      folding_max_width = #{foldingMaxWidth,jdbcType=DECIMAL},
+      folding_min_length = #{foldingMinLength,jdbcType=DECIMAL},
+      folding_min_width = #{foldingMinWidth,jdbcType=DECIMAL},
+      folding_frequency = #{foldingFrequency,jdbcType=INTEGER},
+      folding_clip_width = #{foldingClipWidth,jdbcType=DECIMAL},
+      folding_clip_gram = #{foldingClipGram,jdbcType=DECIMAL},
+      folding_is_close = #{foldingIsClose,jdbcType=TINYINT},
+      folding_status = #{foldingStatus,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

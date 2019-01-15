@@ -1,4 +1,4 @@
-hystrix.command.fallbackcmd.execution.isolation.thread.timeoutInMilliseconds: 5000
+hystrix.command.fallbackcmd.execution.isolation.thread.timeoutInMilliseconds: 100000
 server:
   port: 9293
 spring:
@@ -113,6 +113,17 @@ spring:
         uri: lb://message-server
         predicates:
         - Path=/message/**
+        filters:
+        - StripPrefix=1
+        #- Hystrix=myCommandName
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/hystrixfallback
+      - id: calculate-service
+        uri: lb://calculate-service
+        predicates:
+        - Path=/calculate/**
         filters:
         - StripPrefix=1
         #- Hystrix=myCommandName

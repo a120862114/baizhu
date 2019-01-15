@@ -29,6 +29,16 @@ public class Member {
 
     private String headImgId;
 
+    private ClientUser clientUser;
+
+    public ClientUser getClientUser() {
+        return clientUser;
+    }
+
+    public void setClientUser(ClientUser clientUser) {
+        this.clientUser = clientUser;
+    }
+
     public Long getId() {
         return id;
     }
@@ -158,6 +168,7 @@ public class Member {
                 ", sex=" + sex +
                 ", birthday='" + birthday + '\'' +
                 ", headImgId='" + headImgId + '\'' +
+                ", clientUser=" + clientUser +
                 '}';
     }
 }

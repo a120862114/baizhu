@@ -23,7 +23,7 @@ public interface TechnologyAttrMapper {
 
     Integer countAttrDataByTid(@Param("sellerId") Long sellerId,@Param("tId") Long tId);
 
-    List<TechnologyAttr> listAttrDataByTid(Long tId);
+    List<TechnologyAttr> listAttrDataByTid(@Param("tId") Long tId,@Param("sellerId") Long sellerId);
 
     GetNamesBo selectByPrimaryKeyForNames(Long id);
 }

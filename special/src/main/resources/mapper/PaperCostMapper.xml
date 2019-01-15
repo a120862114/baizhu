@@ -133,7 +133,6 @@
     from paper_cost p LEFT JOIN printing_cost t on p.seller_id = t.seller_id and p.thickness_start &gt;= t.thickness_range_start and p.thickness_start &lt;= t.thickness_range_end
     where p.seller_id = #{sellerId} and  p.paper_tid = #{textureId}
     and p.gram_id = (SELECT id FROM paper_gram g where g.seller_id = #{sellerId} and g.gram_nums = #{gramNums})
-    and t.robot_color_id = #{printingColorId}
     and t.paper_feeding_max_one &gt;= #{Longs}
     and t.paper_feeding_max_two &gt;= #{Width};
   </select>

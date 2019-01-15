@@ -6,8 +6,10 @@ import com.alibaba.fastjson.TypeReference;
 import com.bzdepot.calculate.bo.MinLengthBo;
 import com.bzdepot.calculate.bo.PapercutNumber;
 import com.bzdepot.calculate.bo.PrintSizeBo;
+import com.bzdepot.calculate.bo.ValuesPrintSizeBo;
 import com.bzdepot.calculate.feign.AlgorithmService;
 import com.bzdepot.calculate.model.PrintSizeModel;
+import com.bzdepot.calculate.model.ValuesPrintSizeModel;
 import com.bzdepot.common.message.JsonReturn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -173,5 +175,67 @@ public class AlgorithmLogicService {
             loger.error("无限长纸张计算最小长度--类型转换--异常："+e.toString());
         }
         return minLength;
+    }
+
+    /**
+     * 计算性价比最高尺寸
+     * @param valuesPrintSizeBo
+     * @return
+     */
+    public ValuesPrintSizeModel getValuesPrintSizeLogic(ValuesPrintSizeBo valuesPrintSizeBo){
+        Object Datas = algorithmService.getValuesPrintSize(valuesPrintSizeBo);
+        System.out.println("计算性价比最高尺寸:"+Datas.toString());
+        System.out.println("计算性价比最高尺寸参数:"+valuesPrintSizeBo.toString());
+        String size = null;
+        Integer num = null;
+        try {
+            Map<String,Object> DatasJson = JsonReturn.Parse(Datas);
+            Map<String,Object> dataRes = JsonReturn.Parse(DatasJson.get("data"));
+            num = (Integer) dataRes.get("num");
+            size = (String) dataRes.get("size");
+        }catch (Exception e){
+            e.printStackTrace();
+            loger.error(e.toString());
+        }
+
+        if(size == null || num == null){
+            return null;
+        }
+        ValuesPrintSizeModel valuesPrintSizeModel = new ValuesPrintSizeModel();
+        valuesPrintSizeModel.setNum(num);
+        valuesPrintSizeModel.setSize(size);
+        return valuesPrintSizeModel;
+    }
+
+    /**
+     * 计算是否对称
+     * @param papercutNumber
+     * @return
+     */
+    public Integer getCalcSymmetryLogic(PapercutNumber papercutNumber){
+        Object DataResultObject = algorithmService.getCalcSymmetry(papercutNumber);
+        loger.debug("是否对称请求参数:"+papercutNumber.toString());
+        loger.debug("是否对称结果:"+DataResultObject.toString());
+        Map<String,Object> DataResultMap = JsonReturn.Parse(DataResultObject);
+        Integer Code = 1;
+        Map<String,Object> ReturnDataMap = null;
+        try {
+            Code = (Integer) DataResultMap.get("code");
+            ReturnDataMap = JsonReturn.Parse(DataResultMap.get("data"));
+        }catch (Exception e){
+            e.printStackTrace();
+            loger.error("计算对称接口调用失败:"+e.toString());
+        }
+        if(Code > 0){
+            return -1;
+        }
+        Integer Types = -1;
+        try {
+            Types = (Integer) DataResultMap.get("type");
+        }catch (Exception e){
+            e.printStackTrace();
+            loger.error("获取对称结果类型解析失败："+e.toString());
+        }
+        return Types;
     }
 }

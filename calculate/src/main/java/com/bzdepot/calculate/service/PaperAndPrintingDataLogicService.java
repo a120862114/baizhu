@@ -35,11 +35,11 @@ public class PaperAndPrintingDataLogicService {
         PostData.put("sellerId",joinSelectBo.getSellerId());
         PostData.put("textureId",joinSelectBo.getTextureId());
         PostData.put("gramNums",joinSelectBo.getGramNums());
-        PostData.put("printingColorId",joinSelectBo.getPrintingColorId());
         PostData.put("Longs",joinSelectBo.getLongs());
         PostData.put("Width",joinSelectBo.getWidth());
         //提交数据
         Object ResultData = paperAndPrintingDataService.getPaperConfigJoinPrintingData(PostData);
+        System.out.println("印刷机的数据:"+ResultData.toString());
         Map<String,Object> ResultDatas;
         try {
             ResultDatas = JsonReturn.Parse(ResultData);
@@ -57,7 +57,7 @@ public class PaperAndPrintingDataLogicService {
             errorCode = 10011;
             loger.error(e.toString());
         }
-        if(errorCode != 0){
+        if(errorCode.intValue() != 0){
             return null;
         }
         List<PaperCostWithBLOBs> paperCostModels; //需要解析的结果集

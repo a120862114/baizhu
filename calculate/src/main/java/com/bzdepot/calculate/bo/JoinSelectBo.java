@@ -15,7 +15,6 @@ public class JoinSelectBo {
     @NotNull(message = "厚度参数不能为为空!")
     private BigDecimal gramNums;
 
-    @NotNull(message = "印刷机颜色编号不能为空!")
     private Long printingColorId;
 
     @NotNull(message = "自定义尺寸长不能为空!")

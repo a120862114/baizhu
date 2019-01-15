@@ -97,6 +97,10 @@ public class TestController {
 
     @PostMapping(value = "/get/config")
     public Object getConfig(@Valid @ModelAttribute JoinSelectBo joinSelectBo, BindingResult result){
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("请求参数："+joinSelectBo.toString());
+        System.out.println("错误信息："+result.toString());
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         if(result.hasErrors()){
             String ErrorMsg = result.getFieldError().getDefaultMessage();
             String ErrorCode = result.getFieldError().getCode();
@@ -108,7 +112,13 @@ public class TestController {
         System.out.println("----------=======================----------------------=====================-------------");
         System.out.println("请求参数："+joinSelectBo.toString());
         System.out.println("----------=======================----------------------=====================-------------");
-        List<PaperCostWithBLOBs> paperCostModels = Collections.synchronizedList(paperAndPrintingDataLogicService.getPaperAndPrintConfigData(joinSelectBo));
+        List<PaperCostWithBLOBs> paperCostModels = null;
+        try {
+            paperCostModels = Collections.synchronizedList(paperAndPrintingDataLogicService.getPaperAndPrintConfigData(joinSelectBo));
+        }catch (Exception e){
+           System.out.println("暂无符合的纸张配置与印刷机配置数据!");
+        }
+
         if(paperCostModels != null && paperCostModels.size() > 0){
             List<Future<TaskPaperSizeModel>> futures = Collections.synchronizedList(new ArrayList<>());
             int postthreedCount = 0;
@@ -145,6 +155,6 @@ public class TestController {
             JsonData.put("sizeData",response);
             return JsonReturn.SetMsg(0,"获取纸张配置与符合条件的印刷机数据成功!",JsonData);
         }
-        return JsonReturn.SetMsg(10011,"获取纸张配置与符合条件的印刷机数据失败!","");
+        return JsonReturn.SetMsg(10011,"暂无符合的纸张配置与印刷机配置数据!","");
     }
 }

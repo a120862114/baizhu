@@ -9,6 +9,6 @@ public interface ClientUserMapper {
 
     ClientUser getClientUser(Long id);
 
-
+    int updateByUserIdSelective(ClientUser record);
 
 }

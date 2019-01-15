@@ -14,7 +14,7 @@
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.bzdepot.special.model.TechnologyClass" extends="BaseResultMap" >
     <result column="enable_attr_ids" property="enableAttrIds" jdbcType="LONGVARCHAR" />
-    <collection property="listDetail" ofType="com.bzdepot.special.model.TechnologyAttr" select="com.bzdepot.special.mapper.TechnologyAttrMapper.listAttrDataByTid" column="id"  />
+    <collection property="listDetail" ofType="com.bzdepot.special.model.TechnologyAttr" select="com.bzdepot.special.mapper.TechnologyAttrMapper.listAttrDataByTid" column="{tId=id,sellerId=seller_id}"  />
   </resultMap>
   <resultMap id="GetNamesResultMap" type="com.bzdepot.special.bo.GetNamesBo" >
     <result column="technology_name" property="Names" jdbcType="VARCHAR" />
@@ -28,11 +28,14 @@
   </sql>
   <select id="selectPageClassAndAttr" resultMap="ResultMapWithBLOBs">
     SELECT
-      <include refid="Base_Column_List" />
+    #{sellerId,jdbcType=BIGINT} as seller_id
+     ,
+    id, technology_name, sort, status, default_attr_id, is_commonly_used,
+    create_time, update_time
       ,
       <include refid="Blob_Column_List" />
     from technology_class
-    where seller_id = #{sellerId,jdbcType=BIGINT}
+    where seller_id = #{sellerId,jdbcType=BIGINT} or seller_id = 0 order by id desc
   </select>
   <select id="selectByPrimaryKeyForNames" resultMap="GetNamesResultMap" parameterType="java.lang.Long" >
     select technology_name from technology_class
